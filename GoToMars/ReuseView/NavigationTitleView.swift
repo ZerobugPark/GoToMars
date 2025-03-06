@@ -9,12 +9,12 @@ import UIKit
 
 final class NavigationTitleView: BaseView {
     
-    let title = CustomLabel(color: .projectNavy)
+    let titleLabel = CustomLabel(bold: true, fontSize: 20, color: .projectNavy)
 
     
     override func configureHierarchy() {
         
-        self.addSubview(title)
+        self.addSubview(titleLabel)
         
  
     }
@@ -22,7 +22,7 @@ final class NavigationTitleView: BaseView {
     override func configureLayout() {
 
         
-        title.snp.makeConstraints { make in
+        titleLabel.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.leading.equalToSuperview()
             make.height.equalTo(20)

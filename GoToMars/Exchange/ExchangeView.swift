@@ -14,7 +14,7 @@ final class ExchangeView: BaseView {
     
     private let stackView = UIStackView()
     private let titleView = UIView()
-    private let titleLabel = CustomLabel(color: .projectNavy)
+    private let titleLabel = CustomLabel(bold: true, fontSize: 14, color: .projectNavy)
     
     let currentPriceView = UIView()
     let currentFilterButton = filterButtonView()
@@ -137,9 +137,9 @@ final class ExchangeView: BaseView {
         stackView.backgroundColor = .projectLightGray
         titleLabel.text = "코인"
         
-        currentFilterButton.title.text = "현재가"
-        compareViewFilterButton.title.text = "전일대비"
-        transactionValueFilterButton.title.text = "거래대금"
+        currentFilterButton.titleLabel.text = "현재가"
+        compareViewFilterButton.titleLabel.text = "전일대비"
+        transactionValueFilterButton.titleLabel.text = "거래대금"
         
         self.backgroundColor = .white
         
@@ -151,7 +151,10 @@ final class ExchangeView: BaseView {
         transactionValueView.isUserInteractionEnabled = true
         transactionValueView.tag = 2
         
-        tableView.backgroundColor = .red
+        
+        tableView.bounces = false
+        tableView.separatorStyle = .none
+
     }
     
     deinit {
