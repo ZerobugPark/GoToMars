@@ -18,6 +18,7 @@ struct UpBitAPI: Decodable {
     let changePrice: Double
     let changeRate: Double
     let trade: Double
+    let accTrade: Double
     
     
     enum CodingKeys: String, CodingKey {
@@ -25,7 +26,8 @@ struct UpBitAPI: Decodable {
         case change
         case changePrice = "signed_change_price"
         case changeRate = "signed_change_rate"
-        case trade = "acc_trade_price_24h"
+        case trade = "trade_price"
+        case accTrade = "acc_trade_price_24h"
     }
  
 }
