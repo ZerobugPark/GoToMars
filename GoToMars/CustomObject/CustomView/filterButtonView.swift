@@ -48,10 +48,7 @@ class filterButtonView: BaseView {
         
     }
     
-    override func configureView() {
-
-
-        
+    deinit {
+        print("filterButtonView Deinit")
     }
-
 }
