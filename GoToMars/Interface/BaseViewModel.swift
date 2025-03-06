@@ -11,5 +11,5 @@ protocol BaseViewModel {
     associatedtype Input
     associatedtype Output
     
-    func transfomr(input: Input) -> Output
+    func transform(input: Input) -> Output
 }
