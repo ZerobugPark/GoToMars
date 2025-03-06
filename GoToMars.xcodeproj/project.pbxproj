@@ -11,11 +11,26 @@
 		D031430D2D798E3F00A483E3 /* Toast in Frameworks */ = {isa = PBXBuildFile; productRef = D031430C2D798E3F00A483E3 /* Toast */; };
 		D03143102D798E5900A483E3 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = D031430F2D798E5900A483E3 /* RxCocoa */; };
 		D03143122D798E5900A483E3 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = D03143112D798E5900A483E3 /* RxSwift */; };
-		D03143152D798E8000A483E3 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = D03143142D798E8000A483E3 /* RealmSwift */; };
 		D03143182D798EA600A483E3 /* RxGesture in Frameworks */ = {isa = PBXBuildFile; productRef = D03143172D798EA600A483E3 /* RxGesture */; };
 		D031431B2D798EB300A483E3 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = D031431A2D798EB300A483E3 /* Kingfisher */; };
 		D031431E2D798EC200A483E3 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = D031431D2D798EC200A483E3 /* Alamofire */; };
+		D03143EB2D79DA2A00A483E3 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = D03143EA2D79DA2A00A483E3 /* RealmSwift */; };
+		D03143EC2D79DA3800A483E3 /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = D03143EA2D79DA2A00A483E3 /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		D03143ED2D79DA3800A483E3 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				D03143EC2D79DA3800A483E3 /* RealmSwift in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		D03142092D79758D00A483E3 /* GoToMars.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GoToMars.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -47,12 +62,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D03143EB2D79DA2A00A483E3 /* RealmSwift in Frameworks */,
 				D03143102D798E5900A483E3 /* RxCocoa in Frameworks */,
 				D031431E2D798EC200A483E3 /* Alamofire in Frameworks */,
 				D031430D2D798E3F00A483E3 /* Toast in Frameworks */,
 				D031431B2D798EB300A483E3 /* Kingfisher in Frameworks */,
 				D03143122D798E5900A483E3 /* RxSwift in Frameworks */,
-				D03143152D798E8000A483E3 /* RealmSwift in Frameworks */,
 				D03143182D798EA600A483E3 /* RxGesture in Frameworks */,
 				D031430A2D798E3500A483E3 /* SnapKit in Frameworks */,
 			);
@@ -87,6 +102,7 @@
 				D03142052D79758D00A483E3 /* Sources */,
 				D03142062D79758D00A483E3 /* Frameworks */,
 				D03142072D79758D00A483E3 /* Resources */,
+				D03143ED2D79DA3800A483E3 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -101,10 +117,10 @@
 				D031430C2D798E3F00A483E3 /* Toast */,
 				D031430F2D798E5900A483E3 /* RxCocoa */,
 				D03143112D798E5900A483E3 /* RxSwift */,
-				D03143142D798E8000A483E3 /* RealmSwift */,
 				D03143172D798EA600A483E3 /* RxGesture */,
 				D031431A2D798EB300A483E3 /* Kingfisher */,
 				D031431D2D798EC200A483E3 /* Alamofire */,
+				D03143EA2D79DA2A00A483E3 /* RealmSwift */,
 			);
 			productName = GoToMars;
 			productReference = D03142092D79758D00A483E3 /* GoToMars.app */;
@@ -138,10 +154,10 @@
 				D03143082D798E3500A483E3 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				D031430B2D798E3F00A483E3 /* XCRemoteSwiftPackageReference "Toast-Swift" */,
 				D031430E2D798E5900A483E3 /* XCRemoteSwiftPackageReference "RxSwift" */,
-				D03143132D798E8000A483E3 /* XCRemoteSwiftPackageReference "realm-swift" */,
 				D03143162D798EA600A483E3 /* XCRemoteSwiftPackageReference "RxGesture" */,
 				D03143192D798EB300A483E3 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				D031431C2D798EC200A483E3 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				D03143E92D79DA2A00A483E3 /* XCRemoteSwiftPackageReference "realm-swift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = D031420A2D79758D00A483E3 /* Products */;
@@ -181,6 +197,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9ZR9M5J9M6;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GoToMars/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "박영균";
@@ -214,6 +231,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9ZR9M5J9M6;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GoToMars/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "박영균";
@@ -407,14 +425,6 @@
 				minimumVersion = 6.9.0;
 			};
 		};
-		D03143132D798E8000A483E3 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/realm/realm-swift.git";
-			requirement = {
-				kind = exactVersion;
-				version = 20.0.1;
-			};
-		};
 		D03143162D798EA600A483E3 /* XCRemoteSwiftPackageReference "RxGesture" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/RxSwiftCommunity/RxGesture";
@@ -437,6 +447,14 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 5.10.2;
+			};
+		};
+		D03143E92D79DA2A00A483E3 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-swift.git";
+			requirement = {
+				kind = exactVersion;
+				version = 20.0.1;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -462,11 +480,6 @@
 			package = D031430E2D798E5900A483E3 /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxSwift;
 		};
-		D03143142D798E8000A483E3 /* RealmSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D03143132D798E8000A483E3 /* XCRemoteSwiftPackageReference "realm-swift" */;
-			productName = RealmSwift;
-		};
 		D03143172D798EA600A483E3 /* RxGesture */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = D03143162D798EA600A483E3 /* XCRemoteSwiftPackageReference "RxGesture" */;
@@ -481,6 +494,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = D031431C2D798EC200A483E3 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
+		};
+		D03143EA2D79DA2A00A483E3 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D03143E92D79DA2A00A483E3 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
