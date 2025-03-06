@@ -24,7 +24,7 @@ final class NavigationTitleView: BaseView {
         
         title.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
-            make.leading.equalToSuperview().offset(8)
+            make.leading.equalToSuperview()
             make.height.equalTo(20)
         }
         

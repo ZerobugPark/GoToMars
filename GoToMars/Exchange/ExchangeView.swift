@@ -13,11 +13,10 @@ final class ExchangeView: BaseView {
     
     
     private let stackView = UIStackView()
+    private let titleView = UIView()
+    private let titleLabel = CustomLabel(color: .projectNavy)
     
-    let titleView = UIView()
-    let titleLabel = CustomLabel(color: .projectNavy)
-    
-    let curretPriceView = UIView()
+    let currentPriceView = UIView()
     let currentFilterButton = filterButtonView()
     
     let compareView = UIView()
@@ -29,6 +28,8 @@ final class ExchangeView: BaseView {
     private let lmarginView = UIView()
     private let rmarginView = UIView()
     
+    let tableView = UITableView()
+    
 
     
     override func configureHierarchy() {
@@ -36,14 +37,16 @@ final class ExchangeView: BaseView {
         
         addSubview(stackView)
         
-        [lmarginView, titleView, curretPriceView, compareView, transactionValueView, rmarginView].forEach {
+        [lmarginView, titleView, currentPriceView, compareView, transactionValueView, rmarginView].forEach {
             stackView.addArrangedSubview($0)
         }
         
         titleView.addSubview(titleLabel)
-        curretPriceView.addSubview(currentFilterButton)
+        currentPriceView.addSubview(currentFilterButton)
         compareView.addSubview(compareViewFilterButton)
         transactionValueView.addSubview(transactionValueFilterButton)
+        
+        addSubview(tableView)
  
     }
     
@@ -66,12 +69,12 @@ final class ExchangeView: BaseView {
         }
         
         titleLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(4)
-            make.leading.equalToSuperview().offset(4)
+            make.centerY.equalToSuperview()
+            make.leading.equalToSuperview().offset(6)
         }
         
         
-        curretPriceView.snp.makeConstraints { make in
+        currentPriceView.snp.makeConstraints { make in
             make.width.equalToSuperview().multipliedBy(0.22)
             make.height.equalTo(30)
         }
@@ -118,6 +121,11 @@ final class ExchangeView: BaseView {
             make.width.equalToSuperview().multipliedBy(0.02)
             make.height.equalTo(30)
         }
+        
+        tableView.snp.makeConstraints { make in
+            make.top.equalTo(stackView.snp.bottom)
+            make.horizontalEdges.bottom.equalTo(self.safeAreaLayoutGuide)
+        }
        
         
     }
@@ -136,11 +144,18 @@ final class ExchangeView: BaseView {
         self.backgroundColor = .white
         
         
-        curretPriceView.isUserInteractionEnabled = true
+        currentPriceView.isUserInteractionEnabled = true
+        currentPriceView.tag = 0
         compareView.isUserInteractionEnabled = true
+        compareView.tag = 1
         transactionValueView.isUserInteractionEnabled = true
+        transactionValueView.tag = 2
+        
+        tableView.backgroundColor = .red
     }
     
-    
+    deinit {
+        print("ExchagneView Deinit")
+    }
     
 }
