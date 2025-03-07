@@ -55,25 +55,25 @@ final class CoinInfoCollectionViewCell: BaseCollectionViewCell {
     }
     
     override func configureView() {
-        
-        
-        DispatchQueue.main.async {
-            self.imageView.layer.cornerRadius = self.imageView.frame.width / 2
-        }
-        
         imageView.layer.borderWidth = 0
         imageView.clipsToBounds = true
-        
-
-        
     }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        guard contentView.bounds.width > 0 else { return }
+        
+        imageView.layer.cornerRadius = self.imageView.frame.width / 2
+    
+    }
+    
     
     
     func setup(data: TrendingCoinItem, index: Int) {
         
         numberLabel.text = "\(index + 1)"
-        titleLabel.text = data.item.name
-        subTitleLabel.text = data.item.symbol
+        titleLabel.text = data.item.symbol
+        subTitleLabel.text = data.item.name
         
         
         if let url = URL(string: data.item.thumb) {
@@ -82,7 +82,7 @@ final class CoinInfoCollectionViewCell: BaseCollectionViewCell {
             imageView.image = UIImage(systemName: "star")
         }
         
-        
+        contentView.layoutIfNeeded()
         
         
     }

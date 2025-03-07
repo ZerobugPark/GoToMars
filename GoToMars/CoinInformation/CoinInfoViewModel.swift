@@ -135,7 +135,7 @@ extension CoinInfoViewModel {
         for item in data {
             coinTrend += [.firstSection(item)]
         }
-        coinTrend.removeLast() // 
+        coinTrend.removeLast() // Input 데이터는 15개, 실제 보여주는 데이터는 14개
         
     }
     

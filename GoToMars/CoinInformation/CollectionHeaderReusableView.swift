@@ -32,15 +32,14 @@ final class CollectionHeaderReusableView: UICollectionReusableView {
         
         
         titleLabel.snp.makeConstraints { make in
-            
+            make.centerY.equalToSuperview()
             make.leading.equalTo(self.safeAreaLayoutGuide).offset(16)
-            make.bottom.equalTo(self.safeAreaLayoutGuide)
+            
         }
         
         timeLabel.snp.makeConstraints { make in
-            
+            make.centerY.equalToSuperview()
             make.trailing.equalTo(self.safeAreaLayoutGuide).offset(-16)
-            make.bottom.equalTo(self.safeAreaLayoutGuide)
         }
         
     

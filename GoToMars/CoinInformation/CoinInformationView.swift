@@ -69,8 +69,10 @@ final class CoinInformationView: BaseView {
         searchBar.searchTextField.clipsToBounds = true
         
         searchBar.searchTextField.backgroundColor = .white
-        //collectionView.backgroundColor = .blue
+        
+        
         collectionView.bounces = false
+        collectionView.showsHorizontalScrollIndicator = false
 
 
     }
@@ -98,7 +100,7 @@ final class CoinInformationView: BaseView {
                 
                 // 헤더 추가
                 let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                                        heightDimension: .absolute(30))
+                                                        heightDimension: .absolute(40))
                 let headerItem = NSCollectionLayoutBoundarySupplementaryItem(
                     layoutSize: headerSize,
                     elementKind: UICollectionView.elementKindSectionHeader,
@@ -108,10 +110,10 @@ final class CoinInformationView: BaseView {
                 return section
                 
             } else {
-                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1/4), heightDimension: .fractionalHeight(1.0))
+                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1 / 5), heightDimension: .fractionalHeight(1.0))
                 
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
-                item.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 16, bottom: 5, trailing: 16)
+                
                 
                 let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.35))
                 
@@ -120,11 +122,11 @@ final class CoinInformationView: BaseView {
                 
                 let section = NSCollectionLayoutSection(group: group)
                 
-                section.orthogonalScrollingBehavior = .continuous
+                section.orthogonalScrollingBehavior = .continuous//.groupPagingCentered
                 
                 // 헤더 추가
                 let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                                        heightDimension: .absolute(30))
+                                                        heightDimension: .absolute(40))
                 let headerItem = NSCollectionLayoutBoundarySupplementaryItem(
                     layoutSize: headerSize,
                     elementKind: UICollectionView.elementKindSectionHeader,
