@@ -21,12 +21,15 @@ enum APIRequest {
     
     
     case upbit
+    case coingeckoTrending
     
     
     var baseURL: String {
         switch self {
         case .upbit:
             "https://api.upbit.com/v1/ticker/all"
+        case .coingeckoTrending:
+            "https://api.coingecko.com/api/v3/"
         }
     }
     
@@ -35,6 +38,8 @@ enum APIRequest {
         switch self {
         case .upbit:
             return URL(string: baseURL)!
+        case .coingeckoTrending:
+            return URL(string: baseURL + "search/trending")!
         }
     }
     
@@ -48,6 +53,8 @@ enum APIRequest {
         case .upbit:
             let parameters = ["quote_currencies": "KRW"]
             return parameters
+        case .coingeckoTrending:
+            return nil
         }
     }
     
@@ -68,21 +75,13 @@ final class NetworkManager {
         
         return Single<Result<T, APIError>>.create { value in
             
-            
-            let api = APIRequest.upbit
-            AF.request(api.endPoint, method: api.method, parameters: api.parameter, encoding: URLEncoding(destination: .queryString)).validate(statusCode: 200...299).responseDecodable(of: [UpBitAPI].self) {
+            AF.request(api.endPoint, method: api.method, parameters: api.parameter, encoding: URLEncoding(destination: .queryString)).validate(statusCode: 200...299).responseDecodable(of: T.self) {
                 response in
+                
                 
                 switch response.result {
                 case .success(let data):
-                    
-                    if let data = data as? T {
-                        value(.success(.success(data)))
-                    } else {
-                        value(.success(.failure(APIError.test)))
-                    }
-                    
-                    
+                    value(.success(.success(data)))
                 case .failure(let error):
                     dump(error)
                     
