@@ -118,7 +118,7 @@ final class UpbitTableViewCell: UITableViewCell {
         
         
         
-        currentPriceLabel.text = data.trade.roundToPlaces(places: 2).formatted()
+        currentPriceLabel.text = data.trade.roundToPlaces(places: 1).formatted()
         
         let num = Int(data.accTrade)
         
