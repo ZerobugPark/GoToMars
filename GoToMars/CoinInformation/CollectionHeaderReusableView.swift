@@ -43,8 +43,6 @@ final class CollectionHeaderReusableView: UICollectionReusableView {
             make.bottom.equalTo(self.safeAreaLayoutGuide)
         }
         
-        
-        titleLabel.text = "sdadddda"
-        timeLabel.text = "sdada"
+    
     }
 }

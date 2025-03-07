@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import Kingfisher
 
 final class CoinInfoCollectionViewCell: BaseCollectionViewCell {
     
@@ -23,7 +24,7 @@ final class CoinInfoCollectionViewCell: BaseCollectionViewCell {
         [numberLabel, imageView, titleLabel, subTitleLabel].forEach {
             contentView.addSubview($0)
         }
-        contentView.backgroundColor = .systemGreen
+
     }
     
     override func configureLayout() {
@@ -62,11 +63,27 @@ final class CoinInfoCollectionViewCell: BaseCollectionViewCell {
         
         imageView.layer.borderWidth = 0
         imageView.clipsToBounds = true
-        imageView.image = UIImage(systemName: "star")
         
-        numberLabel.text = "1"
-        titleLabel.text = "dsada"
-        subTitleLabel.text = "xptmxm"
+
+        
+    }
+    
+    
+    func setup(data: TrendingCoinItem, index: Int) {
+        
+        numberLabel.text = "\(index + 1)"
+        titleLabel.text = data.item.name
+        subTitleLabel.text = data.item.symbol
+        
+        
+        if let url = URL(string: data.item.thumb) {
+            imageView.kf.setImage(with: url)
+        } else {
+            imageView.image = UIImage(systemName: "star")
+        }
+        
+        
+        
         
     }
     

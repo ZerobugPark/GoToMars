@@ -7,7 +7,7 @@
 
 import UIKit
 
-class NFTInfoCollectionViewCell: BaseCollectionViewCell {
+final class NFTInfoCollectionViewCell: BaseCollectionViewCell {
     
     static let id = "NFTInfoCollectionViewCell"
     
@@ -56,10 +56,27 @@ class NFTInfoCollectionViewCell: BaseCollectionViewCell {
         imageView.clipsToBounds = true
         imageView.image = UIImage(systemName: "star")
         
- 
-        titleLabel.text = "dsada"
-        subTitleLabel.text = "xptmxm"
         
     }
+    
+    
+    func setup(data: Nfts) {
+        
+        
+        titleLabel.text = data.name
+        subTitleLabel.text = data.symbol
+        
+        
+        if let url = URL(string: data.thumb) {
+            imageView.kf.setImage(with: url)
+        } else {
+            imageView.image = UIImage(systemName: "star")
+        }
+        
+        
+        
+        
+    }
+    
     
 }
