@@ -28,7 +28,7 @@ final class ExchangeViewModel: BaseViewModel {
         let filterStauts: PublishRelay<Filter>
     }
     
-    private let disposeBag = DisposeBag()
+    var disposeBag = DisposeBag()
     
     private var coinList: [UpBitAPI] = []
     
@@ -57,7 +57,7 @@ final class ExchangeViewModel: BaseViewModel {
                     owner.changeTitle(data: owner.coinList)
                     
                     coninList.accept(owner.coinList)
-
+                    print("업비트 다시 호출")
                 case .failure(let error):
                     print(error)
                 }

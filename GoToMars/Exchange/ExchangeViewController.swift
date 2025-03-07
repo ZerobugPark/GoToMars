@@ -18,7 +18,7 @@ final class ExchangeViewController: UIViewController {
     private let exchangeView = ExchangeView()
     private let viewModel = ExchangeViewModel()
     
-    private let disposeBag = DisposeBag()
+    private var disposeBag = DisposeBag()
     
     override func loadView() {
         view = exchangeView
@@ -29,19 +29,25 @@ final class ExchangeViewController: UIViewController {
         super.viewDidLoad()
 
         navigationConfiguration()
-        
-        
         exchangeView.tableView.register(UpbitTableViewCell.self, forCellReuseIdentifier: UpbitTableViewCell.id)
         exchangeView.tableView.rowHeight = 40
-        
-        bind()
 
-        
     }
     
     
     private func bind() {
-    
+        
+        
+        Observable<Int>.interval(.seconds(5), scheduler: MainScheduler.instance).startWith(0).subscribe(with: self) { owner, value in
+            print(value)
+        } onError: { owner, error in
+            print("onError")
+        } onCompleted: { owner in
+            print("onCompleted")
+        } onDisposed: { owner in
+            print("onDisposed")
+        }.disposed(by: disposeBag)
+
         //startWith. 처음에 이벤트를 넣어주는 역할
         let input = ExchangeViewModel.Input(viewDidLoad: Observable<Int>.interval(.seconds(5), scheduler: MainScheduler.instance).startWith(0),
                                             filterButtonTapped: Observable.merge(exchangeView.currentPriceView.rx.tapGesture().when(.recognized).asObservable()
@@ -70,6 +76,20 @@ final class ExchangeViewController: UIViewController {
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        bind()
+        
+        print(#function)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        disposeBag = DisposeBag()
+        viewModel.disposeBag = DisposeBag()
+        
+        print(#function)
+    }
 
  
     
