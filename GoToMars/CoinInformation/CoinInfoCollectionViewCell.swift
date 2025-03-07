@@ -17,11 +17,11 @@ final class CoinInfoCollectionViewCell: BaseCollectionViewCell {
     private let imageView = UIImageView()
     private let titleLabel = CustomLabel(bold: true, fontSize: 12, color: .projectNavy)
     private let subTitleLabel = CustomLabel(bold: false, fontSize: 9, color: .projectGray)
-    
+    private let statusButton =  CustomButton()
     
     override func configureHierarchy() {
         
-        [numberLabel, imageView, titleLabel, subTitleLabel].forEach {
+        [numberLabel, imageView, titleLabel, subTitleLabel, statusButton].forEach {
             contentView.addSubview($0)
         }
 
@@ -31,13 +31,13 @@ final class CoinInfoCollectionViewCell: BaseCollectionViewCell {
         
         numberLabel.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
-            make.leading.equalTo(contentView.safeAreaLayoutGuide).offset(8)
+            make.leading.equalTo(contentView.safeAreaLayoutGuide).offset(16)
             make.width.equalTo(15)
         }
         
         imageView.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
-            make.leading.equalTo(numberLabel.snp.trailing).offset(8)
+            make.leading.equalTo(numberLabel.snp.trailing).offset(4)
             make.size.equalTo(26)
         }
         
@@ -49,6 +49,11 @@ final class CoinInfoCollectionViewCell: BaseCollectionViewCell {
         subTitleLabel.snp.makeConstraints { make in
             make.centerY.equalToSuperview().offset(6)
             make.leading.equalTo(imageView.snp.trailing).offset(4)
+        }
+        
+        statusButton.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.trailing.equalTo(contentView.safeAreaLayoutGuide).offset(-8)
         }
         
         
@@ -81,6 +86,40 @@ final class CoinInfoCollectionViewCell: BaseCollectionViewCell {
         } else {
             imageView.image = UIImage(systemName: "star")
         }
+        
+        
+        let rating = data.item.data.krwPrice.roundToPlaces(places: 2)
+        
+        
+        var imageName = ""
+        var imageStatus = false
+        var title = ""
+        var color: UIColor
+        
+    
+        if rating > 0.0 {
+            imageName = "arrowtriangle.up.fill"
+            imageStatus = true
+            title = rating.formatted() + "%"
+            color = .projectRed
+            
+        } else if rating < 0.0 {
+            imageName = "arrowtriangle.down.fill"
+            imageStatus = true
+            title = rating.formatted() + "%"
+            color = .projectBlue
+            
+        } else {
+            imageName = ""
+            imageStatus = true
+            title = rating.formatted() + "%"
+            color = .projectNavy
+            
+        }
+        
+        statusButton.configuration = statusButton.buttonConfiguration(title: title, color: color, imageStatus: imageStatus, imageName: imageName)
+        
+        
         
         contentView.layoutIfNeeded()
         

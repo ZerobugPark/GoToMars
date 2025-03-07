@@ -11,18 +11,14 @@ final class NFTInfoCollectionViewCell: BaseCollectionViewCell {
     
     static let id = "NFTInfoCollectionViewCell"
     
-    
-    
-    
     private let imageView = UIImageView()
     private let titleLabel = CustomLabel(bold: true, fontSize: 9, color: .projectNavy)
     private let subTitleLabel = CustomLabel(bold: false, fontSize: 9, color: .projectGray)
-    
-    //static let stackView = UIStackView()
+    private let statusButton = CustomButton()
     
     override func configureHierarchy() {
         
-        [imageView, titleLabel, subTitleLabel].forEach {
+        [imageView, titleLabel, subTitleLabel,statusButton].forEach {
             contentView.addSubview($0)
         }
     }
@@ -47,6 +43,10 @@ final class NFTInfoCollectionViewCell: BaseCollectionViewCell {
             make.width.equalToSuperview()
         }
         
+        statusButton.snp.makeConstraints { make in
+            make.top.equalTo(subTitleLabel.snp.bottom)
+            make.horizontalEdges.equalToSuperview()
+        }
         
     }
     
@@ -78,9 +78,44 @@ final class NFTInfoCollectionViewCell: BaseCollectionViewCell {
         }
         
         
+        let rating = data.pricePercent.roundToPlaces(places: 2)
+        
+        
+        var imageName = ""
+        var imageStatus = false
+        var title = ""
+        var color: UIColor
+        
+    
+        if rating > 0.0 {
+            imageName = "arrowtriangle.up.fill"
+            imageStatus = true
+            title = rating.formatted() + "%"
+            color = .projectRed
+            
+        } else if rating < 0.0 {
+            imageName = "arrowtriangle.down.fill"
+            imageStatus = true
+            title = rating.formatted() + "%"
+            color = .projectBlue
+            
+        } else {
+            imageName = ""
+            imageStatus = true
+            title = rating.formatted() + "%"
+            color = .projectNavy
+            
+        }
+        
+        statusButton.configuration = statusButton.buttonConfiguration(title: title, color: color, imageStatus: imageStatus, imageName: imageName)
+        
+        
+     
+        
         
         
     }
     
     
 }
+
