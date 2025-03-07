@@ -23,6 +23,7 @@ final class CoinInfoCollectionViewCell: BaseCollectionViewCell {
         [numberLabel, imageView, titleLabel, subTitleLabel].forEach {
             contentView.addSubview($0)
         }
+        contentView.backgroundColor = .systemGreen
     }
     
     override func configureLayout() {
