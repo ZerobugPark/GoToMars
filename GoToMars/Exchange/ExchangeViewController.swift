@@ -15,24 +15,6 @@ import RxGesture
 final class ExchangeViewController: UIViewController {
 
     
-    enum FillterButton {
-        case current
-        case compare
-        case transaction
-    }
-    
-//    var filterStatus: FillterButton = .transaction {
-//        didSet {
-//            switch oldValue {
-//            case .current:
-//            case .compare:
-//            case .transaction:
-//            }
-//        }
-//    }
-//    
-
-    
     let exchangeView = ExchangeView()
     let viewModel = ExchangeViewModel()
     
@@ -59,11 +41,14 @@ final class ExchangeViewController: UIViewController {
     
     
     private func bind() {
-        
-        
-        let input = ExchangeViewModel.Input(viewDidLoad: Observable.just(()), test: Observable.merge(exchangeView.currentPriceView.rx.tapGesture().when(.recognized).asObservable()
-            .map { [weak self] _ in self?.exchangeView.currentPriceView.tag ?? 0 },
-                                                                   exchangeView.compareView.rx.tapGesture().when(.recognized).asObservable().map { [weak self] _ in self?.exchangeView.compareView.tag ?? 1}, exchangeView.transactionValueView.rx.tapGesture().when(.recognized).asObservable().map { [weak self] _ in self?.exchangeView.transactionValueView.tag ?? 2}))
+    
+        //startWith. 처음에 이벤트를 넣어주는 역할
+        let input = ExchangeViewModel.Input(viewDidLoad: Observable<Int>.interval(.seconds(5), scheduler: MainScheduler.instance).startWith(0),
+                                            test: Observable.merge(exchangeView.currentPriceView.rx.tapGesture().when(.recognized).asObservable()
+                                                .map { [weak self] _ in self?.exchangeView.currentPriceView.tag ?? 0 },
+                                                                   exchangeView.compareView.rx.tapGesture().when(.recognized).asObservable()
+                                                .map { [weak self] _ in self?.exchangeView.compareView.tag ?? 1}, exchangeView.transactionValueView.rx.tapGesture().when(.recognized).asObservable()
+                                                .map { [weak self] _ in self?.exchangeView.transactionValueView.tag ?? 2}))
 
 
         let output = viewModel.transform(input: input)

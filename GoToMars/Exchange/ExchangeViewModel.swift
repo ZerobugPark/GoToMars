@@ -17,7 +17,7 @@ final class ExchangeViewModel: BaseViewModel {
     
     
     struct Input {
-        let viewDidLoad: Observable<Void>
+        let viewDidLoad: Observable<Int>
         
         let test: Observable<Int>
     }
@@ -45,7 +45,7 @@ final class ExchangeViewModel: BaseViewModel {
         let outputConinList = BehaviorRelay(value: coinList)
         
         
-        input.viewDidLoad.flatMapLatest { NetworkManager.shared.callRequest(api: .upbit, type: [UpBitAPI].self) }
+        input.viewDidLoad.flatMapLatest { _ in NetworkManager.shared.callRequest(api: .upbit, type: [UpBitAPI].self) }
             .bind(with: self) { owner, response in
                 
                 switch response {
