@@ -96,16 +96,24 @@ final class CoinInformationView: BaseView {
                 
                 let section = NSCollectionLayoutSection(group: group)
                 
-                
+                // 헤더 추가
+                let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                        heightDimension: .absolute(30))
+                let headerItem = NSCollectionLayoutBoundarySupplementaryItem(
+                    layoutSize: headerSize,
+                    elementKind: UICollectionView.elementKindSectionHeader,
+                    alignment: .top)
+                section.boundarySupplementaryItems = [headerItem]
             
                 return section
+                
             } else {
                 let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1/4), heightDimension: .fractionalHeight(1.0))
                 
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
                 item.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 16, bottom: 5, trailing: 16)
                 
-                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.3))
+                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.35))
                 
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         
@@ -113,6 +121,16 @@ final class CoinInformationView: BaseView {
                 let section = NSCollectionLayoutSection(group: group)
                 
                 section.orthogonalScrollingBehavior = .continuous
+                
+                // 헤더 추가
+                let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                        heightDimension: .absolute(30))
+                let headerItem = NSCollectionLayoutBoundarySupplementaryItem(
+                    layoutSize: headerSize,
+                    elementKind: UICollectionView.elementKindSectionHeader,
+                    alignment: .top)
+                section.boundarySupplementaryItems = [headerItem]
+                
                 return section
             }
             

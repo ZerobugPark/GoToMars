@@ -75,6 +75,9 @@ final class CoinInformationViewController: UIViewController {
     
     let coninInfoView = CoinInformationView()
     private let disposeBag = DisposeBag()
+  
+    
+    let test2ss = "test"
     
     override func loadView() {
         view = coninInfoView
@@ -86,8 +89,15 @@ final class CoinInformationViewController: UIViewController {
         navigationConfiguration()
         view.backgroundColor = .white
         test()
+        
+        
+ 
         coninInfoView.collectionView.register(CoinInfoCollectionViewCell.self, forCellWithReuseIdentifier: "CoinInfoCollectionViewCell")
         coninInfoView.collectionView.register(NFTInfoCollectionViewCell.self, forCellWithReuseIdentifier: "NFTInfoCollectionViewCell")
+        coninInfoView.collectionView.register(CollectionHeaderReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CollectionHeaderReusableView.id) // forSupplementaryViewOfKind 밑에서 쓰는 kind
+        
+       
+        
     }
     
     
@@ -105,7 +115,7 @@ final class CoinInformationViewController: UIViewController {
                 cell.numberLabel.text = "\(indexPath.row)"
                 
                 return cell
-            case .secondSection(let data):
+            case .secondSection(let _):
                 
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NFTInfoCollectionViewCell.id, for: indexPath) as? NFTInfoCollectionViewCell else { return UICollectionViewCell() }
                 
@@ -117,26 +127,31 @@ final class CoinInformationViewController: UIViewController {
             
             
         }, configureSupplementaryView: { dataSource, collectionView, kind , indexPath in
-            
             if indexPath.section == 0 {
-                //                let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: PoseFeedEmptyView.identifier, for: indexPath) as! PoseFeedEmptyView
                 
-                // ...
-                // 섹션 1번 서플먼트 뷰 헤더 정의
-                // ...
-                return UICollectionReusableView()
-                //return header
+                guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: CollectionHeaderReusableView.id, for: indexPath) as? CollectionHeaderReusableView else {
+                    return  UICollectionReusableView() }
+                               
+                
+                headerView.titleLabel.text = "인기 검색어"
+                
+                print(kind,"12")
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "MM.dd hh:mm"
+                
+                headerView.timeLabel.text = dateFormatter.string(from: Date())
+                
+                return headerView
+                
+                
             } else if indexPath.section == 1 {
-                //                   let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: PoseFeedHeader.identifier, for: indexPath) as! PoseFeedHeader
-                //                   let title = dataSource.sectionModels[indexPath.section].header
-                //                   header.configureHeader(with: title)
                 
-                // ...
-                // 섹션 2번 서플먼트 뷰 헤더 정의
-                // ...
+                guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: CollectionHeaderReusableView.id, for: indexPath) as? CollectionHeaderReusableView else {
+                    return  UICollectionReusableView() }
+
+                headerView.titleLabel.text = "인기 NFT"
                 
-                //                   return header
-                return UICollectionReusableView()
+                return headerView
             }
             else {
                 return UICollectionReusableView()
