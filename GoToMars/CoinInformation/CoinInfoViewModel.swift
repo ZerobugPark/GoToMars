@@ -21,8 +21,6 @@ enum CollectionViewSectionModel { //섹션 정의
     case ntf([SectionItem])
 }
 
-
-
 extension CollectionViewSectionModel: SectionModelType {
     
     typealias Item = SectionItem
@@ -41,25 +39,6 @@ extension CollectionViewSectionModel: SectionModelType {
         self = original
         
     }
-}
-
-struct Test {
-    var items: Ment
-}
-
-struct Ment {
-    let word: String
-    
-}
-
-
-struct Test2 {
-    var items: Ment2
-}
-
-struct Ment2 {
-    let word: String
-    
 }
 
 
@@ -88,36 +67,22 @@ final class CoinInfoViewModel: BaseViewModel {
         let trending = BehaviorRelay<[CollectionViewSectionModel]>(value: [.coin(coinTrend),
                                                                            .ntf(ntfTrend)])
         
-        
         input.viewdidLoad.flatMap {
             NetworkManager.shared.callRequest(api: .coingeckoTrending, type: CoinGeckoTrendingAPI.self)
         }.bind(with: self) { owner, response in
             
             switch response {
             case .success(let value):
-                
-               
                 owner.getInfo(data: value.coins)
                 owner.getInfo(data: value.nfts)
-                
-                //print(owner.coinTrend)
-                //print(owner.ntfTrend)
-                
                 trending.accept([.coin(owner.coinTrend),.ntf(owner.ntfTrend)])
-                
-                
             case .failure(let error):
                 print(error)
             }
         }.disposed(by: disposeBag)
 
-        
-        
-        
-        
         return Output(trending: trending)
     }
-    
     
     deinit {
         print("CoinInfoViewModel DeInit")
@@ -128,8 +93,6 @@ final class CoinInfoViewModel: BaseViewModel {
 // MARK: - Section 타입으로 변환
 extension CoinInfoViewModel {
     
-    
-
     private func getInfo(data: [TrendingCoinItem]) {
         
         for item in data {

@@ -9,12 +9,8 @@ import Foundation
 
 import RxSwift
 import RxCocoa
-import RxGesture
-
-
 
 final class ExchangeViewModel: BaseViewModel {
-    
     
     struct Input {
         let viewDidLoad: Observable<Int>
@@ -57,6 +53,7 @@ final class ExchangeViewModel: BaseViewModel {
                     
                     owner.changeTitle(data: owner.coinList)
                     owner.applyFillter(filter: owner.currentFilter)
+                    print(owner.currentFilter)
                     coninList.accept(owner.coinList)
                 case .failure(let error):
                     print(error)

@@ -14,8 +14,6 @@ import RxDataSources
 
 final class CoinInformationViewController: UIViewController {
     
-    
-    
     private let coninInfoView = CoinInformationView()
     private let viewModel = CoinInfoViewModel()
     
@@ -43,10 +41,7 @@ final class CoinInformationViewController: UIViewController {
             
             return cell
             
-            
         }
-        
-        
         
     }, configureSupplementaryView: { dataSource, collectionView, kind , indexPath in
         if indexPath.section == 0 {
@@ -54,12 +49,10 @@ final class CoinInformationViewController: UIViewController {
             guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: CollectionHeaderReusableView.id, for: indexPath) as? CollectionHeaderReusableView else {
                 return  UICollectionReusableView() }
                            
-            
             headerView.titleLabel.text = "인기 검색어"
-        
+           
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "MM.dd hh:mm"
-            
             headerView.timeLabel.text = dateFormatter.string(from: Date())
             
             return headerView
@@ -77,10 +70,7 @@ final class CoinInformationViewController: UIViewController {
         else {
             return UICollectionReusableView()
         }
-        
     })
-    
-    
     
     override func loadView() {
         view = coninInfoView
@@ -89,72 +79,23 @@ final class CoinInformationViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         navigationConfiguration()
-        
-        view.backgroundColor = .white
-        
-        
-
- 
-        coninInfoView.collectionView.register(CoinInfoCollectionViewCell.self, forCellWithReuseIdentifier: "CoinInfoCollectionViewCell")
-        coninInfoView.collectionView.register(NFTInfoCollectionViewCell.self, forCellWithReuseIdentifier: "NFTInfoCollectionViewCell")
-        coninInfoView.collectionView.register(CollectionHeaderReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CollectionHeaderReusableView.id) // forSupplementaryViewOfKind 밑에서 쓰는 kind
-        
+        collectionViewRegister()
         bind()
-        collectionViewDataSource()
-
-        
-//        Observable.just(()).flatMap {
-//            NetworkManager.shared.callRequest(api: .coingeckoTrending, type: CoinGeckoTrendingAPI.self)
-//        }.bind(with: self) { owner, response in
-//            switch response {
-//            case .success(let value):
-//                dump(value)
-//            case .failure(let error):
-//                print(error)
-//            }
-//        }.disposed(by: disposeBag)
-
-        
     }
     
     
-    func bind() {
-        
-    
+    private func bind() {
+
         let input = CoinInfoViewModel.Input(viewdidLoad: Observable.just(()))
-        
-        
         let output = viewModel.transform(input: input)
-        
-        
         output.trending.asDriver().drive(coninInfoView.collectionView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
         
         
-        
-//        let test: [SectionItem] = [.firstSection(Test(items: Ment(word: "123"))),.firstSection(Test(items: Ment(word: "12"))),.firstSection(Test(items: Ment(word: "12"))),.firstSection(Test(items: Ment(word: "12"))),.firstSection(Test(items: Ment(word: "12"))),.firstSection(Test(items: Ment(word: "12"))),.firstSection(Test(items: Ment(word: "12"))),.firstSection(Test(items: Ment(word: "12"))),.firstSection(Test(items: Ment(word: "12"))),.firstSection(Test(items: Ment(word: "12"))),.firstSection(Test(items: Ment(word: "12"))),.firstSection(Test(items: Ment(word: "12"))),.firstSection(Test(items: Ment(word: "12")))
-//                                   
-//        ]
-//        
-//        let test2: [SectionItem] = [.secondSection(Test2(items: Ment2(word: "123"))),.secondSection(Test2(items: Ment2(word: "12"))),.secondSection(Test2(items: Ment2(word: "12"))),.secondSection(Test2(items: Ment2(word: "12"))),.secondSection(Test2(items: Ment2(word: "12"))),.secondSection(Test2(items: Ment2(word: "12"))),.secondSection(Test2(items: Ment2(word: "12")))
-                                    
-//        ]
-        
-//        
-//        let sections: Observable<[CollectionViewSectionModel]> = Observable.just([
-//            .coin(test),
-//            .ntf(test2)
-//        ])
-        
-//        sections.bind(to: coninInfoView.collectionView.rx.items(dataSource: dataSource))
-//            .disposed(by: disposeBag)
-//        
     }
     
 
-    
-    
-    
     private func navigationConfiguration() {
         
         let view = NavigationTitleView()
@@ -166,7 +107,9 @@ final class CoinInformationViewController: UIViewController {
 
 extension CoinInformationViewController {
     
-    private func collectionViewDataSource() {
- 
+    private func collectionViewRegister() {
+        coninInfoView.collectionView.register(CoinInfoCollectionViewCell.self, forCellWithReuseIdentifier: "CoinInfoCollectionViewCell")
+        coninInfoView.collectionView.register(NFTInfoCollectionViewCell.self, forCellWithReuseIdentifier: "NFTInfoCollectionViewCell")
+        coninInfoView.collectionView.register(CollectionHeaderReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CollectionHeaderReusableView.id) // dataSource에서 쓰는 kind
     }
 }
