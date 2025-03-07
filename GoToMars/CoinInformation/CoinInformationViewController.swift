@@ -6,24 +6,101 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
+import RxDataSources
 
-class CoinInformationViewController: UIViewController {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+struct Test {
+    let name: String
+    var items: [Ment]
+}
 
-        // Do any additional setup after loading the view.
+struct Ment {
+    let word: String
+    
+}
+
+extension Test: SectionModelType {
+    
+    typealias Item = Ment
+    
+    init(original: Test, items: [Ment]) {
+        self = original
+        self.items = items
     }
     
+    
+}
 
-    /*
-    // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+
+final class CoinInformationViewController: UIViewController {
+
+    
+    
+    let coninInfoView = CoinInformationView()
+    private let disposeBag = DisposeBag()
+    
+    override func loadView() {
+        view = coninInfoView
     }
-    */
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        navigationConfiguration()
+        view.backgroundColor = .white
+        test()
+        coninInfoView.collectionView.register(CoinInfoCollectionViewCell.self, forCellWithReuseIdentifier: "CoinInfoCollectionViewCell")
+    }
+    
+    
+    func test() {
+        
+        let dataSource = RxCollectionViewSectionedReloadDataSource<Test>  { dataSource, collectionView, indexPath, item in
+            
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CoinInfoCollectionViewCell.id, for: indexPath) as? CoinInfoCollectionViewCell else { return UICollectionViewCell() }
+            
+            cell.numberLabel.text = "\(indexPath.row)"
+            
+            
+            return cell
+        }
+        
+        
+        
+        let mentor = [
+            Test(name: "Jack", items:
+                    [Ment(word: "다시 해볼까요?"),
+                     Ment(word: "맛점?"),
+                     Ment(word: "진짠데?"),
+                     Ment(word: "진짠데?"),
+                     Ment(word: "진짠데?"),
+                     Ment(word: "진짠데?"),
+                     Ment(word: "진짠데?"),
+                     Ment(word: "진짠데?"),
+                     Ment(word: "진짠데?"),
+                     Ment(word: "진짠데?"),
+                     Ment(word: "진짠데?"),
+                     Ment(word: "진짠데?"),
+                     Ment(word: "진짠데?"),
+                     Ment(word: "진짠데?")
+                     
+                    ])]
+        
+        Observable.just(mentor)
+            .bind(to: coninInfoView.collectionView.rx.items(dataSource: dataSource))
+            .disposed(by: disposeBag)
 
+    }
+    
+    
+    
+    private func navigationConfiguration() {
+        
+        let view = NavigationTitleView()
+        view.titleLabel.text = "가상자산 / 심볼 검색"
+        navigationItem.titleView = view
+    }
 }
