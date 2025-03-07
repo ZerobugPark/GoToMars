@@ -11,7 +11,7 @@ import SnapKit
 class filterButtonView: BaseView {
 
     
-    let titleLabel = CustomLabel(bold: true, fontSize: 14, color: .projectNavy)
+    let titleLabel = CustomLabel(bold: true, fontSize: 14, color: .projectGray)
     let topImage = CustomImageView(imageName: "arrowtriangle.up.fill")
     let bottomImage = CustomImageView(imageName: "arrowtriangle.down.fill")
     

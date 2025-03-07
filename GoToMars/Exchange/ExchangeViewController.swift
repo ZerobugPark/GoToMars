@@ -15,8 +15,8 @@ import RxGesture
 final class ExchangeViewController: UIViewController {
 
     
-    let exchangeView = ExchangeView()
-    let viewModel = ExchangeViewModel()
+    private let exchangeView = ExchangeView()
+    private let viewModel = ExchangeViewModel()
     
     private let disposeBag = DisposeBag()
     
@@ -44,11 +44,11 @@ final class ExchangeViewController: UIViewController {
     
         //startWith. 처음에 이벤트를 넣어주는 역할
         let input = ExchangeViewModel.Input(viewDidLoad: Observable<Int>.interval(.seconds(5), scheduler: MainScheduler.instance).startWith(0),
-                                            test: Observable.merge(exchangeView.currentPriceView.rx.tapGesture().when(.recognized).asObservable()
+                                            filterButtonTapped: Observable.merge(exchangeView.currentPriceView.rx.tapGesture().when(.recognized).asObservable()
                                                 .map { [weak self] _ in self?.exchangeView.currentPriceView.tag ?? 0 },
                                                                    exchangeView.compareView.rx.tapGesture().when(.recognized).asObservable()
-                                                .map { [weak self] _ in self?.exchangeView.compareView.tag ?? 1}, exchangeView.transactionValueView.rx.tapGesture().when(.recognized).asObservable()
-                                                .map { [weak self] _ in self?.exchangeView.transactionValueView.tag ?? 2}))
+                                                .map { [weak self] _ in self?.exchangeView.compareView.tag ?? 1}, exchangeView.accTradeView.rx.tapGesture().when(.recognized).asObservable()
+                                                .map { [weak self] _ in self?.exchangeView.accTradeView.tag ?? 2}))
 
 
         let output = viewModel.transform(input: input)
@@ -61,6 +61,9 @@ final class ExchangeViewController: UIViewController {
         }.disposed(by: disposeBag)
         
         
+        output.filterStauts.asDriver(onErrorJustReturn: Filter.normalState).drive(with: self) { owner, status in
+            owner.changButtonStatus(status)
+        }.disposed(by: disposeBag)
         
         
         
@@ -86,3 +89,47 @@ final class ExchangeViewController: UIViewController {
     
 }
 
+// MARK: - filter 관련 UI 적용
+
+extension ExchangeViewController {
+    
+    private func changButtonStatus(_ status: Filter) {
+        
+        exchangeView.currentFilterButton.titleLabel.textColor = .projectGray
+        exchangeView.currentFilterButton.topImage.tintColor = .projectGray
+        exchangeView.currentFilterButton.bottomImage.tintColor = .projectGray
+        
+        exchangeView.compareViewFilterButton.titleLabel.textColor = .projectGray
+        exchangeView.compareViewFilterButton.topImage.tintColor = .projectGray
+        exchangeView.compareViewFilterButton.bottomImage.tintColor = .projectGray
+        
+        exchangeView.accTradeFilterButton.titleLabel.textColor = .projectGray
+        exchangeView.accTradeFilterButton.topImage.tintColor = .projectGray
+        exchangeView.accTradeFilterButton.bottomImage.tintColor = .projectGray
+        
+        
+        switch status {
+        case .downTrade:
+            exchangeView.accTradeFilterButton.titleLabel.textColor = .projectNavy
+            exchangeView.accTradeFilterButton.bottomImage.tintColor = .projectNavy
+        case .upTrade:
+            exchangeView.accTradeFilterButton.titleLabel.textColor = .projectNavy
+            exchangeView.accTradeFilterButton.topImage.tintColor = .projectNavy
+        case .downCompare:
+            exchangeView.compareViewFilterButton.titleLabel.textColor = .projectNavy
+            exchangeView.compareViewFilterButton.bottomImage.tintColor = .projectNavy
+        case .upCompare:
+            exchangeView.compareViewFilterButton.titleLabel.textColor = .projectNavy
+            exchangeView.compareViewFilterButton.topImage.tintColor = .projectNavy
+        case .downCurrentPrice:
+            exchangeView.currentFilterButton.titleLabel.textColor = .projectNavy
+            exchangeView.currentFilterButton.bottomImage.tintColor = .projectNavy
+        case .upCurrentPrice:
+            exchangeView.currentFilterButton.titleLabel.textColor = .projectNavy
+            exchangeView.currentFilterButton.topImage.tintColor = .projectNavy
+        case .normalState:
+            break
+        }
+    }
+    
+}

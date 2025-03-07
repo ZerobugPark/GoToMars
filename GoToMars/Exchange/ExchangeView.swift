@@ -22,8 +22,8 @@ final class ExchangeView: BaseView {
     let compareView = UIView()
     let compareViewFilterButton = filterButtonView()
     
-    let transactionValueView = UIView()
-    let transactionValueFilterButton = filterButtonView()
+    let accTradeView = UIView()
+    let accTradeFilterButton = filterButtonView()
     
     private let lmarginView = UIView()
     private let rmarginView = UIView()
@@ -37,14 +37,14 @@ final class ExchangeView: BaseView {
         
         addSubview(stackView)
         
-        [lmarginView, titleView, currentPriceView, compareView, transactionValueView, rmarginView].forEach {
+        [lmarginView, titleView, currentPriceView, compareView, accTradeView, rmarginView].forEach {
             stackView.addArrangedSubview($0)
         }
         
         titleView.addSubview(titleLabel)
         currentPriceView.addSubview(currentFilterButton)
         compareView.addSubview(compareViewFilterButton)
-        transactionValueView.addSubview(transactionValueFilterButton)
+        accTradeView.addSubview(accTradeFilterButton)
         
         addSubview(tableView)
  
@@ -103,12 +103,12 @@ final class ExchangeView: BaseView {
         }
         
         
-        transactionValueView.snp.makeConstraints { make in
+        accTradeView.snp.makeConstraints { make in
             make.width.equalToSuperview().multipliedBy(0.28)
             make.height.equalTo(30)
         }
         
-        transactionValueFilterButton.snp.makeConstraints { make in
+        accTradeFilterButton.snp.makeConstraints { make in
             make.trailing.equalToSuperview()
             make.width.equalToSuperview().multipliedBy(0.7)
             make.height.equalToSuperview()
@@ -139,7 +139,7 @@ final class ExchangeView: BaseView {
         
         currentFilterButton.titleLabel.text = "현재가"
         compareViewFilterButton.titleLabel.text = "전일대비"
-        transactionValueFilterButton.titleLabel.text = "거래대금"
+        accTradeFilterButton.titleLabel.text = "거래대금"
         
         self.backgroundColor = .white
         
@@ -148,8 +148,8 @@ final class ExchangeView: BaseView {
         currentPriceView.tag = 0
         compareView.isUserInteractionEnabled = true
         compareView.tag = 1
-        transactionValueView.isUserInteractionEnabled = true
-        transactionValueView.tag = 2
+        accTradeView.isUserInteractionEnabled = true
+        accTradeView.tag = 2
         
         
         tableView.bounces = false
