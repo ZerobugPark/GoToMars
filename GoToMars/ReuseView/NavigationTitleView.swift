@@ -10,7 +10,6 @@ import UIKit
 final class NavigationTitleView: BaseView {
     
     let titleLabel = CustomLabel(bold: true, fontSize: 20, color: .projectNavy)
-
     
     override func configureHierarchy() {
         
@@ -20,8 +19,6 @@ final class NavigationTitleView: BaseView {
     }
     
     override func configureLayout() {
-
-        
         titleLabel.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.leading.equalToSuperview()
@@ -30,15 +27,7 @@ final class NavigationTitleView: BaseView {
         
         
     }
-    
-    override func configureView() {
-        
-        
-        
-        
-        
-    }
-    
+
     deinit {
         print("NavigationTitleView Deinit")
     }

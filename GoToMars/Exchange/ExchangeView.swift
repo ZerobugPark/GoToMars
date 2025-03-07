@@ -11,7 +11,7 @@ import SnapKit
 
 final class ExchangeView: BaseView {
     
-    
+    private let lineView = UIView()
     private let stackView = UIStackView()
     private let titleView = UIView()
     private let titleLabel = CustomLabel(bold: true, fontSize: 14, color: .projectNavy)
@@ -34,7 +34,7 @@ final class ExchangeView: BaseView {
     
     override func configureHierarchy() {
         
-        
+        addSubview(lineView)
         addSubview(stackView)
         
         [lmarginView, titleView, currentPriceView, compareView, accTradeView, rmarginView].forEach {
@@ -51,9 +51,14 @@ final class ExchangeView: BaseView {
     }
     
     override func configureLayout() {
+        lineView.snp.makeConstraints { make in
+            make.top.equalTo(self.safeAreaLayoutGuide)
+            make.horizontalEdges.equalTo(self.safeAreaLayoutGuide)
+            make.height.equalTo(1)
+        }
         
         stackView.snp.makeConstraints { make in
-            make.top.equalTo(self.safeAreaLayoutGuide)
+            make.top.equalTo(lineView.snp.bottom)
             make.horizontalEdges.equalTo(self.safeAreaLayoutGuide)
             make.height.equalTo(30)
         }
@@ -132,6 +137,8 @@ final class ExchangeView: BaseView {
     
     override func configureView() {
         
+        lineView.backgroundColor = .projectGray
+        
         stackView.axis = .horizontal
         stackView.distribution = .fill
         stackView.backgroundColor = .projectLightGray
@@ -154,6 +161,7 @@ final class ExchangeView: BaseView {
         
         tableView.bounces = false
         tableView.separatorStyle = .none
+        tableView.showsVerticalScrollIndicator = false
 
     }
     
