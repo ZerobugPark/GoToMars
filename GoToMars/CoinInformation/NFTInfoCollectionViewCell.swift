@@ -38,11 +38,13 @@ final class NFTInfoCollectionViewCell: BaseCollectionViewCell {
         titleLabel.snp.makeConstraints { make in
             make.top.equalTo(imageView.snp.bottom).offset(4)
             make.centerX.equalToSuperview()
+            make.width.equalToSuperview()
         }
         
         subTitleLabel.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(4)
             make.centerX.equalToSuperview()
+            make.width.equalToSuperview()
         }
         
         
@@ -51,20 +53,22 @@ final class NFTInfoCollectionViewCell: BaseCollectionViewCell {
     override func configureView() {
         
         
-        imageView.layer.cornerRadius = 10
+        imageView.layer.cornerRadius = 15
         imageView.layer.borderWidth = 0
         imageView.clipsToBounds = true
         imageView.image = UIImage(systemName: "star")
         
-        
+        titleLabel.textAlignment = .center
+        subTitleLabel.textAlignment = .center
     }
+    
     
     
     func setup(data: Nfts) {
         
         
-        titleLabel.text = data.name
-        subTitleLabel.text = data.symbol
+        titleLabel.text = data.symbol
+        subTitleLabel.text = data.name
         
         
         if let url = URL(string: data.thumb) {
