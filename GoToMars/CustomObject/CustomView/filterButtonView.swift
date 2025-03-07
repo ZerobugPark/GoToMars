@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class filterButtonView: BaseView {
+final class filterButtonView: BaseView {
 
     
     let titleLabel = CustomLabel(bold: true, fontSize: 14, color: .projectGray)
