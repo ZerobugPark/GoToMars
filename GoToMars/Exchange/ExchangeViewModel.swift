@@ -54,10 +54,10 @@ final class ExchangeViewModel: BaseViewModel {
                 switch response {
                 case .success(let value):
                     owner.coinList = value
-                    owner.changeTitle(data: owner.coinList)
                     
+                    owner.changeTitle(data: owner.coinList)
+                    owner.applyFillter(filter: owner.currentFilter)
                     coninList.accept(owner.coinList)
-                    print("업비트 다시 호출")
                 case .failure(let error):
                     print(error)
                 }
@@ -107,7 +107,8 @@ final class ExchangeViewModel: BaseViewModel {
                 owner.previousFilterStatus = value
                 filterStatus.accept(owner.currentFilter)
             }
-            
+            owner.applyFillter(filter: owner.currentFilter)
+            coninList.accept(owner.coinList)
             
         }.disposed(by: disposeBag)
         
@@ -155,6 +156,29 @@ extension ExchangeViewModel {
         
         return name + "/" + code
 
+    }
+    
+    private func applyFillter(filter: Filter) {
+        
+        var data: [UpBitAPI] = []
+        switch filter {
+        case .downTrade:
+            data = coinList.sorted { $0.accTrade > $1.accTrade }
+        case .upTrade:
+            data = coinList.sorted { $0.accTrade < $1.accTrade }
+        case .downCompare:
+            data = coinList.sorted { $0.changeRate > $1.changeRate }
+        case .upCompare:
+            data = coinList.sorted { $0.changeRate < $1.changeRate }
+        case .downCurrentPrice:
+            data = coinList.sorted { $0.trade > $1.trade }
+        case .upCurrentPrice:
+            data = coinList.sorted { $0.trade < $1.trade }
+        case .normalState:
+            data = coinList.sorted { $0.accTrade > $1.accTrade }
+        }
+        coinList = data
+        
     }
     
 }

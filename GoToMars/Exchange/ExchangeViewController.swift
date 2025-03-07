@@ -37,16 +37,6 @@ final class ExchangeViewController: UIViewController {
     
     private func bind() {
         
-        
-        Observable<Int>.interval(.seconds(5), scheduler: MainScheduler.instance).startWith(0).subscribe(with: self) { owner, value in
-            print(value)
-        } onError: { owner, error in
-            print("onError")
-        } onCompleted: { owner in
-            print("onCompleted")
-        } onDisposed: { owner in
-            print("onDisposed")
-        }.disposed(by: disposeBag)
 
         //startWith. 처음에 이벤트를 넣어주는 역할
         let input = ExchangeViewModel.Input(viewDidLoad: Observable<Int>.interval(.seconds(5), scheduler: MainScheduler.instance).startWith(0),
