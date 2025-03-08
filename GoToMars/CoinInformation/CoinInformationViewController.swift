@@ -92,6 +92,27 @@ final class CoinInformationViewController: UIViewController {
         let output = viewModel.transform(input: input)
         output.trending.asDriver().drive(coninInfoView.collectionView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
         
+        coninInfoView.collectionView.rx.modelSelected(SectionItem.self).bind(with: self) { owner, element in
+            
+            
+            switch element {
+            case .firstSection(let item):
+                //print(item)
+                let vc = CoinDetailViewController()
+                
+                owner.navigationController?.pushViewController(vc, animated: true)
+                
+            case .secondSection:
+                return
+            }
+            
+            
+            
+        }.disposed(by: disposeBag)
+        
+        
+        
+        
         
     }
     
