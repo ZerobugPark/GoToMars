@@ -17,6 +17,7 @@ struct TrendingCoinItem: Decodable {
 }
 
 struct TrendingCoinDetails: Decodable {
+    let id: String
     let name: String
     let symbol: String
     let thumb: String
@@ -64,3 +65,33 @@ struct Nfts: Decodable {
     
 
 }
+
+
+struct CoinGeckoMarketAPI: Decodable {
+    // 목데이터에는 널인게 있네? 커스텀 디코딩 해놔야겠네
+    
+    let id: String
+    let symbol: String
+    let name: String
+    let image: String
+    
+    
+    let current_price: Double
+    let market_cap: Double  //시가총액
+    
+    let high_24h: Double // 24시간 고가
+    let low_24h: Double // 24시간 초저
+   
+    let total_volume: Double  // 총거래량
+    let fully_diluted_valuation: Double // 완전희석가치
+    let ath: Double // 역대 최고가
+    let ath_date: Double // 최고가 날자
+    let atl: Double // 역대 최저가
+    let atl_date: Double // 최저가 날짜
+    
+    let sparkline_in_7d: [String: [Double]]
+}
+
+
+
+

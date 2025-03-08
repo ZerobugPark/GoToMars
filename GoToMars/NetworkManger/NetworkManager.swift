@@ -22,6 +22,7 @@ enum APIRequest {
     
     case upbit
     case coingeckoTrending
+    case coingeckoMarket(id: String)
     
     
     var baseURL: String {
@@ -29,6 +30,8 @@ enum APIRequest {
         case .upbit:
             "https://api.upbit.com/v1/ticker/all"
         case .coingeckoTrending:
+            "https://api.coingecko.com/api/v3/"
+        case .coingeckoMarket:
             "https://api.coingecko.com/api/v3/"
         }
     }
@@ -40,6 +43,8 @@ enum APIRequest {
             return URL(string: baseURL)!
         case .coingeckoTrending:
             return URL(string: baseURL + "search/trending")!
+        case .coingeckoMarket(id: let id):
+            return URL(string: baseURL + "coins/markets")!
         }
     }
     
@@ -49,12 +54,14 @@ enum APIRequest {
     
     var parameter: Parameters? {
         switch self {
-            
         case .upbit:
             let parameters = ["quote_currencies": "KRW"]
             return parameters
         case .coingeckoTrending:
             return nil
+        case .coingeckoMarket(let id):
+            let parameters = ["vs_currency": "krw", "ids": id, "sparkline": "true"]
+            return parameters
         }
     }
     

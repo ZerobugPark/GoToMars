@@ -96,9 +96,11 @@ final class CoinInformationViewController: UIViewController {
             
             
             switch element {
-            case .firstSection(let item):
-                //print(item)
+            case .firstSection(let coin):
+                
                 let vc = CoinDetailViewController()
+                
+                vc.id = coin.item.id
                 
                 owner.navigationController?.pushViewController(vc, animated: true)
                 
