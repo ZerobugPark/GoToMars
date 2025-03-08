@@ -24,7 +24,7 @@ final class CoinInfoCollectionViewCell: BaseCollectionViewCell {
         [numberLabel, imageView, titleLabel, subTitleLabel, statusButton].forEach {
             contentView.addSubview($0)
         }
-
+        
     }
     
     override func configureLayout() {
@@ -69,7 +69,7 @@ final class CoinInfoCollectionViewCell: BaseCollectionViewCell {
         guard contentView.bounds.width > 0 else { return }
         
         imageView.layer.cornerRadius = self.imageView.frame.width / 2
-    
+        
     }
     
     
@@ -88,7 +88,7 @@ final class CoinInfoCollectionViewCell: BaseCollectionViewCell {
         }
         
         
-        let rating = data.item.data.krwPrice.roundToPlaces(places: 2)
+        
         
         
         var imageName = ""
@@ -96,24 +96,32 @@ final class CoinInfoCollectionViewCell: BaseCollectionViewCell {
         var title = ""
         var color: UIColor
         
-    
-        if rating > 0.0 {
-            imageName = "arrowtriangle.up.fill"
-            imageStatus = true
-            title = rating.formatted() + "%"
-            color = .projectRed
-            
-        } else if rating < 0.0 {
-            imageName = "arrowtriangle.down.fill"
-            imageStatus = true
-            title = rating.formatted() + "%"
-            color = .projectBlue
-            
-        } else {
+        let status = data.item.data.krwPrice > 0.0 ? true : false
+        let rating = data.item.data.krwPrice.roundToPlaces(places: 2)
+        
+        
+        
+        if data.item.data.krwPrice == 0.0 {
             imageName = ""
             imageStatus = true
             title = rating.formatted() + "%"
             color = .projectNavy
+            
+            
+        } else {
+            
+            if status {
+                imageName = "arrowtriangle.up.fill"
+                imageStatus = true
+                title = rating.formatted() + "%"
+                color = .projectRed
+            } else {
+                imageName = "arrowtriangle.down.fill"
+                imageStatus = true
+                title = rating.formatted() + "%"
+                color = .projectBlue
+            }
+            
             
         }
         
