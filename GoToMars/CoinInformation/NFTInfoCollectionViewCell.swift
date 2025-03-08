@@ -77,35 +77,44 @@ final class NFTInfoCollectionViewCell: BaseCollectionViewCell {
             imageView.image = UIImage(systemName: "star")
         }
         
-        
-        let rating = data.pricePercent.roundToPlaces(places: 2)
-        
-        
+    
         var imageName = ""
         var imageStatus = false
         var title = ""
         var color: UIColor
         
-    
-        if rating > 0.0 {
-            imageName = "arrowtriangle.up.fill"
-            imageStatus = true
-            title = rating.formatted() + "%"
-            color = .projectRed
-            
-        } else if rating < 0.0 {
-            imageName = "arrowtriangle.down.fill"
-            imageStatus = true
-            title = rating.formatted() + "%"
-            color = .projectBlue
-            
-        } else {
+
+        let status = data.pricePercent > 0.0 ? true : false
+        let rating = data.pricePercent.roundToPlaces(places: 2)
+        
+           
+        if data.pricePercent == 0.0 {
             imageName = ""
             imageStatus = true
             title = rating.formatted() + "%"
             color = .projectNavy
             
+            
+        } else {
+            
+            if status {
+                imageName = "arrowtriangle.up.fill"
+                imageStatus = true
+                title = rating.formatted() + "%"
+                color = .projectRed
+            } else {
+                imageName = "arrowtriangle.down.fill"
+                imageStatus = true
+                title = rating.formatted() + "%"
+                color = .projectBlue
+            }
+            
+            
         }
+        
+        
+    
+
         
         statusButton.configuration = statusButton.buttonConfiguration(title: title, color: color, imageStatus: imageStatus, imageName: imageName)
         
