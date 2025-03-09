@@ -72,7 +72,7 @@ final class CoinInformationView: BaseView {
         
         
         collectionView.bounces = false
-        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.showsVerticalScrollIndicator = false
 
 
     }

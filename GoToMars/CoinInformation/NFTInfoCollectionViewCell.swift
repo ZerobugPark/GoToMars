@@ -28,25 +28,25 @@ final class NFTInfoCollectionViewCell: BaseCollectionViewCell {
         
         imageView.snp.makeConstraints { make in
             make.top.equalTo(contentView.safeAreaLayoutGuide)
-            make.centerX.equalToSuperview()
+            make.leading.equalTo(contentView.safeAreaLayoutGuide).offset(16)
             make.size.equalTo(72)
         }
         
         titleLabel.snp.makeConstraints { make in
             make.top.equalTo(imageView.snp.bottom).offset(4)
-            make.centerX.equalToSuperview()
+            make.leading.equalTo(contentView.safeAreaLayoutGuide).offset(16)
             make.width.equalToSuperview()
         }
         
         subTitleLabel.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(4)
-            make.centerX.equalToSuperview()
+            make.leading.equalTo(contentView.safeAreaLayoutGuide).offset(16)
             make.width.equalToSuperview()
         }
         
         statusButton.snp.makeConstraints { make in
             make.top.equalTo(subTitleLabel.snp.bottom)
-            make.horizontalEdges.equalToSuperview()
+            make.leading.equalTo(contentView.safeAreaLayoutGuide).offset(16)
         }
         
     }
