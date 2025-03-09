@@ -85,9 +85,12 @@ final class ExchangeViewController: UIViewController {
     
     private func navigationConfiguration() {
         
-        let view = NavigationTitleView()
-        view.titleLabel.text = "거래소"
-        navigationItem.titleView = view
+        let navigationTitleView = NavigationTitleView()
+        navigationTitleView.titleLabel.text = "거래소"
+        
+        let leftItem =  UIBarButtonItem(customView: navigationTitleView)
+        navigationItem.leftBarButtonItem = leftItem
+
     }
     
     deinit {

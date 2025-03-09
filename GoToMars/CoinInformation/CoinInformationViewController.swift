@@ -82,10 +82,6 @@ final class CoinInformationViewController: UIViewController {
         
     })
     
-//    override func loadView() {
-//        view = coninInfoView
-//    }
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -141,16 +137,10 @@ final class CoinInformationViewController: UIViewController {
         
         let navigationTitleView = NavigationTitleView()
         navigationTitleView.titleLabel.text = "가상자산 / 심볼 검색"
-        navigationItem.titleView = navigationTitleView
         navigationItem.backButtonTitle = ""
-        
-        // 크기를 설정 안해주면 포지션이 틀어지는 현상 발생
-        navigationTitleView.snp.makeConstraints { make in
-            make.width.equalTo(view.frame.width) // 고정된 너비 설정
-            make.height.equalTo(44) // 네비게이션 바 기본 높이
-        }
-        
-      
+        let leftItem =  UIBarButtonItem(customView: navigationTitleView)
+        navigationItem.leftBarButtonItem = leftItem
+
     }
     
     

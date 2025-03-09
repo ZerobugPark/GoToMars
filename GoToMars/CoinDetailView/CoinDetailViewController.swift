@@ -13,7 +13,7 @@ import RxCocoa
 import RxSwift
 import SnapKit
 import DGCharts
-
+import Kingfisher
 
 
 final class CoinDetailViewController: UIViewController {
@@ -22,9 +22,14 @@ final class CoinDetailViewController: UIViewController {
     private let disposeBag = DisposeBag()
     
     private let coinDetailView = CoinDetailView()
-    let viewModel = CoinDetailViewModel()
     
     private let activityIndicator = UIActivityIndicatorView()
+
+    private let leftButtonItem =  UIBarButtonItem(image: UIImage(systemName: "arrow.left"), style: .plain, target: nil, action: nil)
+    
+    let rightButtonItem =  UIBarButtonItem(image: UIImage(systemName: "star"), style: .plain, target: nil, action: nil)
+    
+    let viewModel = CoinDetailViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,6 +38,7 @@ final class CoinDetailViewController: UIViewController {
         activityIndicator.startAnimating()
         coinDetailView.isHidden = true
         bind()
+        navigationController?.navigationBar.isHidden = true
         
     }
     
@@ -73,6 +79,8 @@ final class CoinDetailViewController: UIViewController {
             owner.coinDetailView.thirdSection.totalVolumeTitleLabel.text = "총 거래량"
             owner.coinDetailView.thirdSection.totalVolumeLabel.text = "₩" + value[0].totalVolume.roundToPlaces(places: 2).formatted()
             
+            owner.navigationConfiguration(title: value[0].symbol, img: value[0].image)
+            
             owner.coinDetailView.isHidden = false
             owner.activityIndicator.stopAnimating()
             owner.activityIndicator.isHidden = true
@@ -97,9 +105,42 @@ final class CoinDetailViewController: UIViewController {
             owner.view?.makeToast("준비중입니다.", duration: 0.5)
         }.disposed(by: disposeBag)
         
+        leftButtonItem.rx.tap.bind(with: self) { owner, _ in
+            owner.navigationController?.popViewController(animated: true)
+        }.disposed(by: disposeBag)
         
+        rightButtonItem.rx.tap.bind(with: self) { owner, _ in
+            print("button tapped")
+        }.disposed(by: disposeBag)
         
+    }
+    
+    private func navigationConfiguration(title: String, img: String) {
+            
+        let navigationTitleImageView = NavigationTitleWithImage(frame: CGRect(x: 0, y: 0, width: 200, height: 44))
+       
+        navigationTitleImageView.titleLabel.text = title
         
+        navigationTitleImageView.layoutIfNeeded()
+
+        navigationItem.leftBarButtonItem = leftButtonItem
+        
+        navigationItem.rightBarButtonItem = rightButtonItem
+
+    
+        let url = URL(string: img)
+        
+        if let img = url {
+            navigationTitleImageView.imageView.kf.setImage(with: img)
+        } else {
+            navigationTitleImageView.imageView.image = UIImage(systemName: "heart")
+        }
+      
+        navigationItem.titleView = navigationTitleImageView
+
+
+        navigationController?.navigationBar.isHidden = false
+      
     }
     
     private func releaseDateString(_ releaseDate: String) -> String {
@@ -109,8 +150,6 @@ final class CoinDetailViewController: UIViewController {
         let isoFormatter = ISO8601DateFormatter()
         // withFractionalSeconds 밀리초 지원, withInternetDateTime 기본 인터넷 시간
         isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-        
-        
         
         guard let isoDate = isoFormatter.date(from: releaseDate) else { return "잘못된 포맷" }
           let dateFormatter = DateFormatter()
