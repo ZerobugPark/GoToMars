@@ -88,6 +88,7 @@ final class CoinInformationViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationConfiguration()
         indicatorLayout()
         collectionViewRegister()
         coninInfoView.isHidden = true
@@ -137,22 +138,27 @@ final class CoinInformationViewController: UIViewController {
 
     private func navigationConfiguration() {
         
-        let view = NavigationTitleView()
-        view.titleLabel.text = "가상자산 / 심볼 검색"
-        view.sizeToFit()
-        navigationItem.titleView = view
+        let navigationTitleView = NavigationTitleView()
+        navigationTitleView.titleLabel.text = "가상자산 / 심볼 검색"
+        navigationItem.titleView = navigationTitleView
         navigationItem.backButtonTitle = ""
+        
+        // 이거 설정 포지션이 틀어지는 현상 발생
+        navigationTitleView.snp.makeConstraints { make in
+            make.width.equalTo(view.frame.width) // 고정된 너비 설정
+            make.height.equalTo(44) // 네비게이션 바 기본 높이
+        }
+        
+      
     }
     
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        navigationConfiguration() // viewDidAppear에서 해야 정상적인 위치에 출력
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        navigationItem.titleView = nil // 지우지 않으면, Push - Pop시 네비게이션 뷰의 위치가 이상해짐
     }
     
 
