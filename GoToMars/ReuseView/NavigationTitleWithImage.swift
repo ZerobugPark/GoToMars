@@ -1,0 +1,20 @@
+//
+//  NavigationTitleWithImage.swift
+//  GoToMars
+//
+//  Created by youngkyun park on 3/10/25.
+//
+
+import UIKit
+
+class NavigationTitleWithImage: UIView {
+
+    /*
+    // Only override draw() if you perform custom drawing.
+    // An empty implementation adversely affects performance during animation.
+    override func draw(_ rect: CGRect) {
+        // Drawing code
+    }
+    */
+
+}

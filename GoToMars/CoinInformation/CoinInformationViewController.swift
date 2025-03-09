@@ -7,6 +7,7 @@
 
 import UIKit
 
+import SnapKit
 import RxCocoa
 import RxSwift
 import RxDataSources
@@ -143,7 +144,7 @@ final class CoinInformationViewController: UIViewController {
         navigationItem.titleView = navigationTitleView
         navigationItem.backButtonTitle = ""
         
-        // 이거 설정 포지션이 틀어지는 현상 발생
+        // 크기를 설정 안해주면 포지션이 틀어지는 현상 발생
         navigationTitleView.snp.makeConstraints { make in
             make.width.equalTo(view.frame.width) // 고정된 너비 설정
             make.height.equalTo(44) // 네비게이션 바 기본 높이
