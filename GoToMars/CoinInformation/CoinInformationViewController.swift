@@ -81,7 +81,9 @@ final class CoinInformationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationConfiguration()
+        
+        
+      //  navigationConfiguration()
         collectionViewRegister()
         bind()
     }
@@ -101,7 +103,7 @@ final class CoinInformationViewController: UIViewController {
                 
                 let vc = CoinDetailViewController()
                 
-                vc.id = coin.item.id
+                vc.viewModel.id = coin.item.id
                 
                 owner.navigationController?.pushViewController(vc, animated: true)
                 
@@ -124,8 +126,19 @@ final class CoinInformationViewController: UIViewController {
         
         let view = NavigationTitleView()
         view.titleLabel.text = "가상자산 / 심볼 검색"
+        view.sizeToFit()
         navigationItem.titleView = view
+
+//        navigationItem.titleView?.sizeToFit()
+        
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        navigationConfiguration()
+    }
+    
+
 }
 
 

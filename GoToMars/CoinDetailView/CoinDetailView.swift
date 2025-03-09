@@ -24,7 +24,7 @@ final class CoinDetailView: BaseView {
     let chartView = LineChartView()
     let dateLabel = CustomLabel(bold: false, fontSize: 9, color: .projectGray)
     let secondSection = DetailInfoView()
-    let thiredSection = DetailInfoView()
+    let thirdSection = InvestmentInfoView()
     
     
     private let marginView = UIView()
@@ -38,7 +38,7 @@ final class CoinDetailView: BaseView {
         scrollView.addSubview(contentView)
         
         
-        [priceLabel, statusButton, chartView, dateLabel,secondSection, thiredSection, marginView].forEach {
+        [priceLabel, statusButton, chartView, dateLabel,secondSection, thirdSection, marginView].forEach {
             contentView.addSubview($0)
         }
         
@@ -98,24 +98,20 @@ final class CoinDetailView: BaseView {
            
         }
         
-        thiredSection.snp.makeConstraints { make in
+        thirdSection.snp.makeConstraints { make in
             make.top.equalTo(secondSection.snp.bottom).offset(4)
             make.horizontalEdges.equalTo(contentView)
             make.height.equalTo(190)
             
         }
-        
+                
         marginView.snp.makeConstraints { make in
-            make.top.equalTo(thiredSection.snp.bottom)
+            make.top.equalTo(thirdSection.snp.bottom)
             make.bottom.horizontalEdges.equalTo(contentView)
             make.height.equalTo(10)
         }
         
         
-    
-        
-        
-
         
     
         
@@ -125,14 +121,10 @@ final class CoinDetailView: BaseView {
         
         self.backgroundColor = .white
         lineView.backgroundColor = .projectNavy
-        
-        
+                
         scrollView.showsVerticalScrollIndicator = false
         contentView.backgroundColor = .white
-        
-       // 종목정보에 총 거래량은 필요 없기때문에,hideen 처리
-        secondSection.bottomView.isHidden = true
-        
+                
         
         dateLabel.text = "12321"
         
@@ -142,7 +134,7 @@ final class CoinDetailView: BaseView {
 
     
         secondSection.titleLabel.text = "종목정보"
-        thiredSection.titleLabel.text = "투자지표"
+        thirdSection.titleLabel.text = "투자지표"
         
     
         
