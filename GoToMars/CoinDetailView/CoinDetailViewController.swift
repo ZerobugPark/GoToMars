@@ -33,7 +33,7 @@ final class CoinDetailViewController: UIViewController {
         activityIndicator.startAnimating()
         coinDetailView.isHidden = true
         bind()
-        chartTest()
+        
     }
     
     private func bind() {
@@ -47,7 +47,6 @@ final class CoinDetailViewController: UIViewController {
             
             owner.coinDetailView.priceLabel.text = "₩" + value[0].currentPrice.roundToPlaces(places: 2).formatted()
             
-            
             owner.coinStatus(value: value[0].priceChangePercent)
             
             
@@ -59,11 +58,11 @@ final class CoinDetailViewController: UIViewController {
             
             owner.coinDetailView.secondSection.athPriceTitleLabel.text = "역대 최고가"
             owner.coinDetailView.secondSection.athPriceLabel.text = "₩" + value[0].ath.roundToPlaces(places: 2).formatted()
-            owner.coinDetailView.secondSection.athDateLabel.text = value[0].athDate
+            owner.coinDetailView.secondSection.athDateLabel.text = owner.releaseDateString(value[0].athDate)
             
             owner.coinDetailView.secondSection.atlPriceTitleLabel.text = "역대 최저가"
             owner.coinDetailView.secondSection.atlPriceLabel.text = "₩" + value[0].atl.roundToPlaces(places: 2).formatted()
-            owner.coinDetailView.secondSection.atlDateLabel.text = value[0].atlDate
+            owner.coinDetailView.secondSection.atlDateLabel.text = owner.releaseDateString(value[0].atlDate)
                  
           
             owner.coinDetailView.thirdSection.marketCapTitleLabel  .text = "시가 총액"
@@ -80,6 +79,16 @@ final class CoinDetailViewController: UIViewController {
         }.disposed(by: disposeBag)
         
         
+        ouput.chartData.asDriver(onErrorJustReturn: []).drive(with: self) { owner, value in
+            
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "M/dd HH:mm:ss"
+            let date = dateFormatter.string(from: Date()) + " 업데이트"
+            owner.coinDetailView.dateLabel.text = date
+            
+            owner.setupChart(entries: value)
+        }.disposed(by: disposeBag)
+        
         coinDetailView.secondSection.moreButton.rx.tap.subscribe(with: self) { owner, _ in
             owner.view?.makeToast("준비중입니다.", duration: 0.5)
         }.disposed(by: disposeBag)
@@ -88,8 +97,27 @@ final class CoinDetailViewController: UIViewController {
             owner.view?.makeToast("준비중입니다.", duration: 0.5)
         }.disposed(by: disposeBag)
         
+        
+        
+        
     }
     
+    private func releaseDateString(_ releaseDate: String) -> String {
+          // 서버에서 주는 형태 (ISO규약에 따른 문자열 형태)
+          // isoDate - Iso 형태의 문자열을 Iso 형태의 날짜 형식으로 변환
+        
+        let isoFormatter = ISO8601DateFormatter()
+        // withFractionalSeconds 밀리초 지원, withInternetDateTime 기본 인터넷 시간
+        isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        
+        
+        
+        guard let isoDate = isoFormatter.date(from: releaseDate) else { return "잘못된 포맷" }
+          let dateFormatter = DateFormatter()
+          dateFormatter.dateFormat = "yy년 MM월 dd일"
+          let dateString = dateFormatter.string(from: isoDate)
+          return dateString
+      }
     
     deinit {
         print("CoinDetailViewController DeInit")
@@ -99,7 +127,7 @@ final class CoinDetailViewController: UIViewController {
 }
 
 
-
+// MARK: -  코인 상태 관련 표시 버튼 설정
 extension CoinDetailViewController {
     
     private func coinStatus(value: Double) {
@@ -139,7 +167,6 @@ extension CoinDetailViewController {
         }
         
         
-    
         coinDetailView.statusButton.configuration = coinDetailView.statusButton.buttonConfiguration(title: title, color: color, imageStatus: imageStatus, imageName: imageName)
         
     }
@@ -164,22 +191,12 @@ extension CoinDetailViewController {
     
 }
 
+// MARK: - Chart Setup
 extension CoinDetailViewController {
     
-    private func chartTest() {
+    private func setupChart(entries: [ChartDataEntry]) {
         
-        let values: [Double] = [8, 104, 81, 93, 52, 44, 97, 101, 75, 28,
-                                76, 25, 20, 13, 52, 44, 57, 23, 45, 91,
-                                99, 14, 84, 48, 40, 71, 106, 41, 45, 61]
- 
 
- 
-        
-        var entries: [ChartDataEntry] = Array()
-        for (i, value) in values.enumerated() {
-            entries.append(ChartDataEntry(x: Double(i), y:  value))
-        }
-        
         
         let set1 = LineChartDataSet(entries: entries)
         set1.mode = .cubicBezier

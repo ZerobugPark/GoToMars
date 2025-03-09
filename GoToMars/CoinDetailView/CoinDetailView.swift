@@ -86,8 +86,6 @@ final class CoinDetailView: BaseView {
             
         }
         
-        
-        
         secondSection.snp.makeConstraints { make in
             make.top.equalTo(dateLabel.snp.bottom).offset(8)
             make.horizontalEdges.equalTo(contentView)
@@ -108,9 +106,6 @@ final class CoinDetailView: BaseView {
             make.height.equalTo(10)
         }
         
-        
-        
-    
         
     }
     
@@ -138,8 +133,6 @@ final class CoinDetailView: BaseView {
         chartView.xAxis.drawGridLinesEnabled = false // x축 표시 제거
         chartView.xAxis.drawAxisLineEnabled = false // 위에 표시 제거
         chartView.xAxis.drawLabelsEnabled = false // 레이블 제거
-        
- 
 
         
     }
@@ -153,4 +146,5 @@ final class CoinDetailView: BaseView {
     
     
 }
+
 

@@ -9,6 +9,7 @@ import Foundation
 
 import RxCocoa
 import RxSwift
+import DGCharts
 
 
 final class CoinDetailViewModel: BaseViewModel {
@@ -20,6 +21,7 @@ final class CoinDetailViewModel: BaseViewModel {
     
     struct Output {
         let marketData: PublishRelay<[CoinGeckoMarketAPI]>
+        let chartData: PublishRelay<[ChartDataEntry]>
     }
     
     
@@ -36,6 +38,7 @@ final class CoinDetailViewModel: BaseViewModel {
     func transform(input: Input) -> Output {
         
         let data = PublishRelay<[CoinGeckoMarketAPI]>()
+        let chartData = PublishRelay<[ChartDataEntry]>()
         
         input.viewDidLoad.flatMap {
             NetworkManager.shared.callRequest(api: .coingeckoMarket(id: self.id), type: [CoinGeckoMarketAPI].self)
@@ -45,6 +48,9 @@ final class CoinDetailViewModel: BaseViewModel {
             case .success(let value):
                     
                 owner.marketData = value
+                
+                let spark = owner.setChartData(data: value[0].sparklineIn7d)
+                chartData.accept(spark)
                 data.accept(owner.marketData)
                     
             case .failure(let error):
@@ -54,13 +60,28 @@ final class CoinDetailViewModel: BaseViewModel {
         }.disposed(by: disposeBag)
         
         
-        return Output(marketData: data)
+        return Output(marketData: data, chartData: chartData)
     }
     
     deinit {
         print("CoinDetailViewModel DeInit")
     }
     
+}
+
+
+extension CoinDetailViewModel {
+    
+    private func setChartData(data:[String : [Double]]) -> [ChartDataEntry] {
+
+        var entries: [ChartDataEntry] = Array()
+        
+        for (i, data) in data["price"]!.enumerated()  {
+            entries.append(ChartDataEntry(x: Double(i), y:  data))
+        }
+
+        return entries
+    }
 }
 
 
