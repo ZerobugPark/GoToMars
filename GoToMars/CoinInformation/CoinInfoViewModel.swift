@@ -70,7 +70,6 @@ final class CoinInfoViewModel: BaseViewModel {
         input.viewdidLoad.flatMap { _ in
             NetworkManager.shared.callRequest(api: .coingeckoTrending, type: CoinGeckoTrendingAPI.self)
         }.bind(with: self) { owner, response in
-            
             switch response {
             case .success(let value):
                 owner.coinTrend = []

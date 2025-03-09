@@ -18,6 +18,7 @@ final class CoinInformationViewController: UIViewController {
     private let coninInfoView = CoinInformationView()
     private let viewModel = CoinInfoViewModel()
     
+    private let activityIndicator = UIActivityIndicatorView()
     private let disposeBag = DisposeBag()
     
     
@@ -40,6 +41,9 @@ final class CoinInformationViewController: UIViewController {
             
             cell.setup(data: nft)
             
+            
+            
+            
             return cell
             
         }
@@ -56,7 +60,7 @@ final class CoinInformationViewController: UIViewController {
             dateFormatter.dateFormat = "MM.dd hh:mm"
             headerView.timeLabel.text = dateFormatter.string(from: Date())
             
-            print("시간 업데이트 테스트")
+            
             
             return headerView
             
@@ -73,17 +77,21 @@ final class CoinInformationViewController: UIViewController {
         else {
             return UICollectionReusableView()
         }
+        
+        
     })
     
-    override func loadView() {
-        view = coninInfoView
-    }
+//    override func loadView() {
+//        view = coninInfoView
+//    }
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        indicatorLayout()
         collectionViewRegister()
+        coninInfoView.isHidden = true
+        activityIndicator.startAnimating()
         bind()
     }
     
@@ -93,8 +101,19 @@ final class CoinInformationViewController: UIViewController {
         
         let input = CoinInfoViewModel.Input(viewdidLoad: Observable<Int>.interval(.seconds(600), scheduler: MainScheduler.instance).startWith(0))
         let output = viewModel.transform(input: input)
-        output.trending.asDriver().drive(coninInfoView.collectionView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
         
+        // do: 구독시점이 아닌 방출 시점에 처리 (구독보다 do가 먼저 실행됨)
+        output.trending.asDriver().do { [weak self] value in
+            
+            if !value[0].items.isEmpty {
+                self?.activityIndicator.stopAnimating()
+                self?.activityIndicator.isHidden = true
+                self?.coninInfoView.isHidden = false
+            }
+
+        }.drive(coninInfoView.collectionView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
+        
+                
         coninInfoView.collectionView.rx.modelSelected(SectionItem.self).bind(with: self) { owner, element in
             
             
@@ -110,9 +129,9 @@ final class CoinInformationViewController: UIViewController {
             case .secondSection:
                 return
             }
-    
+      
         }.disposed(by: disposeBag)
-        
+
     }
     
 
@@ -125,16 +144,10 @@ final class CoinInformationViewController: UIViewController {
         navigationItem.backButtonTitle = ""
     }
     
- 
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//        navigationConfiguration()
-//    }
-    
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        navigationConfiguration() // viewDidAppear에서 해야 정상적인 위치
+        navigationConfiguration() // viewDidAppear에서 해야 정상적인 위치에 출력
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -145,7 +158,7 @@ final class CoinInformationViewController: UIViewController {
 
 }
 
-
+// MARK: - CollectionView Register 
 extension CoinInformationViewController {
     
     private func collectionViewRegister() {
@@ -153,4 +166,22 @@ extension CoinInformationViewController {
         coninInfoView.collectionView.register(NFTInfoCollectionViewCell.self, forCellWithReuseIdentifier: "NFTInfoCollectionViewCell")
         coninInfoView.collectionView.register(CollectionHeaderReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CollectionHeaderReusableView.id) // dataSource에서 쓰는 kind
     }
+}
+
+// MARK: - IndicatorLayout
+extension CoinInformationViewController {
+    
+    private func indicatorLayout() {
+        view.addSubview(coninInfoView)
+        view.addSubview(activityIndicator)
+        
+        coninInfoView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
+        activityIndicator.snp.makeConstraints { make in
+            make.edges.equalTo(view.safeAreaLayoutGuide)
+        }
+    }
+    
 }
