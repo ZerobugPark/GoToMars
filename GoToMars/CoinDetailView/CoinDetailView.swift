@@ -131,6 +131,17 @@ final class CoinDetailView: BaseView {
         thirdSection.titleLabel.text = "투자지표"
         
         
+        chartView.legend.enabled = false // 범례제거
+        chartView.rightAxis.enabled = false // 오른쪽 축 값 표시 제거
+        chartView.leftAxis.enabled = false // 왼쪽 축 값 표시 제거
+        chartView.doubleTapToZoomEnabled = false // 줌 제거
+        chartView.xAxis.drawGridLinesEnabled = false // x축 표시 제거
+        chartView.xAxis.drawAxisLineEnabled = false // 위에 표시 제거
+        chartView.xAxis.drawLabelsEnabled = false // 레이블 제거
+        
+ 
+
+        
     }
     
 
@@ -142,6 +153,4 @@ final class CoinDetailView: BaseView {
     
     
 }
-
-
 

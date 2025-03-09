@@ -12,6 +12,7 @@ import Toast
 import RxCocoa
 import RxSwift
 import SnapKit
+import DGCharts
 
 
 
@@ -32,7 +33,7 @@ final class CoinDetailViewController: UIViewController {
         activityIndicator.startAnimating()
         coinDetailView.isHidden = true
         bind()
-        
+        chartTest()
     }
     
     private func bind() {
@@ -91,7 +92,7 @@ final class CoinDetailViewController: UIViewController {
     
     
     deinit {
-        print("CoinInfoViewModel DeInit")
+        print("CoinDetailViewController DeInit")
     }
 
 
@@ -145,6 +146,7 @@ extension CoinDetailViewController {
     
 }
 
+// MARK: - IndicatorLayout
 extension CoinDetailViewController {
     
     private func indicatorLayout() {
@@ -158,6 +160,53 @@ extension CoinDetailViewController {
         activityIndicator.snp.makeConstraints { make in
             make.edges.equalTo(view.safeAreaLayoutGuide)
         }
+    }
+    
+}
+
+extension CoinDetailViewController {
+    
+    private func chartTest() {
+        
+        let values: [Double] = [8, 104, 81, 93, 52, 44, 97, 101, 75, 28,
+                                76, 25, 20, 13, 52, 44, 57, 23, 45, 91,
+                                99, 14, 84, 48, 40, 71, 106, 41, 45, 61]
+ 
+
+ 
+        
+        var entries: [ChartDataEntry] = Array()
+        for (i, value) in values.enumerated() {
+            entries.append(ChartDataEntry(x: Double(i), y:  value))
+        }
+        
+        
+        let set1 = LineChartDataSet(entries: entries)
+        set1.mode = .cubicBezier
+        set1.drawCirclesEnabled = false
+        set1.lineWidth = 1.8
+    
+        let gradColors = [UIColor.projectNavy.cgColor, UIColor.clear.cgColor] as CFArray
+        let colorLocations:[CGFloat] = [1.0, 0.0]
+        if let gradient = CGGradient(colorsSpace: CGColorSpaceCreateDeviceRGB(), colors: gradColors, locations: colorLocations) {
+            set1.fill = LinearGradientFill(gradient: gradient, angle: 90)
+        } else {
+            set1.fillColor = .projectNavy
+        }
+        set1.drawFilledEnabled = true
+        
+        set1.fillAlpha = 1 //배경 투명도
+       
+        set1.colors = [.projectNavy] // 선 색상
+        
+        let data = LineChartData(dataSet: set1)
+        
+        data.setDrawValues(false) //데이터 레이블 미표시
+        
+        coinDetailView.chartView.data = data
+        
+ 
+        
     }
     
 }
