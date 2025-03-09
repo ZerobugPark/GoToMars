@@ -56,11 +56,8 @@ final class CoinDetailView: BaseView {
         scrollView.snp.makeConstraints { make in
             make.top.equalTo(lineView.snp.bottom).offset(4)
             make.horizontalEdges.bottom.equalTo(self.safeAreaLayoutGuide)
-            
-            
         }
 
-        
         contentView.snp.makeConstraints { make in
             make.width.equalTo(scrollView.snp.width)
             make.verticalEdges.equalTo(scrollView)
@@ -124,10 +121,7 @@ final class CoinDetailView: BaseView {
                 
         scrollView.showsVerticalScrollIndicator = false
         contentView.backgroundColor = .white
-                
-        
-        dateLabel.text = "12321"
-        
+            
         chartView.noDataText = "데이터가 없습니다. 관리자에게 문의해주세요."
         chartView.noDataFont = .boldSystemFont(ofSize: 12)
         chartView.noDataTextColor = .projectNavy
@@ -136,11 +130,6 @@ final class CoinDetailView: BaseView {
         secondSection.titleLabel.text = "종목정보"
         thirdSection.titleLabel.text = "투자지표"
         
-    
-        
-        priceLabel.text = "11113344"
-        dateLabel.text = "12255033 업데이트"
-        statusButton.configuration = statusButton.buttonConfiguration(title: "12321", color: .projectNavy, imageStatus: true, imageName: "arrowtriangle.up.fill")
         
     }
     

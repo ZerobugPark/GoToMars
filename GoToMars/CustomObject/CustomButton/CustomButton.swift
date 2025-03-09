@@ -53,7 +53,7 @@ extension CustomButton.Configuration {
         
         let imageConfig = UIImage.SymbolConfiguration(pointSize: 9, weight: .bold)
         configuration.image = UIImage(systemName: image, withConfiguration: imageConfig)
-        configuration.imagePadding = 5
+        configuration.imagePadding = 0
         configuration.imagePlacement = imgplacement
         
         

@@ -128,6 +128,7 @@ final class CoinInformationViewController: UIViewController {
         view.titleLabel.text = "가상자산 / 심볼 검색"
         view.sizeToFit()
         navigationItem.titleView = view
+        navigationItem.backButtonTitle = ""
 
 //        navigationItem.titleView?.sizeToFit()
         

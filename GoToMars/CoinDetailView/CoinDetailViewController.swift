@@ -7,11 +7,12 @@
 
 import UIKit
 
+import Toast
 import RxCocoa
 import RxSwift
 
 
-import SnapKit
+
 
 final class CoinDetailViewController: UIViewController {
 
@@ -38,11 +39,16 @@ final class CoinDetailViewController: UIViewController {
         
         
         let input = CoinDetailViewModel.Input(viewDidLoad: Observable.just(()))
-        
         let ouput = viewModel.transform(input: input)
         
-        
+        //여긴 60초 주기 업데이트, 하지만 호출시 업데이트(인기검색어는 10분마다이기 때문에, 일부 차이가 발생 할 수도 있음)
         ouput.marketData.asDriver(onErrorJustReturn: []).drive(with: self) { owner, value in
+            
+            owner.coinDetailView.priceLabel.text = "₩" + value[0].currentPrice.roundToPlaces(places: 2).formatted()
+            
+            
+            owner.coinStatus(value: value[0].priceChangePercent)
+            
             
             owner.coinDetailView.secondSection.priceTitleLabel.text = "24시간 고가"
             owner.coinDetailView.secondSection.priceLabel.text = "₩" + value[0].high24h.roundToPlaces(places: 2).formatted()
@@ -57,9 +63,7 @@ final class CoinDetailViewController: UIViewController {
             owner.coinDetailView.secondSection.atlPriceTitleLabel.text = "역대 최저가"
             owner.coinDetailView.secondSection.atlPriceLabel.text = "₩" + value[0].atl.roundToPlaces(places: 2).formatted()
             owner.coinDetailView.secondSection.atlDateLabel.text = value[0].atlDate
-            
-            
-            
+                 
           
             owner.coinDetailView.thirdSection.marketCapTitleLabel  .text = "시가 총액"
             owner.coinDetailView.thirdSection.marketCapLabel.text = "₩" + value[0].marketCap.roundToPlaces(places: 2).formatted()
@@ -71,10 +75,15 @@ final class CoinDetailViewController: UIViewController {
             
             
             
-            
-            
-            
-            
+        }.disposed(by: disposeBag)
+        
+        
+        coinDetailView.secondSection.moreButton.rx.tap.subscribe(with: self) { owner, _ in
+            owner.view?.makeToast("준비중입니다.", duration: 0.5)
+        }.disposed(by: disposeBag)
+        
+        coinDetailView.thirdSection.moreButton.rx.tap.subscribe(with: self) { owner, _ in
+            owner.view?.makeToast("준비중입니다.", duration: 0.5)
         }.disposed(by: disposeBag)
         
     }
@@ -87,3 +96,50 @@ final class CoinDetailViewController: UIViewController {
 
 }
 
+
+
+extension CoinDetailViewController {
+    
+    private func coinStatus(value: Double) {
+        
+        var imageName = ""
+        var imageStatus = false
+        var title = ""
+        var color: UIColor
+        
+
+        let status = value > 0.0 ? true : false
+        let rating = value.roundToPlaces(places: 2)
+        
+           
+        if value == 0.0 {
+            imageName = ""
+            imageStatus = true
+            title = rating.formatted() + "%"
+            color = .projectNavy
+            
+            
+        } else {
+            
+            if status {
+                imageName = "arrowtriangle.up.fill"
+                imageStatus = true
+                title = rating.formatted() + "%"
+                color = .projectRed
+            } else {
+                imageName = "arrowtriangle.down.fill"
+                imageStatus = true
+                title = rating.formatted() + "%"
+                color = .projectBlue
+            }
+            
+            
+        }
+        
+        
+    
+        coinDetailView.statusButton.configuration = coinDetailView.statusButton.buttonConfiguration(title: title, color: color, imageStatus: imageStatus, imageName: imageName)
+        
+    }
+    
+}

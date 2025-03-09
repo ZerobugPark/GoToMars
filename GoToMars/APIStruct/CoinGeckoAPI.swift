@@ -74,23 +74,51 @@ struct CoinGeckoMarketAPI: Decodable {
     let symbol: String
     let name: String
     let image: String
+
+    let currentPrice: Double
+    let priceChangePercent: Double
     
-    
-    let current_price: Double
-    let market_cap: Double  //시가총액
-    
-    let high_24h: Double // 24시간 고가
-    let low_24h: Double // 24시간 초저
+    let marketCap: Double  //시가총액
+    let high24h: Double // 24시간 고가
+    let low24h: Double // 24시간 초저
    
-    let total_volume: Double  // 총거래량
-    let fully_diluted_valuation: Double // 완전희석가치
+    let totalVolume: Double  // 총거래량
+    let fullyDilutedValuation: Double // 완전희석가치
     let ath: Double // 역대 최고가
-    let ath_date: Double // 최고가 날자
+    let athDate: String // 최고가 날자
     let atl: Double // 역대 최저가
-    let atl_date: Double // 최저가 날짜
+    let atlDate: String // 최저가 날짜
     
-    let sparkline_in_7d: [String: [Double]]
+    let sparklineIn7d: [String: [Double]]
+
+    
+    enum CodingKeys: String, CodingKey {
+        
+        case id
+        case symbol
+        case name
+        case image
+        
+        case currentPrice = "current_price"
+        case priceChangePercent = "price_change_percentage_24h"
+        case marketCap = "market_cap"
+        
+        case high24h = "high_24h"
+        case low24h = "low_24h"
+        
+        case totalVolume = "total_volume"
+        case fullyDilutedValuation = "fully_diluted_valuation"
+        case ath
+        case athDate = "ath_date"
+        case atl
+        case atlDate = "atl_date"
+        case sparklineIn7d = "sparkline_in_7d"
+    
+    }
+    
 }
+
+
 
 
 
