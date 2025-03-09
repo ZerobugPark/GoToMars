@@ -8,9 +8,10 @@
 import UIKit
 
 import Toast
+
 import RxCocoa
 import RxSwift
-
+import SnapKit
 
 
 
@@ -21,16 +22,15 @@ final class CoinDetailViewController: UIViewController {
     
     private let coinDetailView = CoinDetailView()
     let viewModel = CoinDetailViewModel()
- 
     
-    override func loadView() {
-        view = coinDetailView
-    }
+    private let activityIndicator = UIActivityIndicatorView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        indicatorLayout()
+        activityIndicator.startAnimating()
+        coinDetailView.isHidden = true
         bind()
         
     }
@@ -73,8 +73,9 @@ final class CoinDetailViewController: UIViewController {
             owner.coinDetailView.thirdSection.totalVolumeTitleLabel.text = "총 거래량"
             owner.coinDetailView.thirdSection.totalVolumeLabel.text = "₩" + value[0].totalVolume.roundToPlaces(places: 2).formatted()
             
-            
-            
+            owner.coinDetailView.isHidden = false
+            owner.activityIndicator.stopAnimating()
+            owner.activityIndicator.isHidden = true
         }.disposed(by: disposeBag)
         
         
@@ -140,6 +141,23 @@ extension CoinDetailViewController {
     
         coinDetailView.statusButton.configuration = coinDetailView.statusButton.buttonConfiguration(title: title, color: color, imageStatus: imageStatus, imageName: imageName)
         
+    }
+    
+}
+
+extension CoinDetailViewController {
+    
+    private func indicatorLayout() {
+        view.addSubview(coinDetailView)
+        view.addSubview(activityIndicator)
+        
+        coinDetailView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
+        activityIndicator.snp.makeConstraints { make in
+            make.edges.equalTo(view.safeAreaLayoutGuide)
+        }
     }
     
 }

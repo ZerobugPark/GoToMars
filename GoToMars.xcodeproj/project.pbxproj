@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D01E50902D7D845800CF2EC9 /* DGCharts in Frameworks */ = {isa = PBXBuildFile; productRef = D01E508F2D7D845800CF2EC9 /* DGCharts */; };
 		D031430A2D798E3500A483E3 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = D03143092D798E3500A483E3 /* SnapKit */; };
 		D031430D2D798E3F00A483E3 /* Toast in Frameworks */ = {isa = PBXBuildFile; productRef = D031430C2D798E3F00A483E3 /* Toast */; };
 		D03143102D798E5900A483E3 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = D031430F2D798E5900A483E3 /* RxCocoa */; };
@@ -73,6 +74,7 @@
 				D03143122D798E5900A483E3 /* RxSwift in Frameworks */,
 				D03143182D798EA600A483E3 /* RxGesture in Frameworks */,
 				D04CC8B22D7AEB320015F84F /* Differentiator in Frameworks */,
+				D01E50902D7D845800CF2EC9 /* DGCharts in Frameworks */,
 				D031430A2D798E3500A483E3 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -127,6 +129,7 @@
 				D03143EA2D79DA2A00A483E3 /* RealmSwift */,
 				D04CC8B12D7AEB320015F84F /* Differentiator */,
 				D04CC8B32D7AEB320015F84F /* RxDataSources */,
+				D01E508F2D7D845800CF2EC9 /* DGCharts */,
 			);
 			productName = GoToMars;
 			productReference = D03142092D79758D00A483E3 /* GoToMars.app */;
@@ -165,6 +168,7 @@
 				D031431C2D798EC200A483E3 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				D03143E92D79DA2A00A483E3 /* XCRemoteSwiftPackageReference "realm-swift" */,
 				D04CC8B02D7AEB320015F84F /* XCRemoteSwiftPackageReference "RxDataSources" */,
+				D01E508E2D7D845800CF2EC9 /* XCRemoteSwiftPackageReference "Charts" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = D031420A2D79758D00A483E3 /* Products */;
@@ -408,6 +412,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		D01E508E2D7D845800CF2EC9 /* XCRemoteSwiftPackageReference "Charts" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ChartsOrg/Charts.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.1.0;
+			};
+		};
 		D03143082D798E3500A483E3 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
@@ -475,6 +487,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		D01E508F2D7D845800CF2EC9 /* DGCharts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D01E508E2D7D845800CF2EC9 /* XCRemoteSwiftPackageReference "Charts" */;
+			productName = DGCharts;
+		};
 		D03143092D798E3500A483E3 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = D03143082D798E3500A483E3 /* XCRemoteSwiftPackageReference "SnapKit" */;
