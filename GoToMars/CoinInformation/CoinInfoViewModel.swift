@@ -45,7 +45,7 @@ extension CollectionViewSectionModel: SectionModelType {
 final class CoinInfoViewModel: BaseViewModel {
     
     struct Input {
-        let viewdidLoad: Observable<Void>
+        let viewdidLoad: Observable<Int>
     }
     
     struct Output {
@@ -67,12 +67,13 @@ final class CoinInfoViewModel: BaseViewModel {
         let trending = BehaviorRelay<[CollectionViewSectionModel]>(value: [.coin(coinTrend),
                                                                            .ntf(ntfTrend)])
         
-        input.viewdidLoad.flatMap {
+        input.viewdidLoad.flatMap { _ in
             NetworkManager.shared.callRequest(api: .coingeckoTrending, type: CoinGeckoTrendingAPI.self)
         }.bind(with: self) { owner, response in
             
             switch response {
             case .success(let value):
+                owner.coinTrend = []
                 owner.getInfo(data: value.coins)
                 owner.getInfo(data: value.nfts)
                 trending.accept([.coin(owner.coinTrend),.ntf(owner.ntfTrend)])

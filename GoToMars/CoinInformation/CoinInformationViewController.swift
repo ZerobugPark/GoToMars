@@ -56,6 +56,8 @@ final class CoinInformationViewController: UIViewController {
             dateFormatter.dateFormat = "MM.dd hh:mm"
             headerView.timeLabel.text = dateFormatter.string(from: Date())
             
+            print("시간 업데이트 테스트")
+            
             return headerView
             
             
@@ -81,9 +83,6 @@ final class CoinInformationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        
-      //  navigationConfiguration()
         collectionViewRegister()
         bind()
     }
@@ -91,7 +90,8 @@ final class CoinInformationViewController: UIViewController {
     
     private func bind() {
 
-        let input = CoinInfoViewModel.Input(viewdidLoad: Observable.just(()))
+        
+        let input = CoinInfoViewModel.Input(viewdidLoad: Observable<Int>.interval(.seconds(600), scheduler: MainScheduler.instance).startWith(0))
         let output = viewModel.transform(input: input)
         output.trending.asDriver().drive(coninInfoView.collectionView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
         
@@ -110,14 +110,8 @@ final class CoinInformationViewController: UIViewController {
             case .secondSection:
                 return
             }
-            
-            
-            
+    
         }.disposed(by: disposeBag)
-        
-        
-        
-        
         
     }
     
@@ -129,14 +123,23 @@ final class CoinInformationViewController: UIViewController {
         view.sizeToFit()
         navigationItem.titleView = view
         navigationItem.backButtonTitle = ""
-
-//        navigationItem.titleView?.sizeToFit()
-        
     }
+    
+ 
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//        navigationConfiguration()
+//    }
+    
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        navigationConfiguration()
+        navigationConfiguration() // viewDidAppear에서 해야 정상적인 위치
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        navigationItem.titleView = nil // 지우지 않으면, Push - Pop시 네비게이션 뷰의 위치가 이상해짐
     }
     
 
