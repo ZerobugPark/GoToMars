@@ -6,22 +6,26 @@
 //
 
 import UIKit
+
+import SnapKit
 import DGCharts
 
 
-class CoinDetailView: BaseView {
+final class CoinDetailView: BaseView {
 
     private let lineView = UIView()
     
-    let chartView = LineChartView()
-    
     private let scrollView = UIScrollView()
-
     private let contentView = UIView()
-    private let view2 = UIView()
+    
+    
+    let priceLabel = CustomLabel(bold: true, fontSize: 16, color: .projectNavy)
+    let statusButton = CustomButton()
+    let chartView = LineChartView()
+    let dateLabel = CustomLabel(bold: false, fontSize: 9, color: .projectGray)
     let secondSection = DetailInfoView()
     let thiredSection = DetailInfoView()
-    let imageView = UIImageView()
+    
     
     private let marginView = UIView()
     
@@ -34,7 +38,7 @@ class CoinDetailView: BaseView {
         scrollView.addSubview(contentView)
         
         
-        [chartView, secondSection, thiredSection, marginView].forEach {
+        [priceLabel, statusButton, chartView, dateLabel,secondSection, thiredSection, marginView].forEach {
             contentView.addSubview($0)
         }
         
@@ -63,25 +67,41 @@ class CoinDetailView: BaseView {
             
         }
         
+        priceLabel.snp.makeConstraints { make in
+            make.top.horizontalEdges.equalTo(contentView).inset(16)
+        }
+        
+        statusButton.snp.makeConstraints { make in
+            make.top.equalTo(priceLabel.snp.bottom).offset(4)
+            make.leading.equalTo(contentView).inset(8)
+        }
         
         chartView.snp.makeConstraints { make in
-            make.top.horizontalEdges.equalTo(contentView).inset(16)
-            make.height.equalTo(1000)
+            make.top.equalTo(statusButton.snp.bottom).offset(4)
+            make.horizontalEdges.equalTo(contentView).inset(16)
+            make.height.equalTo(300)
             
         }
-        chartView.backgroundColor = .blue
+        
+        dateLabel.snp.makeConstraints { make in
+            make.top.equalTo(chartView.snp.bottom).offset(4)
+            make.horizontalEdges.equalTo(contentView).inset(16)
+            
+        }
+        
+        
         
         secondSection.snp.makeConstraints { make in
-            make.top.equalTo(chartView.snp.bottom).offset(4)
+            make.top.equalTo(dateLabel.snp.bottom).offset(8)
             make.horizontalEdges.equalTo(contentView)
-            make.height.equalTo(120)
+            make.height.equalTo(160)
            
         }
         
         thiredSection.snp.makeConstraints { make in
             make.top.equalTo(secondSection.snp.bottom).offset(4)
             make.horizontalEdges.equalTo(contentView)
-            make.height.equalTo(170)
+            make.height.equalTo(190)
             
         }
         
@@ -93,8 +113,8 @@ class CoinDetailView: BaseView {
         
         
     
-        thiredSection.mainStackView.backgroundColor = .red
-        marginView.backgroundColor = .black
+        
+        
 
         
     
@@ -106,10 +126,30 @@ class CoinDetailView: BaseView {
         self.backgroundColor = .white
         lineView.backgroundColor = .projectNavy
         
-        contentView.backgroundColor = .lightGray
+        
+        scrollView.showsVerticalScrollIndicator = false
+        contentView.backgroundColor = .white
         
        // 종목정보에 총 거래량은 필요 없기때문에,hideen 처리
         secondSection.bottomView.isHidden = true
+        
+        
+        dateLabel.text = "12321"
+        
+        chartView.noDataText = "데이터가 없습니다. 관리자에게 문의해주세요."
+        chartView.noDataFont = .boldSystemFont(ofSize: 12)
+        chartView.noDataTextColor = .projectNavy
+
+    
+        secondSection.titleLabel.text = "종목정보"
+        thiredSection.titleLabel.text = "투자지표"
+        
+    
+        
+        priceLabel.text = "11113344"
+        dateLabel.text = "12255033 업데이트"
+        statusButton.configuration = statusButton.buttonConfiguration(title: "12321", color: .projectNavy, imageStatus: true, imageName: "arrowtriangle.up.fill")
+        
     }
     
 
@@ -121,3 +161,6 @@ class CoinDetailView: BaseView {
     
     
 }
+
+
+

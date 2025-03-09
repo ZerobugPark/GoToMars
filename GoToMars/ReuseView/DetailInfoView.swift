@@ -11,35 +11,40 @@ import SnapKit
 final class DetailInfoView: BaseView {
 
     
-    private let mainStackView = UIStackView()
+    let mainStackView = UIStackView()
 
     private let topView = UIView()
     private let middleView = UIView()
-    private let bottomView = UIView()
+    let bottomView = UIView()
     
     
-    let titleLabel = CustomLabel(bold: false, fontSize: 14, color: .projectNavy)
+    let titleLabel = CustomLabel(bold: true, fontSize: 14, color: .projectNavy)
     let moreButton =  CustomButton(buttonImage: "chevron.right", imagePlacement: .trailing)
     
     
-    let highPriceTitleLabel = CustomLabel(bold: false, fontSize: 12, color: .projectGray)
-    let highPriceLabel = CustomLabel(bold: false, fontSize: 12, color: .projectNavy)
+    // 24시간 고가 및 시가 총액
+    let priceTitleLabel = CustomLabel(bold: false, fontSize: 12, color: .projectGray)
+    let priceLabel = CustomLabel(bold: true, fontSize: 12, color: .projectNavy)
     
-    
+    // 24시간 저가
     let lowPriceTitleLabel = CustomLabel(bold: false, fontSize: 12, color: .projectGray)
-    let lowPriceLabel = CustomLabel(bold: false, fontSize: 12, color: .projectNavy)
+    let lowPriceLabel = CustomLabel(bold: true, fontSize: 12, color: .projectNavy)
     
     
+    // 역대 최고가 및 FDV(완전 희석 가치)
+    let athPriceORFDVTitleLabel = CustomLabel(bold: false, fontSize: 12, color: .projectGray)
+    let athPriceORFDVLabel = CustomLabel(bold: true, fontSize: 12, color: .projectNavy)
+    let athDateLabel = CustomLabel(bold: false, fontSize: 9, color: .projectGray)
     
     
-    let athPriceLabel = CustomLabel(bold: false, fontSize: 12, color: .projectGray)
+    // 역대 최저가
+    let atlPriceTitleLabel = CustomLabel(bold: false, fontSize: 12, color: .projectGray)
+    let atlPriceLabel = CustomLabel(bold: true, fontSize: 12, color: .projectNavy)
+    let atlDateLabel = CustomLabel(bold: false, fontSize: 9, color: .projectGray)
     
-    
-    let atlPriceLabel = CustomLabel(bold: false, fontSize: 12, color: .projectGray)
-    
-    
-    let highPrice = CustomLabel(bold: false, fontSize: 12, color: .projectGray)
-    
+    // 총거래량
+    let totalVolumeTitleLabel = CustomLabel(bold: false, fontSize: 12, color: .projectGray)
+    let totalVolumeLabel = CustomLabel(bold: true, fontSize: 12, color: .projectNavy)
     
     
 
@@ -54,12 +59,21 @@ final class DetailInfoView: BaseView {
         self.addSubview(mainStackView)
 
         
-        
         [topView, middleView, bottomView].forEach {
             mainStackView.addArrangedSubview($0)
         }
 
+        [priceTitleLabel, priceLabel, lowPriceTitleLabel, lowPriceLabel].forEach {
+            topView.addSubview($0)
+        }
         
+        [athPriceORFDVTitleLabel, athPriceORFDVLabel, athDateLabel, atlPriceTitleLabel, atlPriceLabel, atlDateLabel].forEach {
+            middleView.addSubview($0)
+        }
+        
+        [totalVolumeTitleLabel, totalVolumeLabel].forEach {
+            bottomView.addSubview($0)
+        }
         
         
  
@@ -83,41 +97,115 @@ final class DetailInfoView: BaseView {
             make.horizontalEdges.equalToSuperview().inset(16)
             
         }
-       
+        
+        // MARK: - 24시간 고/저가 or 시가 총액
         topView.snp.makeConstraints { make in
             make.width.equalToSuperview()
             make.height.equalTo(50)
         }
         
+        priceTitleLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(16)
+            make.leading.equalTo(topView.snp.leading).offset(16)
+
+        }
+       
+        priceLabel.snp.makeConstraints { make in
+            make.top.equalTo(priceTitleLabel.snp.bottom).offset(4)
+            make.leading.equalTo(topView.snp.leading).offset(16)
+      
+        }
+        
+    
+        lowPriceTitleLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(16)
+            make.leading.equalTo(topView.snp.centerX).offset(16)
+        }
+        
+    
+        lowPriceLabel.snp.makeConstraints { make in
+            make.top.equalTo(lowPriceTitleLabel.snp.bottom).offset(4)
+            make.leading.equalTo(topView.snp.centerX).offset(16)
+           
+       
+        }
+        
+        
+        // MARK: - 역대 최고/저가 or 완전 희석 가치
         middleView.snp.makeConstraints { make in
+            make.width.equalToSuperview()
+            make.height.equalTo(70)
+        }
+        
+        athPriceORFDVTitleLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(8)
+            make.leading.equalTo(middleView.snp.leading).offset(16)
+
+        }
+                
+        athPriceORFDVLabel.snp.makeConstraints { make in
+            make.top.equalTo(athPriceORFDVTitleLabel.snp.bottom).offset(4)
+            make.leading.equalTo(middleView.snp.leading).offset(16)
+           
+        }
+        
+        
+        athDateLabel.snp.makeConstraints { make in
+            make.top.equalTo(athPriceORFDVLabel.snp.bottom).offset(4)
+            make.leading.equalTo(middleView.snp.leading).offset(16)
+       
+        }
+        
+
+        atlPriceTitleLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(8)
+            make.leading.equalTo(middleView.snp.centerX).offset(16)
+        }
+
+        
+        atlPriceLabel.snp.makeConstraints { make in
+            make.top.equalTo(atlPriceTitleLabel.snp.bottom).offset(4)
+            make.leading.equalTo(middleView.snp.centerX).offset(16)
+           
+        }
+        
+       
+        atlDateLabel.snp.makeConstraints { make in
+            make.top.equalTo(atlPriceLabel.snp.bottom).offset(4)
+            make.leading.equalTo(middleView.snp.centerX).offset(16)
+       
+        }
+   
+     
+        
+        // MARK: - 총 거래량
+        bottomView.snp.makeConstraints { make in
             make.width.equalToSuperview()
             make.height.equalTo(50)
         }
         
-        bottomView.snp.makeConstraints { make in
-            make.width.equalToSuperview()
-            make.height.equalTo(50)
+        totalVolumeTitleLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(8)
+            make.leading.equalTo(bottomView.snp.leading).offset(16)
+        }
+        
+        
+        totalVolumeLabel.snp.makeConstraints { make in
+            make.top.equalTo(totalVolumeTitleLabel.snp.bottom).offset(4)
+            make.leading.equalTo(bottomView.snp.leading).offset(16)
         }
         
     }
     
     override func configureView() {
         
-        titleLabel.text = "종목정보"
-        
-        
         mainStackView.axis = .vertical
         mainStackView.distribution = .fill
         mainStackView.layer.cornerRadius = 10
         mainStackView.clipsToBounds = true
-        mainStackView.backgroundColor = .projectGray
+        mainStackView.backgroundColor = .projectLightGray
         
-        mainStackView.spacing = 6
-        
-        
-        topView.backgroundColor = .red
-        middleView.backgroundColor = .green
-        bottomView.backgroundColor = .blue
+        mainStackView.spacing = 0
 
     }
     
