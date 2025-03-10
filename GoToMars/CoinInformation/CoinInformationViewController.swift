@@ -135,6 +135,16 @@ final class CoinInformationViewController: UIViewController {
         output.blankResult.asDriver(onErrorJustReturn: ()).drive(with: self, onNext: { owenr, _ in
             owenr.view.endEditing(true)
         }).disposed(by: disposeBag)
+        
+        
+        output.searchText.asDriver(onErrorJustReturn: "").drive(with: self) { owner, text in
+            
+            let vc = SearchViewController()
+            
+            owner.navigationController?.pushViewController(vc, animated: true)
+            
+            
+        }.disposed(by: disposeBag)
 
     }
     

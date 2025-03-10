@@ -52,6 +52,7 @@ final class CoinInfoViewModel: BaseViewModel {
     struct Output {
         let trending: BehaviorRelay<[CollectionViewSectionModel]>
         let blankResult: PublishRelay<Void>
+        let searchText: PublishRelay<String>
     }
     
     
@@ -70,6 +71,7 @@ final class CoinInfoViewModel: BaseViewModel {
                                                                            .ntf(ntfTrend)])
         
         let blank = PublishRelay<Void>()
+        let search = PublishRelay<String>()
         
         input.viewdidLoad.flatMap { _ in
             NetworkManager.shared.callRequest(api: .coingeckoTrending, type: CoinGeckoTrendingAPI.self)
@@ -87,18 +89,18 @@ final class CoinInfoViewModel: BaseViewModel {
         
         input.searchButtonTapped.distinctUntilChanged().subscribe(with: self) { owner, text in
             
-            if text.replacingOccurrences(of: " ", with: "").isEmpty {
+            let result = text.replacingOccurrences(of: " ", with: "")
+            if result.isEmpty {
                 blank.accept(())
             } else {
-                print("공백은 없습니다.")
+                search.accept(result)
             }
-            
-            
+    
             
         }.disposed(by: disposeBag)
         
 
-        return Output(trending: trending, blankResult: blank)
+        return Output(trending: trending, blankResult: blank, searchText: search)
     }
     
     
