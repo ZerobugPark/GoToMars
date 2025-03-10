@@ -198,7 +198,7 @@ extension CoinInformationViewController {
         }
         
         activityIndicator.snp.makeConstraints { make in
-            make.edges.equalTo(view.safeAreaLayoutGuide)
+            make.center.equalToSuperview()
         }
     }
     

@@ -113,17 +113,8 @@ final class NFTInfoCollectionViewCell: BaseCollectionViewCell {
             
         }
         
-        
-    
-
-        
         statusButton.configuration = statusButton.buttonConfiguration(title: title, color: color, imageStatus: imageStatus, imageName: imageName)
-        
-        
-     
-        
-        
-        
+    
     }
     
     

@@ -68,7 +68,7 @@ final class CoinInfoCollectionViewCell: BaseCollectionViewCell {
         super.layoutSubviews()
         guard contentView.bounds.width > 0 else { return }
         
-        imageView.layer.cornerRadius = self.imageView.frame.width / 2
+        imageView.layer.cornerRadius = imageView.frame.width / 2
         
     }
     
