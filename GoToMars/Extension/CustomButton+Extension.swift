@@ -23,7 +23,7 @@ extension CustomButton {
         
         
         if imageStatus {
-            let imageConfig = UIImage.SymbolConfiguration(pointSize: 9, weight: .bold)
+            let imageConfig = UIImage.SymbolConfiguration(pointSize: 7, weight: .bold)
             configuration.image = UIImage(systemName: imageName, withConfiguration: imageConfig)
             configuration.imagePadding = 3
         } else {
