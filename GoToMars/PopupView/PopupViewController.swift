@@ -38,6 +38,8 @@ final class PopupViewController: UIViewController {
                 
                 owner.view.makeToast("네트워크에 연결되었습니다.", duration: 0.5)
                 owner.dismiss(animated: true)
+            } else {
+                owner.view.makeToast("네트워크 연결이 원활하지 않습니다.", duration: 1.0)
             }
             
         }.disposed(by: disposeBag)
