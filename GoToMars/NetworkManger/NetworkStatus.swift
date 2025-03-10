@@ -16,7 +16,7 @@ final class NetworkMonitor {
     private let queue = DispatchQueue.global(qos: .background)
     
     
-    private(set) var inConnected: Bool = false
+    private(set) var isConnected: Bool = false
     private(set)var connectionType: ConnectionType = .unknown
     
     private init() {}
@@ -35,7 +35,7 @@ final class NetworkMonitor {
         
         monitor.start(queue: queue)
         monitor.pathUpdateHandler = { [weak self] path in
-            self?.inConnected = path.status == .satisfied
+            self?.isConnected = path.status == .satisfied
             self?.getConnectionType(path)
             
         }

@@ -15,7 +15,7 @@ final class PopupView: BaseView {
     private let subtitle = CustomLabel(bold: false, fontSize: 14, color: .projectGray)
 
     private let lineView = UIView()
-    private let restartButton = UIButton()
+    let restartButton = UIButton()
     
     override func configureHierarchy() {
         

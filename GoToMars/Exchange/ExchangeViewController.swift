@@ -20,6 +20,7 @@ final class ExchangeViewController: UIViewController {
     
     private var disposeBag = DisposeBag()
     
+
     override func loadView() {
         view = exchangeView
         
@@ -31,7 +32,7 @@ final class ExchangeViewController: UIViewController {
         navigationConfiguration()
         exchangeView.tableView.register(UpbitTableViewCell.self, forCellReuseIdentifier: UpbitTableViewCell.id)
         exchangeView.tableView.rowHeight = 40
-
+        
     }
     
     
@@ -57,12 +58,45 @@ final class ExchangeViewController: UIViewController {
         }.disposed(by: disposeBag)
         
         
-        output.filterStauts.asDriver(onErrorJustReturn: Filter.normalState).drive(with: self) { owner, status in
+        output.filterStatus.asDriver(onErrorJustReturn: Filter.normalState).drive(with: self) { owner, status in
             owner.changButtonStatus(status)
         }.disposed(by: disposeBag)
         
         
+        output.errorStatus.asDriver(onErrorJustReturn: APIError.unknown).drive(with: self) { owner, error in
+            switch error {
+            case .badRequest:
+                owner.showAlert(msg: error.message)
+            case .unauthorized:
+                owner.showAlert(msg: error.message)
+            case .forbidden:
+                owner.showAlert(msg: error.message)
+            case .baseURLError:
+                owner.showAlert(msg: error.message)
+            case .tooManyRequests:
+                owner.showAlert(msg: error.message)
+            case .internalServerError:
+                owner.showAlert(msg: error.message)
+            case .serviceUnavailable:
+                owner.showAlert(msg: error.message)
+            case .accessDenied:
+                owner.showAlert(msg: error.message)
+            case .apiKeyMissing:
+                owner.showAlert(msg: error.message)
+            case .noconnection:
+                let vc = PopupViewController()
+                
+                vc.modalPresentationStyle = .overCurrentContext
+                vc.modalTransitionStyle = .crossDissolve
+                owner.present(vc, animated: true)
+                
+            case .unknown:
+                owner.showAlert(msg: error.message)
+    
+            }
+        }.disposed(by: disposeBag)
         
+ 
         
     }
     
@@ -143,6 +177,22 @@ extension ExchangeViewController {
         case .normalState:
             break
         }
+    }
+    
+}
+
+extension ExchangeViewController {
+    
+   private func showAlert(msg: String) {
+        
+        let title = "안내"
+        let alert = UIAlertController(title: title, message: msg, preferredStyle: .alert)
+        let ok = UIAlertAction(title: "확인", style: .default)
+        alert.addAction(ok)
+        
+        present(alert, animated: true)
+        
+        
     }
     
 }
