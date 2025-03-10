@@ -22,8 +22,6 @@ final class CoinViewController: UIViewController {
     
     let viewModel = CoinViewModel()
 
-    var query = ""
-        
     private let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
@@ -45,7 +43,7 @@ final class CoinViewController: UIViewController {
     private func bind() {
         
         
-        let input = CoinViewModel.Input(viewDidLoad: Observable.just(query), startButtonTapped: starButtonTapped)
+        let input = CoinViewModel.Input(starButtonTapped: starButtonTapped)
         
         let output = viewModel.transform(input: input)
         
@@ -152,6 +150,7 @@ extension CoinViewController {
         tableView.register(CoinTableViewCell.self, forCellReuseIdentifier: CoinTableViewCell.id)
         
         tableView.rowHeight = 60
+        tableView.showsVerticalScrollIndicator = false
       
     }
     

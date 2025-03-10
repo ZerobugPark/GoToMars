@@ -36,20 +36,21 @@ final class SearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        layout()
-        navigationConfiguration()
-        bind()
+ 
+        // 첫번째 화면 설정
+        // 이때. 뷰컨 viewdidLoad 시점
+        pageViewController.setViewControllers([firstVC], direction: .forward, animated: true, completion: nil)
         
         textField.text = searchText
-        
-        firstVC.query = searchText
-        
-        
-        // 첫번째 화면 설정
-        pageViewController.setViewControllers([firstVC], direction: .forward, animated: true, completion: nil)
+    
         
         pageViewController.dataSource = self
         pageViewController.delegate = self
+        
+        layout()
+        navigationConfiguration()
+        bind()
+       
      
     }
     
@@ -68,8 +69,9 @@ final class SearchViewController: UIViewController {
             owner.navigationController?.popViewController(animated: true)
         }.disposed(by: disposeBag)
         
-        textField.rx.controlEvent(.editingDidEnd).withLatestFrom(textField.rx.text.orEmpty).bind(with: self) { owner, value in
+        textField.rx.controlEvent(.editingDidEnd).withLatestFrom(textField.rx.text.orEmpty).distinctUntilChanged().startWith(searchText).bind(with: self) { owner, value in
             
+            print("ee")
             owner.firstVC.viewModel.query = value
             
         }.disposed(by: disposeBag)

@@ -14,9 +14,7 @@ import RxSwift
 final class CoinViewModel: BaseViewModel {
     
     struct Input {
-        let viewDidLoad: Observable<String>
-        let startButtonTapped: PublishRelay<Int>
-        
+        let starButtonTapped: PublishRelay<Int>
     }
     
     struct Output {
@@ -52,35 +50,7 @@ final class CoinViewModel: BaseViewModel {
         let isFinished = PublishRelay<Void>()
         let errorStatus = PublishRelay<APIError>()
         
-        input.viewDidLoad.flatMap {
-        
-            if NetworkMonitor.shared.isConnected {
-                return NetworkManager.shared.callRequest(api: .coingeckoSearch(query: $0), type: CoinGeckoSearchAPI.self)
-            } else {
-                return Single.just(.failure(APIError.noconnection))
-            }
-            
-            
-        }.bind(with: self) { owner, response in
-            switch response {
-            case .success(let data):
-                owner.coinData = data.coins
-                
-                if owner.coinData.isEmpty {
-                    isEmpty.accept(true)
-                } else {
-                    searchData.accept(owner.coinData)
-                    isEmpty.accept(false)
-                }
-                
-                isFinished.accept(())
-                
-            case .failure(let error):
-                errorStatus.accept(error)
-            }
-        }.disposed(by: disposeBag)
-        
-        
+
         queryObesrvable.flatMap {
             
             if NetworkMonitor.shared.isConnected {
@@ -101,7 +71,7 @@ final class CoinViewModel: BaseViewModel {
                     searchData.accept(owner.coinData)
                     isEmpty.accept(false)
                 }
-         
+                isFinished.accept(())
             case .failure(let error):
                 errorStatus.accept(error)
             }
@@ -109,7 +79,7 @@ final class CoinViewModel: BaseViewModel {
         }.disposed(by: disposeBag)
         
         
-        input.startButtonTapped.asDriver(onErrorJustReturn: 0).drive(with: self) { owner, index in
+        input.starButtonTapped.asDriver(onErrorJustReturn: 0).drive(with: self) { owner, index in
             
             owner.coinData[index].isLiked.toggle()
             searchData.accept(owner.coinData)
