@@ -44,7 +44,7 @@ final class ExchangeViewModel: BaseViewModel {
         let filterStatus = PublishRelay<Filter>()
         
         
-        input.viewDidLoad.flatMapLatest { _ in NetworkManager.shared.callRequest(api: .upbit, type: [UpBitAPI].self) }
+        input.viewDidLoad.flatMap { _ in NetworkManager.shared.callRequest(api: .upbit, type: [UpBitAPI].self) }
             .bind(with: self) { owner, response in
                 
                 switch response {
