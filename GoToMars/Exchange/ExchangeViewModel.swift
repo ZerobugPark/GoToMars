@@ -50,10 +50,9 @@ final class ExchangeViewModel: BaseViewModel {
                 switch response {
                 case .success(let value):
                     owner.coinList = value
-                    
                     owner.changeTitle(data: owner.coinList)
                     owner.applyFillter(filter: owner.currentFilter)
-                    print(owner.currentFilter)
+                    
                     coninList.accept(owner.coinList)
                 case .failure(let error):
                     print(error)

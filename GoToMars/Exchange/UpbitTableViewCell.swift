@@ -135,7 +135,8 @@ final class UpbitTableViewCell: UITableViewCell {
             changePriceLabel.textColor = .projectBlue
         }
         
-        ratingLabel.text = (data.changeRate * 100).roundToPlaces(places: 2).formatted() + "%"
+        
+        ratingLabel.text =  (data.changeRate * 100).roundToPlaces(places: 2).formatted() + "%"
         changePriceLabel.text = data.changePrice.roundToPlaces(places: 2).formatted()
         
     }
