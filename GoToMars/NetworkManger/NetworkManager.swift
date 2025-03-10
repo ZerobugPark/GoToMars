@@ -23,7 +23,7 @@ enum APIRequest {
     case upbit
     case coingeckoTrending
     case coingeckoMarket(id: String)
-    
+    case coingeckoSearch(query: String)
     
     var baseURL: String {
         switch self {
@@ -33,6 +33,8 @@ enum APIRequest {
             APIURLs.coingeckoTrending
         case .coingeckoMarket:
             APIURLs.coingeckoMarket
+        case .coingeckoSearch:
+            APIURLs.coingeckoSearch
         }
     }
     
@@ -45,7 +47,10 @@ enum APIRequest {
             return URL(string: baseURL + "search/trending")!
         case .coingeckoMarket:
             return URL(string: baseURL + "coins/markets")!
+        case .coingeckoSearch:
+            return URL(string: baseURL + "search")!
         }
+        
     }
     
     var method: HTTPMethod {
@@ -61,6 +66,9 @@ enum APIRequest {
             return nil
         case .coingeckoMarket(let id):
             let parameters = ["vs_currency": "krw", "ids": id, "sparkline": "true"]
+            return parameters
+        case .coingeckoSearch(let query):
+            let parameters = ["query": query]
             return parameters
         }
     }
