@@ -28,12 +28,12 @@ final class CoinInformationViewController: UIViewController {
         
         switch dataSource[indexPath] { // dataSource Type == sectionItem
         case .firstSection(let coin):
-
+            
             
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CoinInfoCollectionViewCell.id, for: indexPath) as? CoinInfoCollectionViewCell else { return UICollectionViewCell() }
             
             cell.setup(data: coin, index: indexPath.row)
- 
+            
             return cell
             
         case .secondSection(let nft):
@@ -54,9 +54,9 @@ final class CoinInformationViewController: UIViewController {
             
             guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: CollectionHeaderReusableView.id, for: indexPath) as? CollectionHeaderReusableView else {
                 return  UICollectionReusableView() }
-                           
+            
             headerView.titleLabel.text = "인기 검색어"
-           
+            
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "MM.dd hh:mm"
             headerView.timeLabel.text = dateFormatter.string(from: Date())
@@ -70,7 +70,7 @@ final class CoinInformationViewController: UIViewController {
             
             guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: CollectionHeaderReusableView.id, for: indexPath) as? CollectionHeaderReusableView else {
                 return  UICollectionReusableView() }
-
+            
             headerView.titleLabel.text = "인기 NFT"
             
             return headerView
@@ -95,13 +95,13 @@ final class CoinInformationViewController: UIViewController {
     
     
     private func bind() {
-
+        
         
         let input = CoinInfoViewModel.Input(viewdidLoad: Observable<Int>.interval(.seconds(600), scheduler: MainScheduler.instance).startWith(0), searchButtonTapped:  coninInfoView.searchBar.rx.searchButtonClicked.withLatestFrom(coninInfoView.searchBar.rx.text.orEmpty))
         
         let output = viewModel.transform(input: input)
-          
-
+        
+        
         // do: 구독시점이 아닌 방출 시점에 처리 (구독보다 do가 먼저 실행됨)
         output.trending.asDriver().do { [weak self] value in
             
@@ -110,10 +110,10 @@ final class CoinInformationViewController: UIViewController {
                 self?.activityIndicator.isHidden = true
                 self?.coninInfoView.isHidden = false
             }
-
+            
         }.drive(coninInfoView.collectionView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
         
-                
+        
         coninInfoView.collectionView.rx.modelSelected(SectionItem.self).bind(with: self) { owner, element in
             
             switch element {
@@ -128,7 +128,7 @@ final class CoinInformationViewController: UIViewController {
             case .secondSection:
                 return
             }
-      
+            
         }.disposed(by: disposeBag)
         
         
@@ -145,10 +145,10 @@ final class CoinInformationViewController: UIViewController {
             
             
         }.disposed(by: disposeBag)
-
+        
     }
     
-
+    
     private func navigationConfiguration() {
         
         let navigationTitleView = NavigationTitleView()
@@ -156,7 +156,7 @@ final class CoinInformationViewController: UIViewController {
         navigationItem.backButtonTitle = ""
         let leftItem =  UIBarButtonItem(customView: navigationTitleView)
         navigationItem.leftBarButtonItem = leftItem
-
+        
     }
     
     
@@ -173,10 +173,10 @@ final class CoinInformationViewController: UIViewController {
         self.view.endEditing(true)
     }
     
-
+    
 }
 
-// MARK: - CollectionView Register 
+// MARK: - CollectionView Register
 extension CoinInformationViewController {
     
     private func collectionViewRegister() {

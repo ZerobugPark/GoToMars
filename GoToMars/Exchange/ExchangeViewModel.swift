@@ -14,14 +14,14 @@ final class ExchangeViewModel: BaseViewModel {
     
     struct Input {
         let viewDidLoad: Observable<Int>
-        
         let filterButtonTapped: Observable<Int>
     }
     
     struct Output {
         
         let coinList: BehaviorRelay<[UpBitAPI]>
-        let filterStauts: PublishRelay<Filter>
+        let filterStatus: PublishRelay<Filter>
+        let errorStatus: PublishRelay<APIError>
     }
     
     var disposeBag = DisposeBag()
@@ -42,10 +42,18 @@ final class ExchangeViewModel: BaseViewModel {
         
         let coninList = BehaviorRelay(value: coinList)
         let filterStatus = PublishRelay<Filter>()
+        let errorStatus = PublishRelay<APIError>()
         
         
-        input.viewDidLoad.flatMap { _ in NetworkManager.shared.callRequest(api: .upbit, type: [UpBitAPI].self) }
-            .bind(with: self) { owner, response in
+        input.viewDidLoad.flatMap { _ in
+            
+            if NetworkMonitor.shared.isConnected {
+                return NetworkManager.shared.callRequest(api: .upbit, type: [UpBitAPI].self)
+            } else {
+                return Single.just(Result.failure(APIError.noconnection))
+            }
+              
+        }.bind(with: self) { owner, response in
                 
                 switch response {
                 case .success(let value):
@@ -55,7 +63,7 @@ final class ExchangeViewModel: BaseViewModel {
                     
                     coninList.accept(owner.coinList)
                 case .failure(let error):
-                    print(error)
+                    errorStatus.accept(error)
                 }
                 
                 
@@ -108,7 +116,7 @@ final class ExchangeViewModel: BaseViewModel {
             
         }.disposed(by: disposeBag)
         
-        return Output(coinList: coninList, filterStauts: filterStatus)
+        return Output(coinList: coninList, filterStatus: filterStatus, errorStatus: errorStatus)
         
         
         
