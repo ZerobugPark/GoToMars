@@ -9,8 +9,9 @@ import UIKit
 
 import RxCocoa
 import RxSwift
+import SnapKit
 
-class SearchViewController: UIViewController {
+final class SearchViewController: UIViewController {
     
     private let searchView = SearchView()
     
@@ -25,7 +26,7 @@ class SearchViewController: UIViewController {
     private let firstVC = CoinViewController()
     private let secondVC = NFTViewController()
     private let thridVC = MarketViewController()
-    
+
     
     private lazy var dataViewControllers: [UIViewController] = [firstVC, secondVC, thridVC]
     
@@ -41,13 +42,18 @@ class SearchViewController: UIViewController {
         
         textField.text = searchText
         
+        firstVC.query = searchText
+        
+        
         // 첫번째 화면 설정
         pageViewController.setViewControllers([firstVC], direction: .forward, animated: true, completion: nil)
         
         pageViewController.dataSource = self
         pageViewController.delegate = self
-        
+     
     }
+    
+    
     
     
     private func bind() {
@@ -60,6 +66,12 @@ class SearchViewController: UIViewController {
         
         leftBackButton.rx.tap.bind(with: self) { owner, _ in
             owner.navigationController?.popViewController(animated: true)
+        }.disposed(by: disposeBag)
+        
+        textField.rx.controlEvent(.editingDidEnd).withLatestFrom(textField.rx.text.orEmpty).bind(with: self) { owner, value in
+            
+            owner.firstVC.viewModel.query = value
+            
         }.disposed(by: disposeBag)
         
     }

@@ -119,7 +119,42 @@ struct CoinGeckoMarketAPI: Decodable {
 }
 
 
+struct CoinGeckoSearchAPI: Decodable {
+    let coins: [SearchCoin]
+}
 
+struct SearchCoin: Decodable {
+    let id: String
+    let name: String
+    let symbol: String
+    let thumb: String
+    let rank: Int
+    let isLiked: Bool
+    
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case symbol
+        case thumb
+        case rank = "market_cap_rank"
+    }
+    
+    
+    init(from decoder: any Decoder) throws {
+        // 서버에서 받은 데이터를 한번 더 확인
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        id = try container.decodeIfPresent(String.self, forKey: .id) ?? "nil"
+        name = try container.decodeIfPresent(String.self, forKey: .name) ?? "nil"
+        symbol = try container.decode(String.self, forKey: .symbol)
+        thumb = try container.decode(String.self, forKey: .thumb)
+        rank = try container.decodeIfPresent(Int.self, forKey: .rank) ?? -1
+        
+        isLiked = false
+    }
+    
+}
 
 
 

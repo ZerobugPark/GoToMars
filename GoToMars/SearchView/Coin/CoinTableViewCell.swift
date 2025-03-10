@@ -7,14 +7,17 @@
 
 import UIKit
 
+import SnapKit
+import Kingfisher
+
 final class CoinTableViewCell: UITableViewCell {
 
     static let id = "CoinTableViewCell"
     
     private let symbolImageView = UIImageView()
-    private let titleLabel = CustomLabel(bold: true, fontSize: 12, color: .projectNavy)
+    private let titleLabel = CustomLabel(bold: true, fontSize: 14, color: .projectNavy)
     private let subTitleLabel = CustomLabel(bold: false, fontSize: 12, color: .projectGray)
-    private let rankLabel = CustomLabel(bold: true, fontSize: 9, color: .projectGray)
+    private let rankLabel = PaddingLabel(bold: true, fontSize: 9, color: .projectGray)
     private let starButton = CustomButton()
     
     
@@ -85,7 +88,7 @@ final class CoinTableViewCell: UITableViewCell {
         rankLabel.text = "11"
         
         starButton.setImage(UIImage(systemName: "star"), for: .normal)
-        
+        starButton.tintColor = .projectNavy
         rankLabel.backgroundColor = .projectLightGray
         rankLabel.layer.cornerRadius = 5
         //rankLabel.clipsToBounds = true
@@ -103,13 +106,22 @@ final class CoinTableViewCell: UITableViewCell {
     
     
 
-    func setup() {
+    func setup(data: SearchCoin) {
         
-        symbolImageView.image = UIImage(systemName: "star")
-        titleLabel.text = "123"
-        subTitleLabel.text = "456"
+        let url = URL(string: data.thumb)
         
-        rankLabel.text = "11"
+        if let url = url {
+         
+            symbolImageView.kf.setImage(with: url)
+        } else {
+            symbolImageView.image = UIImage(systemName: "star")
+        }
+        
+        
+        titleLabel.text = data.symbol
+        subTitleLabel.text = data.name
+        
+        rankLabel.text = "#\(data.rank)"
         
         starButton.setImage(UIImage(systemName: "star"), for: .normal)
         

@@ -6,48 +6,88 @@
 //
 
 import UIKit
+
+import RxCocoa
+import RxSwift
 import SnapKit
 
 final class CoinViewController: UIViewController {
-
+    
     
     private let tableView = UITableView()
     
-    var text = ""
+    private let activityIndicator = UIActivityIndicatorView()
+    private let infoLabel = CustomLabel(bold: true, fontSize: 16, color: .projectNavy)
+    
+    
+    let viewModel = CoinViewModel()
+
+    var query = ""
+        
+    private let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        layout()
         view.backgroundColor = .white
         
-        tableView.register(CoinTableViewCell.self, forCellReuseIdentifier: CoinTableViewCell.id)
+        activityIndicator.startAnimating()
+        tableView.isHidden = true
+        infoLabel.isHidden = true
         
-        tableView.rowHeight = 60
-        tableView.delegate = self
-        tableView.dataSource = self
+        configurationTableView()
+        layout()
+        bind()
         
+     
     }
     
-
+    
+    private func bind() {
+        
+        
+        let input = CoinViewModel.Input(viewDidLoad: Observable.just(query))
+        
+        let output = viewModel.transform(input: input)
+        
+        
+        output.searchData.asDriver().drive(tableView.rx.items(cellIdentifier: CoinTableViewCell.id, cellType: CoinTableViewCell.self)) { row, element, cell in
+          
+            cell.setup(data: element)
+            
+        }.disposed(by: disposeBag)
+        
+        
+        tableView.rx.modelSelected(SearchCoin.self).bind(with: self) { owner, element in
+            
+            let vc = CoinDetailViewController()
+            
+            vc.viewModel.id = element.id
+            owner.navigationController?.pushViewController(vc, animated: true)
   
+        }.disposed(by: disposeBag)
+        
+        
+        output.isEmpty.asDriver(onErrorJustReturn: false).drive(with: self) { owner, status in
+            
+            if status {
+                owner.infoLabel.isHidden = false
+            } else {
+                owner.infoLabel.isHidden = true
+            }
+            
+        }.disposed(by: disposeBag)
+        
+        output.isFinished.asDriver(onErrorJustReturn: ()).drive(with: self) { owner, _ in
+            
+            owner.tableView.isHidden = false
+            owner.activityIndicator.stopAnimating()
+            owner.activityIndicator.isHidden = true
+            
+        }.disposed(by: disposeBag)
+        
+    }
 }
 
-
-extension CoinViewController: UITableViewDelegate, UITableViewDataSource {
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: CoinTableViewCell.id, for: indexPath) as? CoinTableViewCell else { return UITableViewCell() }
-        
-        return cell
-    }
-    
-}
 
 
 
@@ -55,12 +95,38 @@ extension CoinViewController: UITableViewDelegate, UITableViewDataSource {
 // MARK: -  Layout
 extension CoinViewController {
     
+    private func configurationTableView() {
+        
+        tableView.register(CoinTableViewCell.self, forCellReuseIdentifier: CoinTableViewCell.id)
+        
+        tableView.rowHeight = 60
+      
+    }
+    
     private func layout() {
         
         view.addSubview(tableView)
+        view.addSubview(infoLabel)
+        view.addSubview(activityIndicator)
         
         tableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+        
+        infoLabel.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
+        
+        activityIndicator.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+
+        }
+        
+        
+        infoLabel.text = "검색 결과가 없습니다."
     }
 }
+
+
+
+
