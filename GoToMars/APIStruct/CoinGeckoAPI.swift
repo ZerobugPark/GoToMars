@@ -129,7 +129,7 @@ struct SearchCoin: Decodable {
     let symbol: String
     let thumb: String
     let rank: Int
-    let isLiked: Bool
+    var isLiked: Bool
     
     
     enum CodingKeys: String, CodingKey {

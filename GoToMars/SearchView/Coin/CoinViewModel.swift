@@ -15,6 +15,7 @@ final class CoinViewModel: BaseViewModel {
     
     struct Input {
         let viewDidLoad: Observable<String>
+        let startButtonTapped: PublishRelay<Int>
         
     }
     
@@ -105,6 +106,13 @@ final class CoinViewModel: BaseViewModel {
                 errorStatus.accept(error)
             }
             
+        }.disposed(by: disposeBag)
+        
+        
+        input.startButtonTapped.asDriver(onErrorJustReturn: 0).drive(with: self) { owner, index in
+            
+            owner.coinData[index].isLiked.toggle()
+            searchData.accept(owner.coinData)
         }.disposed(by: disposeBag)
         
         

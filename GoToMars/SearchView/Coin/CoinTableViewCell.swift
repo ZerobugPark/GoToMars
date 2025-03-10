@@ -8,7 +8,9 @@
 import UIKit
 
 import SnapKit
+import RxSwift
 import Kingfisher
+
 
 final class CoinTableViewCell: UITableViewCell {
 
@@ -18,8 +20,8 @@ final class CoinTableViewCell: UITableViewCell {
     private let titleLabel = CustomLabel(bold: true, fontSize: 14, color: .projectNavy)
     private let subTitleLabel = CustomLabel(bold: false, fontSize: 12, color: .projectGray)
     private let rankLabel = PaddingLabel(bold: true, fontSize: 9, color: .projectGray)
-    private let starButton = CustomButton()
-    
+    let starButton = CustomButton()
+    var disposeBag = DisposeBag()
     
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -81,17 +83,17 @@ final class CoinTableViewCell: UITableViewCell {
         symbolImageView.layer.borderWidth = 0
         symbolImageView.clipsToBounds = true
         
-        symbolImageView.image = UIImage(systemName: "star")
-        titleLabel.text = "123"
-        subTitleLabel.text = "456"
-        
-        rankLabel.text = "11"
-        
-        starButton.setImage(UIImage(systemName: "star"), for: .normal)
         starButton.tintColor = .projectNavy
         rankLabel.backgroundColor = .projectLightGray
         rankLabel.layer.cornerRadius = 5
-        //rankLabel.clipsToBounds = true
+        rankLabel.clipsToBounds = true
+        
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        disposeBag = DisposeBag()
+
         
     }
     

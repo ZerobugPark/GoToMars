@@ -18,7 +18,7 @@ final class CoinViewController: UIViewController {
     
     private let activityIndicator = UIActivityIndicatorView()
     private let infoLabel = CustomLabel(bold: true, fontSize: 16, color: .projectNavy)
-    
+    private let starButtonTapped = PublishRelay<Int>()
     
     let viewModel = CoinViewModel()
 
@@ -45,14 +45,33 @@ final class CoinViewController: UIViewController {
     private func bind() {
         
         
-        let input = CoinViewModel.Input(viewDidLoad: Observable.just(query))
+        let input = CoinViewModel.Input(viewDidLoad: Observable.just(query), startButtonTapped: starButtonTapped)
         
         let output = viewModel.transform(input: input)
         
         
-        output.searchData.asDriver().drive(tableView.rx.items(cellIdentifier: CoinTableViewCell.id, cellType: CoinTableViewCell.self)) { row, element, cell in
+        output.searchData.asDriver().drive(tableView.rx.items(cellIdentifier: CoinTableViewCell.id, cellType: CoinTableViewCell.self)) { [weak self] row, element, cell in
           
+            guard let self = self else { return }
+            
             cell.setup(data: element)
+            
+            let image = element.isLiked ? "star.fill" : "star"
+            cell.starButton.setImage(UIImage(systemName: image), for: .normal)
+            
+            
+            cell.starButton.rx.tap.bind(with: self) { owner, _ in
+                
+                
+                let msg = element.isLiked ? "즐겨찾기에서 삭제되었습니다" : "즐겨찾기에 추가되었습니다"
+                
+                owner.starButtonTapped.accept(row)
+                owner.view.makeToast("\(element.symbol)이(가) " + msg, duration: 0.5)
+
+            }.disposed(by: cell.disposeBag)
+            
+            
+         
             
         }.disposed(by: disposeBag)
         
