@@ -70,7 +70,7 @@ final class CoinInformationView: BaseView {
         
         searchBar.searchTextField.backgroundColor = .white
         
-        
+
         collectionView.bounces = false
         collectionView.showsVerticalScrollIndicator = false
 

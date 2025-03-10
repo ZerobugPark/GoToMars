@@ -117,8 +117,8 @@ final class CoinDetailViewController: UIViewController {
     
     private func navigationConfiguration(title: String, img: String) {
             
-        let navigationTitleImageView = NavigationTitleWithImage(frame: CGRect(x: 0, y: 0, width: 200, height: 44))
-       
+        let navigationTitleImageView = NavigationTitleWithImage()
+        
         navigationTitleImageView.titleLabel.text = title
         
         navigationTitleImageView.layoutIfNeeded()

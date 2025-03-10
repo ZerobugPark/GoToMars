@@ -97,9 +97,11 @@ final class CoinInformationViewController: UIViewController {
     private func bind() {
 
         
-        let input = CoinInfoViewModel.Input(viewdidLoad: Observable<Int>.interval(.seconds(600), scheduler: MainScheduler.instance).startWith(0))
-        let output = viewModel.transform(input: input)
+        let input = CoinInfoViewModel.Input(viewdidLoad: Observable<Int>.interval(.seconds(600), scheduler: MainScheduler.instance).startWith(0), searchButtonTapped:  coninInfoView.searchBar.rx.searchButtonClicked.withLatestFrom(coninInfoView.searchBar.rx.text.orEmpty))
         
+        let output = viewModel.transform(input: input)
+          
+
         // do: 구독시점이 아닌 방출 시점에 처리 (구독보다 do가 먼저 실행됨)
         output.trending.asDriver().do { [weak self] value in
             
@@ -113,7 +115,6 @@ final class CoinInformationViewController: UIViewController {
         
                 
         coninInfoView.collectionView.rx.modelSelected(SectionItem.self).bind(with: self) { owner, element in
-            
             
             switch element {
             case .firstSection(let coin):
@@ -129,6 +130,11 @@ final class CoinInformationViewController: UIViewController {
             }
       
         }.disposed(by: disposeBag)
+        
+        
+        output.blankResult.asDriver(onErrorJustReturn: ()).drive(with: self, onNext: { owenr, _ in
+            owenr.view.endEditing(true)
+        }).disposed(by: disposeBag)
 
     }
     
@@ -150,6 +156,11 @@ final class CoinInformationViewController: UIViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+    }
+    
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
     }
     
 

@@ -46,10 +46,12 @@ final class CoinInfoViewModel: BaseViewModel {
     
     struct Input {
         let viewdidLoad: Observable<Int>
+        let searchButtonTapped: Observable<ControlProperty<String>.Element>
     }
     
     struct Output {
         let trending: BehaviorRelay<[CollectionViewSectionModel]>
+        let blankResult: PublishRelay<Void>
     }
     
     
@@ -67,6 +69,8 @@ final class CoinInfoViewModel: BaseViewModel {
         let trending = BehaviorRelay<[CollectionViewSectionModel]>(value: [.coin(coinTrend),
                                                                            .ntf(ntfTrend)])
         
+        let blank = PublishRelay<Void>()
+        
         input.viewdidLoad.flatMap { _ in
             NetworkManager.shared.callRequest(api: .coingeckoTrending, type: CoinGeckoTrendingAPI.self)
         }.bind(with: self) { owner, response in
@@ -80,9 +84,24 @@ final class CoinInfoViewModel: BaseViewModel {
                 print(error)
             }
         }.disposed(by: disposeBag)
+        
+        input.searchButtonTapped.distinctUntilChanged().subscribe(with: self) { owner, text in
+            
+            if text.replacingOccurrences(of: " ", with: "").isEmpty {
+                blank.accept(())
+            } else {
+                print("공백은 없습니다.")
+            }
+            
+            
+            
+        }.disposed(by: disposeBag)
+        
 
-        return Output(trending: trending)
+        return Output(trending: trending, blankResult: blank)
     }
+    
+    
     
     deinit {
         print("CoinInfoViewModel DeInit")

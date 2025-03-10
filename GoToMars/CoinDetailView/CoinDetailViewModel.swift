@@ -17,6 +17,7 @@ final class CoinDetailViewModel: BaseViewModel {
     
     struct Input {
         let viewDidLoad: Observable<Void>
+     
     }
     
     struct Output {
@@ -58,7 +59,7 @@ final class CoinDetailViewModel: BaseViewModel {
             }
             
         }.disposed(by: disposeBag)
-        
+          
         
         return Output(marketData: data, chartData: chartData)
     }
