@@ -10,17 +10,9 @@ import SnapKit
 
 final class NavigationTitleWithImage: BaseView {
 
-    
-    
-   
     let imageView = UIImageView()
     let titleLabel = CustomLabel(bold: true, fontSize: 16, color: .projectNavy)
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-    }
-    
-    
     override func configureHierarchy() {
         
         self.addSubview(imageView)
