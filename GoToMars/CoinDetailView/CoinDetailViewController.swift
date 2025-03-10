@@ -46,10 +46,10 @@ final class CoinDetailViewController: UIViewController {
         
         
         let input = CoinDetailViewModel.Input(viewDidLoad: Observable.just(()))
-        let ouput = viewModel.transform(input: input)
+        let output = viewModel.transform(input: input)
         
         //여긴 60초 주기 업데이트, 하지만 호출시 업데이트(인기검색어는 10분마다이기 때문에, 일부 차이가 발생 할 수도 있음)
-        ouput.marketData.asDriver(onErrorJustReturn: []).drive(with: self) { owner, value in
+        output.marketData.asDriver(onErrorJustReturn: []).drive(with: self) { owner, value in
             
             owner.coinDetailView.priceLabel.text = "₩" + value[0].currentPrice.roundToPlaces(places: 2).formatted()
             
@@ -87,7 +87,7 @@ final class CoinDetailViewController: UIViewController {
         }.disposed(by: disposeBag)
         
         
-        ouput.chartData.asDriver(onErrorJustReturn: []).drive(with: self) { owner, value in
+        output.chartData.asDriver(onErrorJustReturn: []).drive(with: self) { owner, value in
             
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "M/dd HH:mm:ss"
@@ -111,6 +111,39 @@ final class CoinDetailViewController: UIViewController {
         
         rightButtonItem.rx.tap.bind(with: self) { owner, _ in
             print("button tapped")
+        }.disposed(by: disposeBag)
+        
+        output.errorStatus.asDriver(onErrorJustReturn: APIError.unknown).drive(with: self) { owner, error in
+            switch error {
+            case .badRequest:
+                owner.showAlert(msg: error.message)
+            case .unauthorized:
+                owner.showAlert(msg: error.message)
+            case .forbidden:
+                owner.showAlert(msg: error.message)
+            case .baseURLError:
+                owner.showAlert(msg: error.message)
+            case .tooManyRequests:
+                owner.showAlert(msg: error.message)
+            case .internalServerError:
+                owner.showAlert(msg: error.message)
+            case .serviceUnavailable:
+                owner.showAlert(msg: error.message)
+            case .accessDenied:
+                owner.showAlert(msg: error.message)
+            case .apiKeyMissing:
+                owner.showAlert(msg: error.message)
+            case .noconnection:
+                let vc = PopupViewController()
+                
+                vc.modalPresentationStyle = .overFullScreen
+                vc.modalTransitionStyle = .crossDissolve
+                owner.present(vc, animated: true)
+                
+            case .unknown:
+                owner.showAlert(msg: error.message)
+    
+            }
         }.disposed(by: disposeBag)
         
     }
@@ -262,6 +295,22 @@ extension CoinDetailViewController {
         coinDetailView.chartView.data = data
         
  
+        
+    }
+    
+}
+
+extension CoinDetailViewController {
+    
+   private func showAlert(msg: String) {
+        
+        let title = "안내"
+        let alert = UIAlertController(title: title, message: msg, preferredStyle: .alert)
+        let ok = UIAlertAction(title: "확인", style: .default)
+        alert.addAction(ok)
+        
+        present(alert, animated: true)
+        
         
     }
     

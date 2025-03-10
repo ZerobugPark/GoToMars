@@ -53,6 +53,7 @@ final class CoinInfoViewModel: BaseViewModel {
         let trending: BehaviorRelay<[CollectionViewSectionModel]>
         let blankResult: PublishRelay<Void>
         let searchText: PublishRelay<String>
+        let errorStatus: PublishRelay<APIError>
     }
     
     
@@ -72,9 +73,17 @@ final class CoinInfoViewModel: BaseViewModel {
         
         let blank = PublishRelay<Void>()
         let search = PublishRelay<String>()
+        let errorStatus = PublishRelay<APIError>()
         
         input.viewdidLoad.flatMap { _ in
-            NetworkManager.shared.callRequest(api: .coingeckoTrending, type: CoinGeckoTrendingAPI.self)
+            
+            if NetworkMonitor.shared.isConnected {
+                return NetworkManager.shared.callRequest(api: .coingeckoTrending, type: CoinGeckoTrendingAPI.self)
+            } else {
+                return Single.just(.failure(APIError.noconnection))
+            }
+            
+            
         }.bind(with: self) { owner, response in
             switch response {
             case .success(let value):
@@ -83,7 +92,7 @@ final class CoinInfoViewModel: BaseViewModel {
                 owner.getInfo(data: value.nfts)
                 trending.accept([.coin(owner.coinTrend),.ntf(owner.ntfTrend)])
             case .failure(let error):
-                print(error)
+                errorStatus.accept(error)
             }
         }.disposed(by: disposeBag)
         
@@ -100,7 +109,7 @@ final class CoinInfoViewModel: BaseViewModel {
         }.disposed(by: disposeBag)
         
 
-        return Output(trending: trending, blankResult: blank, searchText: search)
+        return Output(trending: trending, blankResult: blank, searchText: search, errorStatus: errorStatus)
     }
     
     

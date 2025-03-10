@@ -137,6 +137,7 @@ final class NetworkManager {
                 case .failure(let error):
                     dump(error)
                     
+                    print(response.response?.statusCode)
                     if let statusCode = response.response?.statusCode {
                         switch statusCode {
                         case APIError.badRequest.rawValue:

@@ -22,6 +22,7 @@ final class CoinViewModel: BaseViewModel {
         let isFinished: PublishRelay<Void>
         let searchData: BehaviorRelay<[SearchCoin]>
         let isEmpty: PublishRelay<Bool>
+        let errorStatus: PublishRelay<APIError>
         
     }
     
@@ -48,9 +49,17 @@ final class CoinViewModel: BaseViewModel {
         let searchData = BehaviorRelay(value: coinData)
         let isEmpty = PublishRelay<Bool>()
         let isFinished = PublishRelay<Void>()
+        let errorStatus = PublishRelay<APIError>()
         
         input.viewDidLoad.flatMap {
-            NetworkManager.shared.callRequest(api: .coingeckoSearch(query: $0), type: CoinGeckoSearchAPI.self)
+        
+            if NetworkMonitor.shared.isConnected {
+                return NetworkManager.shared.callRequest(api: .coingeckoSearch(query: $0), type: CoinGeckoSearchAPI.self)
+            } else {
+                return Single.just(.failure(APIError.noconnection))
+            }
+            
+            
         }.bind(with: self) { owner, response in
             switch response {
             case .success(let data):
@@ -66,13 +75,19 @@ final class CoinViewModel: BaseViewModel {
                 isFinished.accept(())
                 
             case .failure(let error):
-                print(error)
+                errorStatus.accept(error)
             }
         }.disposed(by: disposeBag)
         
         
         queryObesrvable.flatMap {
-            NetworkManager.shared.callRequest(api: .coingeckoSearch(query: $0), type: CoinGeckoSearchAPI.self)
+            
+            if NetworkMonitor.shared.isConnected {
+                return NetworkManager.shared.callRequest(api: .coingeckoSearch(query: $0), type: CoinGeckoSearchAPI.self)
+            } else {
+                return Single.just(.failure(APIError.noconnection))
+            }
+            
         }.bind(with: self) { owner, response in
             
             switch response {
@@ -87,7 +102,7 @@ final class CoinViewModel: BaseViewModel {
                 }
          
             case .failure(let error):
-                print(error)
+                errorStatus.accept(error)
             }
             
         }.disposed(by: disposeBag)
@@ -96,7 +111,7 @@ final class CoinViewModel: BaseViewModel {
 
         
         
-        return Output(isFinished: isFinished, searchData: searchData, isEmpty: isEmpty)
+        return Output(isFinished: isFinished, searchData: searchData, isEmpty: isEmpty, errorStatus: errorStatus)
     }
     
     deinit {

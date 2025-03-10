@@ -146,6 +146,40 @@ final class CoinInformationViewController: UIViewController {
             
         }.disposed(by: disposeBag)
         
+        output.errorStatus.asDriver(onErrorJustReturn: APIError.unknown).drive(with: self) { owner, error in
+            switch error {
+            case .badRequest:
+                owner.showAlert(msg: error.message)
+            case .unauthorized:
+                owner.showAlert(msg: error.message)
+            case .forbidden:
+                owner.showAlert(msg: error.message)
+            case .baseURLError:
+                owner.showAlert(msg: error.message)
+            case .tooManyRequests:
+                owner.showAlert(msg: error.message)
+            case .internalServerError:
+                owner.showAlert(msg: error.message)
+            case .serviceUnavailable:
+                owner.showAlert(msg: error.message)
+            case .accessDenied:
+                owner.showAlert(msg: error.message)
+            case .apiKeyMissing:
+                owner.showAlert(msg: error.message)
+            case .noconnection:
+                let vc = PopupViewController()
+                
+                vc.modalPresentationStyle = .overFullScreen
+                vc.modalTransitionStyle = .crossDissolve
+                owner.present(vc, animated: true)
+                
+            case .unknown:
+                owner.showAlert(msg: error.message)
+    
+            }
+        }.disposed(by: disposeBag)
+        
+        
     }
     
     
@@ -200,6 +234,23 @@ extension CoinInformationViewController {
         activityIndicator.snp.makeConstraints { make in
             make.center.equalToSuperview()
         }
+    }
+    
+}
+
+
+extension CoinInformationViewController {
+    
+   private func showAlert(msg: String) {
+        
+        let title = "안내"
+        let alert = UIAlertController(title: title, message: msg, preferredStyle: .alert)
+        let ok = UIAlertAction(title: "확인", style: .default)
+        alert.addAction(ok)
+        
+        present(alert, animated: true)
+        
+        
     }
     
 }

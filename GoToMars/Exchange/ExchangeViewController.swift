@@ -86,7 +86,7 @@ final class ExchangeViewController: UIViewController {
             case .noconnection:
                 let vc = PopupViewController()
                 
-                vc.modalPresentationStyle = .overCurrentContext
+                vc.modalPresentationStyle = .overFullScreen
                 vc.modalTransitionStyle = .crossDissolve
                 owner.present(vc, animated: true)
                 
@@ -128,7 +128,6 @@ final class ExchangeViewController: UIViewController {
     }
     
     deinit {
-        //사실 불필요 첫화면이라 Deinit 안될텐뎅
         print("ExchangeViewController Deinit")
     }
 

@@ -23,6 +23,7 @@ final class CoinDetailViewModel: BaseViewModel {
     struct Output {
         let marketData: PublishRelay<[CoinGeckoMarketAPI]>
         let chartData: PublishRelay<[ChartDataEntry]>
+        let errorStatus: PublishRelay<APIError>
     }
     
     
@@ -40,9 +41,16 @@ final class CoinDetailViewModel: BaseViewModel {
         
         let data = PublishRelay<[CoinGeckoMarketAPI]>()
         let chartData = PublishRelay<[ChartDataEntry]>()
+        let errorStatus = PublishRelay<APIError>()
         
         input.viewDidLoad.flatMap {
-            NetworkManager.shared.callRequest(api: .coingeckoMarket(id: self.id), type: [CoinGeckoMarketAPI].self)
+            
+            if NetworkMonitor.shared.isConnected {
+                return NetworkManager.shared.callRequest(api: .coingeckoMarket(id: self.id), type: [CoinGeckoMarketAPI].self)
+            } else {
+                return Single.just(.failure(APIError.noconnection))
+            }
+            
         }.bind(with: self) { owner, response in
             
             switch response {
@@ -55,13 +63,13 @@ final class CoinDetailViewModel: BaseViewModel {
                 data.accept(owner.marketData)
                     
             case .failure(let error):
-                print(error)
+                errorStatus.accept(error)
             }
             
         }.disposed(by: disposeBag)
           
         
-        return Output(marketData: data, chartData: chartData)
+        return Output(marketData: data, chartData: chartData, errorStatus: errorStatus)
     }
     
     deinit {
