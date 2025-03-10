@@ -28,11 +28,11 @@ enum APIRequest {
     var baseURL: String {
         switch self {
         case .upbit:
-            "https://api.upbit.com/v1/ticker/all"
+            APIURLs.upbit
         case .coingeckoTrending:
-            "https://api.coingecko.com/api/v3/"
+            APIURLs.coingeckoTrending
         case .coingeckoMarket:
-            "https://api.coingecko.com/api/v3/"
+            APIURLs.coingeckoMarket
         }
     }
     
@@ -43,7 +43,7 @@ enum APIRequest {
             return URL(string: baseURL)!
         case .coingeckoTrending:
             return URL(string: baseURL + "search/trending")!
-        case .coingeckoMarket(id: let id):
+        case .coingeckoMarket:
             return URL(string: baseURL + "coins/markets")!
         }
     }
