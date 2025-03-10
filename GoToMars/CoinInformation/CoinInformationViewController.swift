@@ -86,7 +86,7 @@ final class CoinInformationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationConfiguration()
-        indicatorLayout()
+        layout()
         collectionViewRegister()
         coninInfoView.isHidden = true
         activityIndicator.startAnimating()
@@ -140,7 +140,7 @@ final class CoinInformationViewController: UIViewController {
         output.searchText.asDriver(onErrorJustReturn: "").drive(with: self) { owner, text in
             
             let vc = SearchViewController()
-            
+            vc.searchText = text
             owner.navigationController?.pushViewController(vc, animated: true)
             
             
@@ -189,7 +189,7 @@ extension CoinInformationViewController {
 // MARK: - IndicatorLayout
 extension CoinInformationViewController {
     
-    private func indicatorLayout() {
+    private func layout() {
         view.addSubview(coninInfoView)
         view.addSubview(activityIndicator)
         

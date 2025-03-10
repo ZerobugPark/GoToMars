@@ -34,7 +34,7 @@ final class CoinDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        indicatorLayout()
+        layout()
         activityIndicator.startAnimating()
         coinDetailView.isHidden = true
         bind()
@@ -215,7 +215,7 @@ extension CoinDetailViewController {
 // MARK: - IndicatorLayout
 extension CoinDetailViewController {
     
-    private func indicatorLayout() {
+    private func layout() {
         view.addSubview(coinDetailView)
         view.addSubview(activityIndicator)
         

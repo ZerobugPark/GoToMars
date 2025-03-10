@@ -14,14 +14,7 @@ final class SearchView: BaseView {
     private let container = UIView()
     let segmentControl = UISegmentedControl()
     let underLineView = UIView()
-    let baseLineView = UIView()
-    
-//    lazy var leadingDistanc: NSLayoutConstraint = {
-//        return underLineView.snp.updateConstraints { make in
-//
-//        }
-//    }
-    
+    private let baseLineView = UIView()
     
     override func configureHierarchy() {
         
@@ -30,7 +23,7 @@ final class SearchView: BaseView {
         container.addSubview(segmentControl)
         container.addSubview(underLineView)
         container.addSubview(baseLineView)
-
+        
     }
     
     override func configureLayout() {
