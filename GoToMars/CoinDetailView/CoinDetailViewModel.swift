@@ -77,7 +77,7 @@ final class CoinDetailViewModel: BaseViewModel {
                 likeButtonStatus.accept(owner.isLiked)
                 data.accept(owner.marketData)
                 
-                dump(value)
+                //dump(value)
             case .failure(let error):
                 errorStatus.accept(error)
             }
