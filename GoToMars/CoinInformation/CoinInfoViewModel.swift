@@ -91,7 +91,7 @@ final class CoinInfoViewModel: BaseViewModel {
                 owner.getInfo(data: value.coins)
                 owner.getInfo(data: value.nfts)
                 trending.accept([.coin(owner.coinTrend),.ntf(owner.ntfTrend)])
-                print("실행")
+                
             case .failure(let error):
                 errorStatus.accept(error)
             }

@@ -30,11 +30,19 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Go To Mars" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VDT-P2-Cug">
+                                <rect key="frame" x="135.66666666666666" y="89" width="121.66666666666666" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="VDT-P2-Cug" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="30" id="C2P-pa-lsz"/>
                             <constraint firstItem="Kmq-2N-3YR" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="UI0-hx-rzp"/>
+                            <constraint firstItem="VDT-P2-Cug" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="avD-Ek-SnM"/>
                             <constraint firstItem="b2J-Vj-zDm" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="mN2-S7-d62"/>
                             <constraint firstItem="b2J-Vj-zDm" firstAttribute="top" secondItem="Kmq-2N-3YR" secondAttribute="bottom" constant="10" id="ph8-WW-5Co"/>
                             <constraint firstItem="Kmq-2N-3YR" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="y9e-ek-O66"/>

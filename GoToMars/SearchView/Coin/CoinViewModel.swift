@@ -29,20 +29,11 @@ final class CoinViewModel: BaseViewModel {
     }
     
     private let disposeBag = DisposeBag()
-    
-    private let queryObesrvable = PublishSubject<String>()
 
     private let repository: LikeRepository = LikeTableRepository()
     
     var coinData: [SearchCoin] = []
     var list: Results<LikeTable>!
-    
-
-    var query = "" {
-        didSet {
-            queryObesrvable.onNext(query)
-        }
-    }
     
     init() {
         print("CoinViewModel Init")

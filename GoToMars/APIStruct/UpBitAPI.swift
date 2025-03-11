@@ -9,10 +9,7 @@ import Foundation
 
 
 struct UpBitAPI: Decodable {
-    
-    //현재가
-    // 전일대비 (비율, 금액(
-    //거래대금
+
     var market: String
     let change: String
     let changePrice: Double

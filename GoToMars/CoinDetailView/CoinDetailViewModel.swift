@@ -15,7 +15,6 @@ import RealmSwift
 
 final class CoinDetailViewModel: BaseViewModel {
     
-    
     struct Input {
         let callRequest: BehaviorRelay<Void>
         let likeButtonTapped: ControlEvent<()>
@@ -36,11 +35,10 @@ final class CoinDetailViewModel: BaseViewModel {
     
     private var isLiked = false
     
+    private var marketData: [CoinGeckoMarketAPI] = []
+    private var list: Results<LikeTable>!
+    
     var id = ""
-    var marketData: [CoinGeckoMarketAPI] = []
-    
-    var list: Results<LikeTable>!
-    
     
     init() {
         print("CoinDetailViewModel Init")
@@ -116,7 +114,7 @@ final class CoinDetailViewModel: BaseViewModel {
     
 }
 
-
+// MARK: - Get Chart Data
 extension CoinDetailViewModel {
     
     private func setChartData(data:[String : [Double]]) -> [ChartDataEntry] {
@@ -129,6 +127,12 @@ extension CoinDetailViewModel {
 
         return entries
     }
+
+}
+
+
+// MARK: - Load Realm
+extension CoinDetailViewModel {
     
     private func getRealmData(id: String) -> Bool {
         
@@ -142,7 +146,4 @@ extension CoinDetailViewModel {
         
     }
     
-    
 }
-
-

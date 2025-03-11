@@ -25,7 +25,7 @@ final class CoinViewController: UIViewController {
     
     lazy var callRequest = BehaviorRelay(value: query)
     
-    let viewModel = CoinViewModel()
+    private let viewModel = CoinViewModel()
 
     private let disposeBag = DisposeBag()
     
@@ -51,8 +51,7 @@ final class CoinViewController: UIViewController {
         let input = CoinViewModel.Input(callRequest: callRequest, likeButtonTapped: likeButtonTapped)
         
         let output = viewModel.transform(input: input)
-        
-    
+
         
         output.searchData.asDriver().drive(tableView.rx.items(cellIdentifier: CoinTableViewCell.id, cellType: CoinTableViewCell.self)) { [weak self] row, element, cell in
           
@@ -61,11 +60,10 @@ final class CoinViewController: UIViewController {
             cell.setup(data: element)
             
             let image = element.isLiked ? "star.fill" : "star"
-            cell.starButton.setImage(UIImage(systemName: image), for: .normal)
+            cell.likeButton.setImage(UIImage(systemName: image), for: .normal)
             
             
-            cell.starButton.rx.tap.bind(with: self) { owner, _ in
-                
+            cell.likeButton.rx.tap.bind(with: self) { owner, _ in
                 
                 let msg = element.isLiked ? "즐겨찾기에서 삭제되었습니다" : "즐겨찾기에 추가되었습니다"
                 
@@ -73,9 +71,6 @@ final class CoinViewController: UIViewController {
                 owner.view.makeToast("\(element.symbol)이(가) " + msg, duration: 0.5)
 
             }.disposed(by: cell.disposeBag)
-            
-            
-         
             
         }.disposed(by: disposeBag)
         

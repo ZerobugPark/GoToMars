@@ -20,7 +20,7 @@ final class CoinTableViewCell: UITableViewCell {
     private let titleLabel = CustomLabel(bold: true, fontSize: 14, color: .projectNavy)
     private let subTitleLabel = CustomLabel(bold: false, fontSize: 12, color: .projectGray)
     private let rankLabel = PaddingLabel(bold: true, fontSize: 9, color: .projectGray)
-    let starButton = CustomButton()
+    let likeButton = CustomButton()
     var disposeBag = DisposeBag()
     
     
@@ -40,7 +40,7 @@ final class CoinTableViewCell: UITableViewCell {
     
     private func configureHierarchy() {
         
-        [symbolImageView, titleLabel, subTitleLabel, rankLabel, starButton].forEach {
+        [symbolImageView, titleLabel, subTitleLabel, rankLabel, likeButton].forEach {
             contentView.addSubview($0)
         }
         
@@ -72,7 +72,7 @@ final class CoinTableViewCell: UITableViewCell {
             make.leading.equalTo(titleLabel.snp.trailing).offset(4)
         }
         
-        starButton.snp.makeConstraints { make in
+        likeButton.snp.makeConstraints { make in
             make.centerY.equalTo(contentView.safeAreaLayoutGuide)
             make.trailing.equalTo(contentView.safeAreaLayoutGuide).offset(-16)
         }
@@ -83,7 +83,7 @@ final class CoinTableViewCell: UITableViewCell {
         symbolImageView.layer.borderWidth = 0
         symbolImageView.clipsToBounds = true
         
-        starButton.tintColor = .projectNavy
+        likeButton.tintColor = .projectNavy
         rankLabel.backgroundColor = .projectLightGray
         rankLabel.layer.cornerRadius = 5
         rankLabel.clipsToBounds = true
@@ -125,7 +125,7 @@ final class CoinTableViewCell: UITableViewCell {
         
         rankLabel.text = "#\(data.rank)"
         
-        starButton.setImage(UIImage(systemName: "star"), for: .normal)
+        likeButton.setImage(UIImage(systemName: "star"), for: .normal)
         
         
         contentView.layoutIfNeeded()

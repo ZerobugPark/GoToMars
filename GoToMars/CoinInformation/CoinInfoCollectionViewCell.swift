@@ -13,7 +13,7 @@ final class CoinInfoCollectionViewCell: BaseCollectionViewCell {
     
     static let id = "CoinInfoCollectionViewCell"
     
-    let numberLabel = CustomLabel(bold: false, fontSize: 12, color: .projectGray)
+    private let numberLabel = CustomLabel(bold: false, fontSize: 12, color: .projectGray)
     private let imageView = UIImageView()
     private let titleLabel = CustomLabel(bold: true, fontSize: 12, color: .projectNavy)
     private let subTitleLabel = CustomLabel(bold: false, fontSize: 9, color: .projectGray)
@@ -87,10 +87,7 @@ final class CoinInfoCollectionViewCell: BaseCollectionViewCell {
             imageView.image = UIImage(systemName: "star")
         }
         
-        
-        
-        
-        
+
         var imageName = ""
         var imageStatus = false
         var title = ""
@@ -126,11 +123,9 @@ final class CoinInfoCollectionViewCell: BaseCollectionViewCell {
         }
         
         statusButton.configuration = statusButton.buttonConfiguration(title: title, color: color, imageStatus: imageStatus, imageName: imageName)
-        
-        
+
         
         contentView.layoutIfNeeded()
-        
         
     }
     

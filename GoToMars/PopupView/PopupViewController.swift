@@ -31,7 +31,7 @@ final class PopupViewController: UIViewController {
     
     private func bind() {
         
-        // 다시시도하기 버튼을 누르지 않더라도, 네트워크 연결이 되면 이전 화면으로 돌아가기
+        // 다시 시도하기 버튼을 누르지 않더라도, 네트워크 연결이 되면 이전 화면으로 돌아가기
         Observable<Int>.interval(.seconds(10), scheduler: MainScheduler.instance).bind(with: self) { owner, _ in
             
             if NetworkMonitor.shared.isConnected {

@@ -34,9 +34,7 @@ final class CoinDetailView: BaseView {
         addSubview(lineView)
         addSubview(scrollView)
         
-        
         scrollView.addSubview(contentView)
-        
         
         [priceLabel, statusButton, chartView, dateLabel,secondSection, thirdSection, marginView].forEach {
             contentView.addSubview($0)
@@ -51,7 +49,6 @@ final class CoinDetailView: BaseView {
             make.horizontalEdges.equalTo(self.safeAreaLayoutGuide)
             make.height.equalTo(1)
         }
-        
         
         scrollView.snp.makeConstraints { make in
             make.top.equalTo(lineView.snp.bottom).offset(4)
@@ -140,7 +137,7 @@ final class CoinDetailView: BaseView {
 
     
     deinit {
-        print("CoinInformationView Deinit")
+        print("CoinDetailView Deinit")
     }
     
     

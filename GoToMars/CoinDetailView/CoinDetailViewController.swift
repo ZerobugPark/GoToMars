@@ -21,20 +21,16 @@ import Kingfisher
 final class CoinDetailViewController: UIViewController {
 
  
-    private let disposeBag = DisposeBag()
-    
     private let coinDetailView = CoinDetailView()
-    
+    let viewModel = CoinDetailViewModel()
+
     private let activityIndicator = UIActivityIndicatorView()
 
     private let leftButtonItem =  UIBarButtonItem(image: UIImage(systemName: "arrow.left"), style: .plain, target: nil, action: nil)
     
     private let likeButton = {
-       
         let button = UIButton()
-        
         button.setImage(UIImage(systemName: "star"), for: .normal)
-        
         return button
     }()
     
@@ -42,7 +38,7 @@ final class CoinDetailViewController: UIViewController {
 
     private let callRequest = BehaviorRelay<Void>(value: ())
     
-    let viewModel = CoinDetailViewModel()
+    private let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,7 +57,7 @@ final class CoinDetailViewController: UIViewController {
         
         let output = viewModel.transform(input: input)
         
-        //여긴 60초 주기 업데이트, 하지만 호출시 업데이트(인기검색어는 10분마다이기 때문에, 일부 차이가 발생 할 수도 있음)
+        //검색 결과에 대한 업데이트는 60초 주기이지만,  인기검색어는 10분마다 업데이트 되기 때문에, 실제 값에서는 차이가 있을 수 있음
         output.marketData.asDriver(onErrorJustReturn: []).drive(with: self) { owner, value in
             
             owner.coinDetailView.priceLabel.text = "₩" + value[0].currentPrice.roundToPlaces(places: 2).formatted()
@@ -147,9 +143,8 @@ final class CoinDetailViewController: UIViewController {
             case .noconnection:
                 let vc = PopupViewController()
                 vc.connectedNetwork.asDriver(onErrorJustReturn: ()).drive(with: owner) { owner, _ in
-                    
+                    //callRequest 재호출
                     owner.callRequest.accept(())
-                    
                     
                 }.disposed(by: owner.disposeBag)
                 vc.modalPresentationStyle = .overFullScreen
@@ -157,7 +152,6 @@ final class CoinDetailViewController: UIViewController {
                 owner.present(vc, animated: true)
                 
             case .unknown:
-                print("here")
                 break
     
             }
@@ -299,7 +293,7 @@ extension CoinDetailViewController {
     private func setupChart(entries: [ChartDataEntry]) {
         
         if entries.isEmpty {
-            return 
+            return
         }
 
         

@@ -9,7 +9,7 @@ import UIKit
 
 class InvestmentInfoView: BaseView {
     
-    let mainStackView = UIStackView()
+    private let mainStackView = UIStackView()
 
     private let topView = UIView()
     private let middleView = UIView()

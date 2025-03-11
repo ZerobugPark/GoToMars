@@ -41,7 +41,7 @@ struct Data: Decodable {
         
         pricePercent = try container.decode([String:Double].self, forKey: .pricePercent)
         
-        krwPrice = pricePercent["krw"] ?? 1000000.0 //백만을 넘을 수 있을까?.. 나도 사고싶네
+        krwPrice = pricePercent["krw"] ?? 1000000.0  // 값이 없을 경우
         
     }
 }
@@ -68,7 +68,6 @@ struct Nfts: Decodable {
 
 
 struct CoinGeckoMarketAPI: Decodable {
-    // 목데이터에는 널인게 있네? 커스텀 디코딩 해놔야겠네
     
     let id: String
     let symbol: String

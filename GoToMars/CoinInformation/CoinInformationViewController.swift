@@ -32,7 +32,6 @@ final class CoinInformationViewController: UIViewController {
         switch dataSource[indexPath] { // dataSource Type == sectionItem
         case .firstSection(let coin):
             
-            
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CoinInfoCollectionViewCell.id, for: indexPath) as? CoinInfoCollectionViewCell else { return UICollectionViewCell() }
             
             cell.setup(data: coin, index: indexPath.row)
@@ -44,10 +43,7 @@ final class CoinInformationViewController: UIViewController {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NFTInfoCollectionViewCell.id, for: indexPath) as? NFTInfoCollectionViewCell else { return UICollectionViewCell() }
             
             cell.setup(data: nft)
-            
-            
-            
-            
+        
             return cell
             
         }
@@ -179,7 +175,7 @@ final class CoinInformationViewController: UIViewController {
                 let vc = PopupViewController()
                 
                 vc.connectedNetwork.asDriver(onErrorJustReturn: ()).drive(with: owner) { owner, _ in
-                    
+                    //callRequest 재호출
                     owner.callRequest.accept(0)
                     
                 }.disposed(by: owner.disposeBag)
@@ -235,7 +231,7 @@ extension CoinInformationViewController {
     }
 }
 
-// MARK: - IndicatorLayout
+// MARK: - Layout
 extension CoinInformationViewController {
     
     private func layout() {

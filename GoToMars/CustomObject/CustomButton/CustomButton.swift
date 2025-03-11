@@ -17,15 +17,10 @@ final class CustomButton: UIButton {
     }
     
     convenience init(buttonImage: String, imagePlacement: NSDirectionalRectEdge) {
-        
         self.init()
-        
-        
         let title = "더보기"
         configuration = .imageButtonStyle(title: title, image: buttonImage, imgplacement: imagePlacement)
     }
-    
-    
     
     
     required init?(coder: NSCoder) {
@@ -46,8 +41,6 @@ extension CustomButton.Configuration {
         titleContainer.font = .boldSystemFont(ofSize: 12)
         configuration.attributedTitle = AttributedString(title, attributes: titleContainer)
         
-        
-        
         configuration.baseForegroundColor = .projectGray  // 텍스트 컬러
         configuration.baseBackgroundColor = .clear // 배경 컬러
         
@@ -55,8 +48,6 @@ extension CustomButton.Configuration {
         configuration.image = UIImage(systemName: image, withConfiguration: imageConfig)
         configuration.imagePadding = 0
         configuration.imagePlacement = imgplacement
-        
-        
         
         configuration.buttonSize = .medium
       
