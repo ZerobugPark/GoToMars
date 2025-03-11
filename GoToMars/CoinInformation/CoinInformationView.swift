@@ -122,7 +122,7 @@ final class CoinInformationView: BaseView {
                 
                 let section = NSCollectionLayoutSection(group: group)
                 
-                section.orthogonalScrollingBehavior = .continuous//.groupPagingCentered
+                section.orthogonalScrollingBehavior = .continuous
                 
                 // 헤더 추가
                 let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
