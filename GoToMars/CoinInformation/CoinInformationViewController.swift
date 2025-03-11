@@ -91,6 +91,7 @@ final class CoinInformationViewController: UIViewController {
         coninInfoView.isHidden = true
         activityIndicator.startAnimating()
         bind()
+        hideKeyboard()
     }
     
     
@@ -199,10 +200,21 @@ final class CoinInformationViewController: UIViewController {
     }
 
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true)
+//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        
+//        self.view.endEditing(true)
+//    }
+//    
+    private func hideKeyboard() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard))
+        
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
     }
     
+    @objc private func dismissKeyboard() {
+        view.endEditing(true)
+    }
     
 }
 
