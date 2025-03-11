@@ -20,7 +20,10 @@ final class CoinViewController: UIViewController {
     private let infoLabel = CustomLabel(bold: true, fontSize: 16, color: .projectNavy)
     private let likeButtonTapped = PublishRelay<Int>()
     
-    private let restartCallReuest = PublishRelay<Void>()
+    
+    var query = ""
+    
+    lazy var callRequest = BehaviorRelay(value: query)
     
     let viewModel = CoinViewModel()
 
@@ -45,10 +48,11 @@ final class CoinViewController: UIViewController {
     private func bind() {
         
         
-        let input = CoinViewModel.Input(likeButtonTapped: likeButtonTapped, restartCallReuest: restartCallReuest)
+        let input = CoinViewModel.Input(callRequest: callRequest, likeButtonTapped: likeButtonTapped)
         
         let output = viewModel.transform(input: input)
         
+    
         
         output.searchData.asDriver().drive(tableView.rx.items(cellIdentifier: CoinTableViewCell.id, cellType: CoinTableViewCell.self)) { [weak self] row, element, cell in
           
@@ -128,7 +132,10 @@ final class CoinViewController: UIViewController {
                 let vc = PopupViewController()
                 
                 vc.connectedNetwork.asDriver(onErrorJustReturn: ()).drive(with: owner) { owner, _ in
-                    owner.restartCallReuest.accept(())
+                    
+                    let currentQuery = owner.callRequest.value
+                    owner.callRequest.accept(currentQuery)
+                    
                 }.disposed(by: owner.disposeBag)
                 
                 vc.modalPresentationStyle = .overFullScreen

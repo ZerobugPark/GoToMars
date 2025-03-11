@@ -71,7 +71,7 @@ final class SearchViewController: UIViewController {
         
         textField.rx.controlEvent(.editingDidEnd).withLatestFrom(textField.rx.text.orEmpty).distinctUntilChanged().startWith(searchText).bind(with: self) { owner, value in
             
-            owner.firstVC.viewModel.query = value
+            owner.firstVC.callRequest.accept(value)
             
         }.disposed(by: disposeBag)
         

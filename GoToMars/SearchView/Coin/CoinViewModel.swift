@@ -15,8 +15,9 @@ import RealmSwift
 final class CoinViewModel: BaseViewModel {
     
     struct Input {
+        
+        let callRequest: BehaviorRelay<String>
         let likeButtonTapped: PublishRelay<Int>
-        let restartCallReuest: PublishRelay<()>
     }
     
     struct Output {
@@ -55,7 +56,7 @@ final class CoinViewModel: BaseViewModel {
         let errorStatus = BehaviorRelay<APIError>(value: .unknown)
         
 
-        queryObesrvable.flatMap {
+        input.callRequest.flatMap {
             
             if NetworkMonitor.shared.isConnected {
                 return NetworkManager.shared.callRequest(api: .coingeckoSearch(query: $0), type: CoinGeckoSearchAPI.self)
@@ -97,35 +98,7 @@ final class CoinViewModel: BaseViewModel {
             searchData.accept(owner.coinData)
         }.disposed(by: disposeBag)
         
-        // // 네트워크 끊기고 다시 연결되면 다시 호출
-        input.restartCallReuest.flatMap {
-            
-            if NetworkMonitor.shared.isConnected {
-                return NetworkManager.shared.callRequest(api: .coingeckoSearch(query: self.query), type: CoinGeckoSearchAPI.self)
-            } else {
-                return Single.just(.failure(APIError.noconnection))
-            }
-            
-        }.bind(with: self) { owner, response in
-            
-            switch response {
-            case .success(let data):
-                owner.coinData = data.coins
-                if owner.coinData.isEmpty {
-                    isEmpty.accept(true)
-                } else {
-                    owner.getLikeStatus()
-                    searchData.accept(owner.coinData)
-                    isEmpty.accept(false)
-                }
-                isFinished.accept(())
-            case .failure(let error):
-                errorStatus.accept(error)
-            }
-            
-        }.disposed(by: disposeBag)
-        
-        
+
         NotificationCenter.default.rx.notification(.isLiked).compactMap {
             
             let id = $0.userInfo?["id"] as? String
