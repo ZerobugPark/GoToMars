@@ -17,9 +17,8 @@ final class CoinDetailViewModel: BaseViewModel {
     
     
     struct Input {
-        let viewDidLoad: Observable<Void>
+        let callRequest: BehaviorRelay<Void>
         let likeButtonTapped: ControlEvent<()>
-     
     }
     
     struct Output {
@@ -57,17 +56,16 @@ final class CoinDetailViewModel: BaseViewModel {
         let likeButtonStatus = PublishRelay<Bool>()
         let likeStatusMessage = PublishRelay<String>()
         
-        input.viewDidLoad.flatMap {
+        input.callRequest.flatMap {
             
             if NetworkMonitor.shared.isConnected {
                 return NetworkManager.shared.callRequest(api: .coingeckoMarket(id: self.id), type: [CoinGeckoMarketAPI].self)
                 
             } else {
-                //errorStatus.accept(APIError.noconnection)
                 return Single.just(Result.failure(APIError.noconnection))
             }
             
-        }.debug("나출력").bind(with: self) { owner, response in
+        }.bind(with: self) { owner, response in
             
             switch response {
             case .success(let value):
@@ -80,9 +78,10 @@ final class CoinDetailViewModel: BaseViewModel {
                 owner.isLiked = owner.getRealmData(id: owner.id)
                 likeButtonStatus.accept(owner.isLiked)
                 data.accept(owner.marketData)
+                
+                dump(value)
             case .failure(let error):
                 errorStatus.accept(error)
-                print("here")
             }
             
         }.disposed(by: disposeBag)
@@ -102,11 +101,11 @@ final class CoinDetailViewModel: BaseViewModel {
             }
             
             NotificationCenter.default.post(name: .isLiked, object: nil, userInfo: ["id": owner.id , "isLiked" : owner.isLiked])
-            
 
             likeButtonStatus.accept(owner.isLiked)
 
         }.disposed(by: disposeBag)
+    
         
         return Output(marketData: data, chartData: chartData, errorStatus: errorStatus, likeButtonStatus: likeButtonStatus, likeStatusMessage: likeStatusMessage)
     }

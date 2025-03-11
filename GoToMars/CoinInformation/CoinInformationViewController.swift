@@ -16,11 +16,15 @@ import RxDataSources
 
 final class CoinInformationViewController: UIViewController {
     
-    private let coninInfoView = CoinInformationView()
+    
     private let viewModel = CoinInfoViewModel()
+    private let coninInfoView = CoinInformationView()
     
     private let activityIndicator = UIActivityIndicatorView()
+    private let callRequest = BehaviorRelay<Int>(value: 0)
+    
     private let disposeBag = DisposeBag()
+
     
     private lazy var dataSource = RxCollectionViewSectionedReloadDataSource<CollectionViewSectionModel> (configureCell: { dataSource, collectionView, indexPath, item in
         
@@ -97,8 +101,12 @@ final class CoinInformationViewController: UIViewController {
     
     private func bind() {
         
+
+        Observable<Int>.interval(.seconds(600), scheduler: MainScheduler.instance).bind(to: callRequest).disposed(by: disposeBag)
+            
+   
         
-        let input = CoinInfoViewModel.Input(viewdidLoad: Observable<Int>.interval(.seconds(600), scheduler: MainScheduler.instance).startWith(0), searchButtonTapped:  coninInfoView.searchBar.rx.searchButtonClicked.withLatestFrom(coninInfoView.searchBar.rx.text.orEmpty))
+        let input = CoinInfoViewModel.Input(callRequest: callRequest, searchButtonTapped:  coninInfoView.searchBar.rx.searchButtonClicked.withLatestFrom(coninInfoView.searchBar.rx.text.orEmpty))
         
         let output = viewModel.transform(input: input)
         
@@ -170,6 +178,11 @@ final class CoinInformationViewController: UIViewController {
             case .noconnection:
                 let vc = PopupViewController()
                 
+                vc.connectedNetwork.asDriver(onErrorJustReturn: ()).drive(with: owner) { owner, _ in
+                    
+                    owner.callRequest.accept(0)
+                    
+                }.disposed(by: owner.disposeBag)
                 vc.modalPresentationStyle = .overFullScreen
                 vc.modalTransitionStyle = .crossDissolve
                 owner.present(vc, animated: true)

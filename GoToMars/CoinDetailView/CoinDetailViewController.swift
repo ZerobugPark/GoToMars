@@ -39,9 +39,8 @@ final class CoinDetailViewController: UIViewController {
     }()
     
     private lazy var rightButtonItem =  UIBarButtonItem(customView: likeButton)
-    
 
-    //private let restart = PublishRelay<Void>()
+    private let callRequest = BehaviorRelay<Void>(value: ())
     
     let viewModel = CoinDetailViewModel()
     
@@ -58,7 +57,8 @@ final class CoinDetailViewController: UIViewController {
     
     private func bind() {
         
-        let input = CoinDetailViewModel.Input(viewDidLoad: Observable.just(()), likeButtonTapped: likeButton.rx.tap)
+        let input = CoinDetailViewModel.Input(callRequest: callRequest, likeButtonTapped: likeButton.rx.tap)
+        
         let output = viewModel.transform(input: input)
         
         //여긴 60초 주기 업데이트, 하지만 호출시 업데이트(인기검색어는 10분마다이기 때문에, 일부 차이가 발생 할 수도 있음)
@@ -146,7 +146,12 @@ final class CoinDetailViewController: UIViewController {
                 owner.showAlert(msg: error.message)
             case .noconnection:
                 let vc = PopupViewController()
-                
+                vc.connectedNetwork.asDriver(onErrorJustReturn: ()).drive(with: owner) { owner, _ in
+                    
+                    owner.callRequest.accept(())
+                    
+                    
+                }.disposed(by: owner.disposeBag)
                 vc.modalPresentationStyle = .overFullScreen
                 vc.modalTransitionStyle = .crossDissolve
                 owner.present(vc, animated: true)
@@ -293,6 +298,9 @@ extension CoinDetailViewController {
     
     private func setupChart(entries: [ChartDataEntry]) {
         
+        if entries.isEmpty {
+            return 
+        }
 
         
         let set1 = LineChartDataSet(entries: entries)

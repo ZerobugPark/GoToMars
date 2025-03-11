@@ -20,6 +20,8 @@ final class CoinViewController: UIViewController {
     private let infoLabel = CustomLabel(bold: true, fontSize: 16, color: .projectNavy)
     private let likeButtonTapped = PublishRelay<Int>()
     
+    private let restartCallReuest = PublishRelay<Void>()
+    
     let viewModel = CoinViewModel()
 
     private let disposeBag = DisposeBag()
@@ -43,7 +45,7 @@ final class CoinViewController: UIViewController {
     private func bind() {
         
         
-        let input = CoinViewModel.Input(likeButtonTapped: likeButtonTapped)
+        let input = CoinViewModel.Input(likeButtonTapped: likeButtonTapped, restartCallReuest: restartCallReuest)
         
         let output = viewModel.transform(input: input)
         
@@ -124,6 +126,10 @@ final class CoinViewController: UIViewController {
                 owner.showAlert(msg: error.message)
             case .noconnection:
                 let vc = PopupViewController()
+                
+                vc.connectedNetwork.asDriver(onErrorJustReturn: ()).drive(with: owner) { owner, _ in
+                    owner.restartCallReuest.accept(())
+                }.disposed(by: owner.disposeBag)
                 
                 vc.modalPresentationStyle = .overFullScreen
                 vc.modalTransitionStyle = .crossDissolve

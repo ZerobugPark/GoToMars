@@ -45,7 +45,7 @@ extension CollectionViewSectionModel: SectionModelType {
 final class CoinInfoViewModel: BaseViewModel {
     
     struct Input {
-        let viewdidLoad: Observable<Int>
+        let callRequest: BehaviorRelay<Int>
         let searchButtonTapped: Observable<ControlProperty<String>.Element>
     }
     
@@ -75,7 +75,7 @@ final class CoinInfoViewModel: BaseViewModel {
         let search = PublishRelay<String>()
         let errorStatus = BehaviorRelay<APIError>(value: .unknown)
         
-        input.viewdidLoad.flatMap { _ in
+        input.callRequest.flatMap { _ in
             
             if NetworkMonitor.shared.isConnected {
                 return NetworkManager.shared.callRequest(api: .coingeckoTrending, type: CoinGeckoTrendingAPI.self)
@@ -91,6 +91,7 @@ final class CoinInfoViewModel: BaseViewModel {
                 owner.getInfo(data: value.coins)
                 owner.getInfo(data: value.nfts)
                 trending.accept([.coin(owner.coinTrend),.ntf(owner.ntfTrend)])
+                print("실행")
             case .failure(let error):
                 errorStatus.accept(error)
             }
@@ -107,6 +108,9 @@ final class CoinInfoViewModel: BaseViewModel {
     
             
         }.disposed(by: disposeBag)
+        
+        
+
         
 
         return Output(trending: trending, blankResult: blank, searchText: search, errorStatus: errorStatus)

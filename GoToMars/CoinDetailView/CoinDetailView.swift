@@ -117,7 +117,7 @@ final class CoinDetailView: BaseView {
         scrollView.showsVerticalScrollIndicator = false
         contentView.backgroundColor = .white
             
-        chartView.noDataText = "데이터가 없습니다. 관리자에게 문의해주세요."
+        chartView.noDataText = "조회할 수 있는 차트 데이터가 없습니다."
         chartView.noDataFont = .boldSystemFont(ofSize: 12)
         chartView.noDataTextColor = .projectNavy
 
