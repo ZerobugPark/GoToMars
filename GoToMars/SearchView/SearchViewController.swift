@@ -23,7 +23,7 @@ final class SearchViewController: UIViewController {
     
     private let disposeBag = DisposeBag()
     
-    private let firstVC = CoinViewController()
+    private lazy var firstVC = CoinViewController(query: searchText)
     private let secondVC = NFTViewController()
     private let thridVC = MarketViewController()
 
@@ -42,8 +42,7 @@ final class SearchViewController: UIViewController {
         pageViewController.setViewControllers([firstVC], direction: .forward, animated: true, completion: nil)
         
         textField.text = searchText
-    
-        
+ 
         pageViewController.dataSource = self
         pageViewController.delegate = self
         

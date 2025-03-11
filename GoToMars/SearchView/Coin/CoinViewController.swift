@@ -29,6 +29,15 @@ final class CoinViewController: UIViewController {
 
     private let disposeBag = DisposeBag()
     
+    init(query: String) {
+        self.query = query
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -36,7 +45,7 @@ final class CoinViewController: UIViewController {
         activityIndicator.startAnimating()
         tableView.isHidden = true
         infoLabel.isHidden = true
-        
+
         configurationTableView()
         layout()
         bind()
