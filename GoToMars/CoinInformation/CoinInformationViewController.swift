@@ -22,7 +22,6 @@ final class CoinInformationViewController: UIViewController {
     private let activityIndicator = UIActivityIndicatorView()
     private let disposeBag = DisposeBag()
     
-    
     private lazy var dataSource = RxCollectionViewSectionedReloadDataSource<CollectionViewSectionModel> (configureCell: { dataSource, collectionView, indexPath, item in
         
         
@@ -58,7 +57,7 @@ final class CoinInformationViewController: UIViewController {
             headerView.titleLabel.text = "인기 검색어"
             
             let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "MM.dd hh:mm"
+            dateFormatter.dateFormat = "MM.dd HH:mm"
             headerView.timeLabel.text = dateFormatter.string(from: Date())
             
             
@@ -92,6 +91,7 @@ final class CoinInformationViewController: UIViewController {
         activityIndicator.startAnimating()
         bind()
         hideKeyboard()
+       
     }
     
     
@@ -199,12 +199,6 @@ final class CoinInformationViewController: UIViewController {
         self.view.endEditing(true)
     }
 
-    
-//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        
-//        self.view.endEditing(true)
-//    }
-//    
     private func hideKeyboard() {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard))
         

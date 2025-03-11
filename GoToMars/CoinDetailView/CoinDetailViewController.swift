@@ -11,6 +11,8 @@ import Toast
 
 import RxCocoa
 import RxSwift
+import RxGesture
+
 import SnapKit
 import DGCharts
 import Kingfisher
@@ -27,7 +29,19 @@ final class CoinDetailViewController: UIViewController {
 
     private let leftButtonItem =  UIBarButtonItem(image: UIImage(systemName: "arrow.left"), style: .plain, target: nil, action: nil)
     
-    let rightButtonItem =  UIBarButtonItem(image: UIImage(systemName: "star"), style: .plain, target: nil, action: nil)
+    private let likeButton = {
+       
+        let button = UIButton()
+        
+        button.setImage(UIImage(systemName: "star"), for: .normal)
+        
+        return button
+    }()
+    
+    private lazy var rightButtonItem =  UIBarButtonItem(customView: likeButton)
+    
+
+    //private let restart = PublishRelay<Void>()
     
     let viewModel = CoinDetailViewModel()
     
@@ -39,14 +53,16 @@ final class CoinDetailViewController: UIViewController {
         coinDetailView.isHidden = true
         bind()
         navigationController?.navigationBar.isHidden = true
+   
         
+   
     }
     
     private func bind() {
         
-        
-        let input = CoinDetailViewModel.Input(viewDidLoad: Observable.just(()))
+        let input = CoinDetailViewModel.Input(viewDidLoad: Observable.just(()), likeButtonTapped: likeButton.rx.tap)
         let output = viewModel.transform(input: input)
+        
         
         //여긴 60초 주기 업데이트, 하지만 호출시 업데이트(인기검색어는 10분마다이기 때문에, 일부 차이가 발생 할 수도 있음)
         output.marketData.asDriver(onErrorJustReturn: []).drive(with: self) { owner, value in
@@ -109,9 +125,7 @@ final class CoinDetailViewController: UIViewController {
             owner.navigationController?.popViewController(animated: true)
         }.disposed(by: disposeBag)
         
-        rightButtonItem.rx.tap.bind(with: self) { owner, _ in
-            print("button tapped")
-        }.disposed(by: disposeBag)
+
         
         output.errorStatus.asDriver(onErrorJustReturn: APIError.unknown).drive(with: self) { owner, error in
             switch error {
@@ -146,6 +160,17 @@ final class CoinDetailViewController: UIViewController {
             }
         }.disposed(by: disposeBag)
         
+        
+        output.likeButtonStatus.asDriver(onErrorJustReturn: false).drive(with: self) { owner, status in
+            
+            let image = status ? "star.fill" : "star"
+       
+            owner.likeButton.setImage(UIImage(systemName: image), for: .normal)
+            
+            
+        }.disposed(by: disposeBag)
+        
+        
     }
     
     private func navigationConfiguration(title: String, img: String) {
@@ -157,9 +182,8 @@ final class CoinDetailViewController: UIViewController {
         navigationTitleImageView.layoutIfNeeded()
 
         navigationItem.leftBarButtonItem = leftButtonItem
-        
+    
         navigationItem.rightBarButtonItem = rightButtonItem
-
     
         let url = URL(string: img)
         
