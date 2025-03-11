@@ -133,7 +133,6 @@ extension CoinDetailViewModel {
     private func getRealmData(id: String) -> Bool {
         
         list = repository.fetchAll().where{ $0.coinID == id }
-        print(list.isEmpty)
         
         if list.isEmpty {
             return false

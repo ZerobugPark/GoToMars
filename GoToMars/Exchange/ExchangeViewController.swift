@@ -103,16 +103,12 @@ final class ExchangeViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         bind()
-        
-        print(#function)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         disposeBag = DisposeBag()
         viewModel.disposeBag = DisposeBag()
-        
-        print(#function)
     }
 
  
