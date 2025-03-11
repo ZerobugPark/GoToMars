@@ -84,14 +84,14 @@ final class ExchangeViewController: UIViewController {
             case .apiKeyMissing:
                 owner.showAlert(msg: error.message)
             case .noconnection:
+                print("hereddd")
                 let vc = PopupViewController()
-                
                 vc.modalPresentationStyle = .overFullScreen
                 vc.modalTransitionStyle = .crossDissolve
                 owner.present(vc, animated: true)
                 
             case .unknown:
-                owner.showAlert(msg: error.message)
+                break
     
             }
         }.disposed(by: disposeBag)

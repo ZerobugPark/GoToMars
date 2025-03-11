@@ -53,7 +53,7 @@ final class CoinInfoViewModel: BaseViewModel {
         let trending: BehaviorRelay<[CollectionViewSectionModel]>
         let blankResult: PublishRelay<Void>
         let searchText: PublishRelay<String>
-        let errorStatus: PublishRelay<APIError>
+        let errorStatus: BehaviorRelay<APIError>
     }
     
     
@@ -73,7 +73,7 @@ final class CoinInfoViewModel: BaseViewModel {
         
         let blank = PublishRelay<Void>()
         let search = PublishRelay<String>()
-        let errorStatus = PublishRelay<APIError>()
+        let errorStatus = BehaviorRelay<APIError>(value: .unknown)
         
         input.viewdidLoad.flatMap { _ in
             

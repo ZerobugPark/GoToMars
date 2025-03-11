@@ -175,7 +175,7 @@ final class CoinInformationViewController: UIViewController {
                 owner.present(vc, animated: true)
                 
             case .unknown:
-                owner.showAlert(msg: error.message)
+                break
     
             }
         }.disposed(by: disposeBag)

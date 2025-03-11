@@ -22,7 +22,7 @@ final class CoinViewModel: BaseViewModel {
         let isFinished: PublishRelay<Void>
         let searchData: BehaviorRelay<[SearchCoin]>
         let isEmpty: PublishRelay<Bool>
-        let errorStatus: PublishRelay<APIError>
+        let errorStatus: BehaviorRelay<APIError>
         
     }
     
@@ -51,7 +51,7 @@ final class CoinViewModel: BaseViewModel {
         let searchData = BehaviorRelay(value: coinData)
         let isEmpty = PublishRelay<Bool>()
         let isFinished = PublishRelay<Void>()
-        let errorStatus = PublishRelay<APIError>()
+        let errorStatus = BehaviorRelay<APIError>(value: .unknown)
         
 
         queryObesrvable.flatMap {

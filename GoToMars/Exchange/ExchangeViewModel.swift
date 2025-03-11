@@ -21,7 +21,7 @@ final class ExchangeViewModel: BaseViewModel {
         
         let coinList: BehaviorRelay<[UpBitAPI]>
         let filterStatus: PublishRelay<Filter>
-        let errorStatus: PublishRelay<APIError>
+        let errorStatus: BehaviorRelay<APIError>
     }
     
     var disposeBag = DisposeBag()
@@ -42,7 +42,7 @@ final class ExchangeViewModel: BaseViewModel {
         
         let coninList = BehaviorRelay(value: coinList)
         let filterStatus = PublishRelay<Filter>()
-        let errorStatus = PublishRelay<APIError>()
+        let errorStatus = BehaviorRelay<APIError>(value: .unknown)
         
         
         input.viewDidLoad.flatMap { _ in

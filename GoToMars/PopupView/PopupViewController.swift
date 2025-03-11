@@ -17,7 +17,7 @@ final class PopupViewController: UIViewController {
 
     private let popupView = PopupView()
     private let disposeBag = DisposeBag()
-    
+    let test = PublishRelay<Void>()
     
     override func loadView() {
         view = popupView
@@ -37,7 +37,9 @@ final class PopupViewController: UIViewController {
             if NetworkMonitor.shared.isConnected {
                 
                 owner.view.makeToast("네트워크에 연결되었습니다.", duration: 0.5)
+                owner.test.accept(())
                 owner.dismiss(animated: true)
+                
             } else {
                 owner.view.makeToast("네트워크 연결이 원활하지 않습니다.", duration: 1.0)
             }
@@ -50,6 +52,7 @@ final class PopupViewController: UIViewController {
             
             if NetworkMonitor.shared.isConnected {
                 owner.view.makeToast("네트워크에 연결되었습니다.", duration: 0.5)
+                owner.test.accept(())
                 owner.dismiss(animated: true)
             }
             

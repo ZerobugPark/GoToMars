@@ -25,7 +25,7 @@ final class CoinDetailViewModel: BaseViewModel {
     struct Output {
         let marketData: PublishRelay<[CoinGeckoMarketAPI]>
         let chartData: PublishRelay<[ChartDataEntry]>
-        let errorStatus: PublishRelay<APIError>
+        let errorStatus: BehaviorRelay<APIError>
         let likeButtonStatus: PublishRelay<Bool>
         let likeStatusMessage: PublishRelay<String>
     }
@@ -53,7 +53,7 @@ final class CoinDetailViewModel: BaseViewModel {
         
         let data = PublishRelay<[CoinGeckoMarketAPI]>()
         let chartData = PublishRelay<[ChartDataEntry]>()
-        let errorStatus = PublishRelay<APIError>()
+        let errorStatus = BehaviorRelay<APIError>(value: .unknown)
         let likeButtonStatus = PublishRelay<Bool>()
         let likeStatusMessage = PublishRelay<String>()
         
@@ -61,11 +61,13 @@ final class CoinDetailViewModel: BaseViewModel {
             
             if NetworkMonitor.shared.isConnected {
                 return NetworkManager.shared.callRequest(api: .coingeckoMarket(id: self.id), type: [CoinGeckoMarketAPI].self)
+                
             } else {
-                return Single.just(.failure(APIError.noconnection))
+                //errorStatus.accept(APIError.noconnection)
+                return Single.just(Result.failure(APIError.noconnection))
             }
             
-        }.bind(with: self) { owner, response in
+        }.debug("나출력").bind(with: self) { owner, response in
             
             switch response {
             case .success(let value):
@@ -77,11 +79,10 @@ final class CoinDetailViewModel: BaseViewModel {
                 
                 owner.isLiked = owner.getRealmData(id: owner.id)
                 likeButtonStatus.accept(owner.isLiked)
-                
                 data.accept(owner.marketData)
-                    
             case .failure(let error):
                 errorStatus.accept(error)
+                print("here")
             }
             
         }.disposed(by: disposeBag)

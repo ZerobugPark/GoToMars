@@ -49,12 +49,10 @@ final class CoinDetailViewController: UIViewController {
         super.viewDidLoad()
         
         layout()
+        bind()
         activityIndicator.startAnimating()
         coinDetailView.isHidden = true
-        bind()
         navigationController?.navigationBar.isHidden = true
-   
-        
    
     }
     
@@ -62,7 +60,6 @@ final class CoinDetailViewController: UIViewController {
         
         let input = CoinDetailViewModel.Input(viewDidLoad: Observable.just(()), likeButtonTapped: likeButton.rx.tap)
         let output = viewModel.transform(input: input)
-        
         
         //여긴 60초 주기 업데이트, 하지만 호출시 업데이트(인기검색어는 10분마다이기 때문에, 일부 차이가 발생 할 수도 있음)
         output.marketData.asDriver(onErrorJustReturn: []).drive(with: self) { owner, value in
@@ -155,7 +152,8 @@ final class CoinDetailViewController: UIViewController {
                 owner.present(vc, animated: true)
                 
             case .unknown:
-                owner.showAlert(msg: error.message)
+                print("here")
+                break
     
             }
         }.disposed(by: disposeBag)
