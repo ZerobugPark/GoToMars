@@ -95,6 +95,9 @@ final class CoinDetailViewModel: BaseViewModel {
                 owner.repository.deleteItem(data: owner.list[0])
             }
             
+            NotificationCenter.default.post(name: .isLiked, object: nil, userInfo: ["id": owner.id , "isLiked" : owner.isLiked])
+            
+
             likeButtonStatus.accept(owner.isLiked)
 
         }.disposed(by: disposeBag)

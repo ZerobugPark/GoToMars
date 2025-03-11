@@ -9,12 +9,13 @@ import Foundation
 
 import RxCocoa
 import RxSwift
+import RealmSwift
 
 
 final class CoinViewModel: BaseViewModel {
     
     struct Input {
-        let starButtonTapped: PublishRelay<Int>
+        let likeButtonTapped: PublishRelay<Int>
     }
     
     struct Output {
@@ -27,17 +28,19 @@ final class CoinViewModel: BaseViewModel {
     
     private let disposeBag = DisposeBag()
     
-    var coinData: [SearchCoin] = []
-    
     private let queryObesrvable = PublishSubject<String>()
+
+    private let repository: LikeRepository = LikeTableRepository()
     
+    var coinData: [SearchCoin] = []
+    var list: Results<LikeTable>!
+    
+
     var query = "" {
         didSet {
             queryObesrvable.onNext(query)
         }
     }
-    
-    
     
     init() {
         print("CoinViewModel Init")
@@ -64,10 +67,10 @@ final class CoinViewModel: BaseViewModel {
             switch response {
             case .success(let data):
                 owner.coinData = data.coins
-                
                 if owner.coinData.isEmpty {
                     isEmpty.accept(true)
                 } else {
+                    owner.getLikeStatus()
                     searchData.accept(owner.coinData)
                     isEmpty.accept(false)
                 }
@@ -79,15 +82,35 @@ final class CoinViewModel: BaseViewModel {
         }.disposed(by: disposeBag)
         
         
-        input.starButtonTapped.asDriver(onErrorJustReturn: 0).drive(with: self) { owner, index in
+        input.likeButtonTapped.asDriver(onErrorJustReturn: 0).drive(with: self) { owner, index in
             
             owner.coinData[index].isLiked.toggle()
+            
+            if owner.coinData[index].isLiked {
+                owner.repository.createItem(id: owner.coinData[index].id, status: owner.coinData[index].isLiked)
+                
+            } else {
+                owner.repository.deleteItem(data: owner.list[index])
+            }
+            
             searchData.accept(owner.coinData)
         }.disposed(by: disposeBag)
         
-        
-
-        
+        NotificationCenter.default.rx.notification(.isLiked).compactMap {
+            
+            let id = $0.userInfo?["id"] as? String
+            let likeStatus = $0.userInfo?["isLiked"] as? Bool
+            
+            return (id, likeStatus)
+        }.bind(with: self) { owner, value in
+            
+            let data = owner.coinData.firstIndex{ $0.id == value.0! }
+                       
+            if let index = data {
+                owner.coinData[index].isLiked = value.1!
+            }
+            searchData.accept(owner.coinData)
+        }.disposed(by: disposeBag)
         
         return Output(isFinished: isFinished, searchData: searchData, isEmpty: isEmpty, errorStatus: errorStatus)
     }
@@ -97,3 +120,31 @@ final class CoinViewModel: BaseViewModel {
     }
     
 }
+
+
+
+extension CoinViewModel {
+    
+    
+    private func getLikeStatus() {
+        
+        list = repository.fetchAll()
+        
+        if list.isEmpty {
+            return
+        }
+        
+        for i in 0..<coinData.count {
+            
+            let data = list.where { $0.coinID == coinData[i].id }
+            
+            if !data.isEmpty {
+                coinData[i].isLiked = data[0].isLiked
+            }
+        }
+        
+    }
+    
+}
+
+

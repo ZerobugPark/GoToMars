@@ -18,7 +18,7 @@ final class CoinViewController: UIViewController {
     
     private let activityIndicator = UIActivityIndicatorView()
     private let infoLabel = CustomLabel(bold: true, fontSize: 16, color: .projectNavy)
-    private let starButtonTapped = PublishRelay<Int>()
+    private let likeButtonTapped = PublishRelay<Int>()
     
     let viewModel = CoinViewModel()
 
@@ -43,7 +43,7 @@ final class CoinViewController: UIViewController {
     private func bind() {
         
         
-        let input = CoinViewModel.Input(starButtonTapped: starButtonTapped)
+        let input = CoinViewModel.Input(likeButtonTapped: likeButtonTapped)
         
         let output = viewModel.transform(input: input)
         
@@ -63,7 +63,7 @@ final class CoinViewController: UIViewController {
                 
                 let msg = element.isLiked ? "즐겨찾기에서 삭제되었습니다" : "즐겨찾기에 추가되었습니다"
                 
-                owner.starButtonTapped.accept(row)
+                owner.likeButtonTapped.accept(row)
                 owner.view.makeToast("\(element.symbol)이(가) " + msg, duration: 0.5)
 
             }.disposed(by: cell.disposeBag)
