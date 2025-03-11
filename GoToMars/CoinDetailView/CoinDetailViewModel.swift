@@ -27,6 +27,7 @@ final class CoinDetailViewModel: BaseViewModel {
         let chartData: PublishRelay<[ChartDataEntry]>
         let errorStatus: PublishRelay<APIError>
         let likeButtonStatus: PublishRelay<Bool>
+        let likeStatusMessage: PublishRelay<String>
     }
     
     
@@ -54,6 +55,7 @@ final class CoinDetailViewModel: BaseViewModel {
         let chartData = PublishRelay<[ChartDataEntry]>()
         let errorStatus = PublishRelay<APIError>()
         let likeButtonStatus = PublishRelay<Bool>()
+        let likeStatusMessage = PublishRelay<String>()
         
         input.viewDidLoad.flatMap {
             
@@ -90,8 +92,11 @@ final class CoinDetailViewModel: BaseViewModel {
             
             if owner.isLiked {
                 owner.repository.createItem(id: owner.id, status: owner.isLiked)
+                let msg = "\(owner.id)이(가) 즐겨찾기에 추가되었습니다."
+                likeStatusMessage.accept(msg)
             } else {
-                
+                let msg = "\(owner.id)이(가) 즐겨찾기에서 삭제되었습니다."
+                likeStatusMessage.accept(msg)
                 owner.repository.deleteItem(data: owner.list[0])
             }
             
@@ -102,7 +107,7 @@ final class CoinDetailViewModel: BaseViewModel {
 
         }.disposed(by: disposeBag)
         
-        return Output(marketData: data, chartData: chartData, errorStatus: errorStatus, likeButtonStatus: likeButtonStatus)
+        return Output(marketData: data, chartData: chartData, errorStatus: errorStatus, likeButtonStatus: likeButtonStatus, likeStatusMessage: likeStatusMessage)
     }
     
     deinit {

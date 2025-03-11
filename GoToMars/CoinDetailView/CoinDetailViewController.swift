@@ -166,8 +166,11 @@ final class CoinDetailViewController: UIViewController {
             let image = status ? "star.fill" : "star"
        
             owner.likeButton.setImage(UIImage(systemName: image), for: .normal)
-            
-            
+
+        }.disposed(by: disposeBag)
+        
+        output.likeStatusMessage.asDriver(onErrorJustReturn: "").drive(with: self) { owner, msg in
+            owner.view?.makeToast(msg)
         }.disposed(by: disposeBag)
         
         
