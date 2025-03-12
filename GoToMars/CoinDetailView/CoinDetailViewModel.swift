@@ -54,9 +54,15 @@ final class CoinDetailViewModel: BaseViewModel {
         let likeButtonStatus = PublishRelay<Bool>()
         let likeStatusMessage = PublishRelay<String>()
         
-        input.callRequest.flatMap {
+        input.callRequest.flatMap { [weak self] in
+            
+            guard let self = self else {
+                // 타입 명시가 필요
+                  return Single<Result<[CoinGeckoMarketAPI], APIError>>.just(Result.failure(APIError.noconnection))
+              }
             
             if NetworkMonitor.shared.isConnected {
+                //self.id가 강하게 참조됨
                 return NetworkManager.shared.callRequest(api: .coingeckoMarket(id: self.id), type: [CoinGeckoMarketAPI].self)
                 
             } else {
@@ -67,7 +73,6 @@ final class CoinDetailViewModel: BaseViewModel {
             
             switch response {
             case .success(let value):
-                    
                 owner.marketData = value
                 
                 let spark = owner.setChartData(data: value[0].sparklineIn7d)
@@ -76,7 +81,7 @@ final class CoinDetailViewModel: BaseViewModel {
                 owner.isLiked = owner.getRealmData(id: owner.id)
                 likeButtonStatus.accept(owner.isLiked)
                 data.accept(owner.marketData)
-                
+
                 //dump(value)
             case .failure(let error):
                 errorStatus.accept(error)
