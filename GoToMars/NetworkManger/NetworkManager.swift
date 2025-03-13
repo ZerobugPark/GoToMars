@@ -61,6 +61,7 @@ enum APIRequest {
     case coingeckoTrending
     case coingeckoMarket(id: String)
     case coingeckoSearch(query: String)
+    case naverSearch(query: String)
     
     var baseURL: String {
         switch self {
@@ -72,6 +73,8 @@ enum APIRequest {
             APIURLs.coingeckoMarket
         case .coingeckoSearch:
             APIURLs.coingeckoSearch
+        case .naverSearch:
+            APIURLs.naverSearch
         }
     }
     
@@ -86,6 +89,8 @@ enum APIRequest {
             return URL(string: baseURL + "coins/markets")!
         case .coingeckoSearch:
             return URL(string: baseURL + "search")!
+        case .naverSearch(query: let query):
+            return URL(string: baseURL + "news")!
         }
         
     }
@@ -93,6 +98,26 @@ enum APIRequest {
     var method: HTTPMethod {
         return .get
     }
+    
+    var header: HTTPHeaders? {
+    
+        switch self {
+        case .upbit:
+            return nil
+        case .coingeckoTrending:
+            return nil
+        case .coingeckoMarket(let id):
+            return nil
+        case .coingeckoSearch(let query):
+            return nil
+        case .naverSearch(let query):
+            return ["X-Naver-Client-Id": NaverAPIKey.clientId, "X-Naver-Client-Secret": NaverAPIKey.clientSecret]
+        }
+        
+       
+        
+    }
+    
     
     var parameter: Parameters? {
         switch self {
@@ -106,6 +131,9 @@ enum APIRequest {
             return parameters
         case .coingeckoSearch(let query):
             let parameters = ["query": query]
+            return parameters
+        case .naverSearch(query: let query):
+            let parameters = ["query": query, "display":"5"]
             return parameters
         }
     }
@@ -127,7 +155,7 @@ final class NetworkManager {
         
         return Single<Result<T, APIError>>.create { value in
             
-            AF.request(api.endPoint, method: api.method, parameters: api.parameter, encoding: URLEncoding(destination: .queryString)).validate(statusCode: 200...299).responseDecodable(of: T.self) {
+            AF.request(api.endPoint, method: api.method, parameters: api.parameter, encoding: URLEncoding(destination: .queryString),headers: api.header).validate(statusCode: 200...299).responseDecodable(of: T.self) {
                 response in
                 
                 
