@@ -25,6 +25,7 @@ extension CollectionViewSectionModel: SectionModelType {
     
     typealias Item = SectionItem
     
+    // dataSource의 타입에 따라서 호출 됨
     var items: [SectionItem] {
         switch self {
         case .coin(let items):
