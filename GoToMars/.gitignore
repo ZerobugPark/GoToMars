@@ -3,6 +3,7 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=swift
  
 APIStruct/APIURLs.swift
+APIStruct/APIKey.swift
 
 ### Swift ###
 # Xcode
