@@ -17,14 +17,14 @@ final class RecentNesViewController: UIViewController {
     
     
     private let viewModel = RecentNewsViewModel()
-    private let tableView = UITableView()
+    private let tableView = UITableView(frame: .zero, style: .plain)
     private let disposeBag = DisposeBag()
     
     private lazy var dataSource = RxTableViewSectionedReloadDataSource<News> { dataSource, tableView, indexPath, item in
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "basicCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "BasicCell", for: indexPath)
         
-
+        cell.selectionStyle = .none
         cell.textLabel?.text = item.title.replacingOccurrences(of: "<[^>]+>|&quot;",
                                                                with: "",
                                                                options: .regularExpression,
@@ -36,30 +36,31 @@ final class RecentNesViewController: UIViewController {
     }
     
     
-    
-    
-    
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .white
         configure()
         dataSource.titleForHeaderInSection = { dataSource, index in
+            
             return dataSource.sectionModels[index].title
         }
         
         bind()
         
-   
+        //헤더 셋팅
+        let headerLabelAppearance = UILabel.appearance(whenContainedInInstancesOf: [UITableViewHeaderFooterView.self])
+        headerLabelAppearance.textColor = .projectNavy // 폰트컬러
+        headerLabelAppearance.font = .boldSystemFont(ofSize: 16)
+        UITableViewHeaderFooterView.appearance().tintColor = .white //백그라운드
+
         
     }
     
     private func bind() {
         
         let input = RecentNewsViewModel.Input(callRequest:
-                                                Observable<Int>.timer(.seconds(15), scheduler: MainScheduler.instance).startWith(0))
+                                                Observable<Int>.timer(.seconds(60), scheduler: MainScheduler.instance).startWith(0))
         
         let output = viewModel.transform(input: input)
         
@@ -73,12 +74,33 @@ final class RecentNesViewController: UIViewController {
         view.backgroundColor = .white
         view.addSubview(tableView)
         
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "basicCell")
-        
-        
+    
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "BasicCell")
+        tableView.delegate = self
+
         tableView.snp.makeConstraints { make in
             make.edges.equalTo(view.safeAreaLayoutGuide)
         }
+        
+        tableView.bounces = false
+        tableView.showsVerticalScrollIndicator = false
+        
+        if #available(iOS 15.0, *) {
+            tableView.sectionHeaderTopPadding = 0
+        }
+  
     }
+    
+}
+
+
+
+extension RecentNesViewController: UITableViewDelegate {
+ 
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 30
+    }
+    
     
 }
