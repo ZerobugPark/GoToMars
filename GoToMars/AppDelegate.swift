@@ -39,11 +39,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
 
         let appearance = UINavigationBarAppearance()
-        
+        appearance.configureWithOpaqueBackground()
         
         UINavigationBar.appearance().tintColor = .projectNavy
         UINavigationBar.appearance().standardAppearance = appearance
-
+        UINavigationBar.appearance().scrollEdgeAppearance = appearance
+        
     }
 
 }
