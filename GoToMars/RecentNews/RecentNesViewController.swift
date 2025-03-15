@@ -30,7 +30,7 @@ final class RecentNesViewController: UIViewController {
                                                                options: .regularExpression,
                                                                range: nil)
              
-
+        
         
         return cell
     }
@@ -66,6 +66,23 @@ final class RecentNesViewController: UIViewController {
         
         output.newsData.asDriver(onErrorJustReturn: []).drive(tableView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
         
+        
+        
+        tableView.rx.itemSelected.bind(with: self) { owner, indexPath in
+            
+            let data = owner.dataSource[indexPath.section].items[indexPath.row]
+            
+            let vc = WebViewController()
+            
+            vc.url = data.originallink
+            
+            owner.navigationController?.pushViewController(vc, animated: true)
+            
+            
+        }.disposed(by: disposeBag)
+        
+    
+    
     }
     
     
