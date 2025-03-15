@@ -100,9 +100,7 @@ class RecentNewsViewModel: BaseViewModel {
             }
             
             newsData.accept(owner.data)
-            
-            print("Here")
-            
+                        
         }.disposed(by: disposeBag)
         
         
