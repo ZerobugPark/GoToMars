@@ -54,6 +54,7 @@ final class RecentNesViewController: UIViewController {
         headerLabelAppearance.font = .boldSystemFont(ofSize: 16)
         UITableViewHeaderFooterView.appearance().tintColor = .white //백그라운드
 
+        navigationItem.backButtonTitle = ""
         
     }
     

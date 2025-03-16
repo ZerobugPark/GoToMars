@@ -70,6 +70,8 @@ class RecentNewsViewModel: BaseViewModel {
             
             let (economyResult, stockResult, coinResult) = value
             
+            owner.data = []
+            
             switch economyResult {
             case .success(let data):
                 
