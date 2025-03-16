@@ -21,10 +21,22 @@ GotoMars는 화성을 가자는 은유적 의미로 비트코인 및 알트코�
 
 ### 주요 기능
 1. 코인 현재가 조회
+<img src="https://github.com/user-attachments/assets/d33b3601-617f-4269-b6f0-a98078cb81e0" width="300" />
+
 2. 가장 있기 있는 코인 탑 14
+<img src="https://github.com/user-attachments/assets/a213ebee-cf8a-493c-b9ab-aa830daa2eb4" width="300" />
+     
 3. 코인 검색 기능
+<img src="https://github.com/user-attachments/assets/04db8130-e375-4035-a25b-a1e162c47d80" width="300" />
+
 4. 코인 상세 정보
+<img src="https://github.com/user-attachments/assets/d4ba7778-7ca2-438f-9bfb-1bb920b1f344" width="300" />
+
 5. 최근 경제 뉴스
+<img src="https://github.com/user-attachments/assets/d93bb04a-dc95-4f7f-a31b-200cbefc351f" width="300" />   
+<img src="https://github.com/user-attachments/assets/c1dd2ef1-eb59-43b2-b97c-78ad6630319d" width="300" />
+
+
 
 ***
 ### 기술 스택
