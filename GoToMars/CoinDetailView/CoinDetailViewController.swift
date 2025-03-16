@@ -327,18 +327,3 @@ extension CoinDetailViewController {
     
 }
 
-extension CoinDetailViewController {
-    
-   private func showAlert(msg: String) {
-        
-        let title = "안내"
-        let alert = UIAlertController(title: title, message: msg, preferredStyle: .alert)
-        let ok = UIAlertAction(title: "확인", style: .default)
-        alert.addAction(ok)
-        
-        present(alert, animated: true)
-        
-        
-    }
-    
-}
