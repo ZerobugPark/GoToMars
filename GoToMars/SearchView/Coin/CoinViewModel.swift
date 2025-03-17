@@ -86,6 +86,7 @@ final class CoinViewModel: BaseViewModel {
                 owner.repository.deleteItem(data: owner.list[index])
             }
             
+            
             searchData.accept(owner.coinData)
         }.disposed(by: disposeBag)
         
