@@ -54,7 +54,7 @@ final class ExchangeViewModel: BaseViewModel {
             }
               
         }.bind(with: self) { owner, response in
-                
+            
                 switch response {
                 case .success(let value):
                     owner.coinList = value

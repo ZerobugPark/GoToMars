@@ -11,3 +11,6 @@ import Foundation
 extension NSNotification.Name {
     static let isLiked = NSNotification.Name("isLiked")
 }
+
+
+//[Int]배열

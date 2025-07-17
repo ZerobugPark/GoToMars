@@ -89,7 +89,7 @@ enum APIRequest {
             return URL(string: baseURL + "coins/markets")!
         case .coingeckoSearch:
             return URL(string: baseURL + "search")!
-        case .naverSearch(query: let query):
+        case .naverSearch(_):
             return URL(string: baseURL + "news")!
         }
         
@@ -106,11 +106,11 @@ enum APIRequest {
             return nil
         case .coingeckoTrending:
             return nil
-        case .coingeckoMarket(let id):
+        case .coingeckoMarket(_):
             return nil
-        case .coingeckoSearch(let query):
+        case .coingeckoSearch(_):
             return nil
-        case .naverSearch(let query):
+        case .naverSearch(_):
             return ["X-Naver-Client-Id": NaverAPIKey.clientId, "X-Naver-Client-Secret": NaverAPIKey.clientSecret]
         }
         
@@ -163,9 +163,8 @@ final class NetworkManager {
                 case .success(let data):
                     value(.success(.success(data)))
                 case .failure(let error):
-                    //dump(error)
+                    dump(error)
                     
-                    //print(response.response?.statusCode)
                     if let statusCode = response.response?.statusCode {
                         switch statusCode {
                         case APIError.badRequest.rawValue:

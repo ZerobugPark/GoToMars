@@ -51,9 +51,7 @@ final class ExchangeViewController: UIViewController {
         let output = viewModel.transform(input: input)
         
         output.coinList.asDriver().drive(exchangeView.tableView.rx.items(cellIdentifier: UpbitTableViewCell.id, cellType: UpbitTableViewCell.self)) { row, element, cell in
-            
             cell.setup(data: element)
-            
             
         }.disposed(by: disposeBag)
         
@@ -84,7 +82,6 @@ final class ExchangeViewController: UIViewController {
             case .apiKeyMissing:
                 owner.showAlert(msg: error.message)
             case .noconnection:
-                print("hereddd")
                 let vc = PopupViewController()
                 vc.modalPresentationStyle = .overFullScreen
                 vc.modalTransitionStyle = .crossDissolve
