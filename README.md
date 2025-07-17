@@ -1,72 +1,89 @@
-# ProjectName: GoToMars
+# 🪐 실시간 코인 & 뉴스 플랫폼 GoToMars
 
-## 목차
-1. Application 소개
-2. 주요 기능
-3. 기술 수택
-4. 기술 설명
-5. 트러블 슈팅
+## 프로젝트 소개
+"GoToMars"는 화성을 가자는 은유적 의미로 비트코인 및 알트코인, NFT의 현재 시세, 최근 뉴스 등을 조회할 수 있는 애플리케이션입니다
 
-***
+#### 주요 기능
+- 실시간 코인 / NFT 조회
+- 최근 뉴스 소식
+- 좋아요 기능
 
-## Application 소개
-GotoMars는 화성을 가자는 은유적 의미로 비트코인 및 알트코인, NFT의 현재 시세 등을 조회할 수 있는 어플리케이션입니다.
+<br><br>
+## 프로젝트 정보
+기획 및 개발: 2025.03.26 ~ 2025.03.11(6일간) 
 
-***
-
-## 프로젝트 기간
-2025.03.26 ~ 2025.03.11(6일간)
-
-***
-
-### 주요 기능
-1. 코인 현재가 조회
-<img src="https://github.com/user-attachments/assets/d33b3601-617f-4269-b6f0-a98078cb81e0" width="300" />
-
-2. 가장 있기 있는 코인 탑 14
-<img src="https://github.com/user-attachments/assets/a213ebee-cf8a-493c-b9ab-aa830daa2eb4" width="300" />
-     
-3. 코인 검색 기능
-<img src="https://github.com/user-attachments/assets/04db8130-e375-4035-a25b-a1e162c47d80" width="300" />
-
-4. 코인 상세 정보
-<img src="https://github.com/user-attachments/assets/d4ba7778-7ca2-438f-9bfb-1bb920b1f344" width="300" />
-
-5. 최근 경제 뉴스
-<img src="https://github.com/user-attachments/assets/d93bb04a-dc95-4f7f-a31b-200cbefc351f" width="300" />   
-<img src="https://github.com/user-attachments/assets/c1dd2ef1-eb59-43b2-b97c-78ad6630319d" width="300" />
-
-
-
-***
 ### 기술 스택
-- FrameWork - UIKit  
-- Library - Alamofire, Kingfisher, SnapKit, RxSwift, RxDataSource, Realm, Toast
-- API - Upbit, Coingetco
+- **FrameWork** - UIKit, Network, WebKit  
+- **Library** - RxSwift, RxDataSource, RxGesture, DGCharts, Realm, SnapKit, KingFisher, Toast<br>
+- **Architecture** - MVVM
 
-***
+
 ### 기술 설명
-<b>[네트워크 단절]</b>  
-- 네트워크 모니터를 싱글톤 패턴으로 구현하여, 네트워크 통신이 발생할 때마다, 네트워크 상태를 체크할 수 있도록 설계했습니다.
-- 네트워크 단절시에는, 네트워크 재시도를 할 수 있도록 설계했으며, 재시도 하지않더라도 네트워크가 연결되면 기존 화면으로 돌아가도록 설계했습니다.
+- **최소 지원 iOS 버전**: iOS 16.0  
+- **Local DB**: Realm
+- **API(Rest API)**: Upbit / Coingecko / Naver
+<br><br>
 
-  
-<b>[네트워크 매니저]</b>  
-- 네트워크 매니저는 싱글톤 패턴을 적용하여, 어느 곳에서든지 인스턴스 생성 없이 호출할 수 있도록 했습니다.
-- Upbit 및 Coingecko는 동일한 네트워크 매니저를 사용할 수 있도록 제네릭 타입 및 라우터 패턴으로 구현했습니다.
 
-<b>[Compositional Layout]</b>  
-- CollectioniView Compositional Layout과 RxDataSource를 사용하여 설계했습니다.
-- 섹션마다 데이터 타입이 다르기 때문에, 섹션의 타입을 enum타입으로 구분하여 각 섹션에 맞는 데이터가 들어갈 수 있도록 설계했습니다.
+## 페이지별 기능
 
-<b>[화면전환]</b>  
-- 화면전환시, 네트워크 통신으로 인해 뷰의 Drawing이 지연될 수 있기 때문에, activityIndicator를 추가하여 사용자에게 로딩중임을 안내했습니다.
+### [실시간 코인 조회]
 
-<b>[UI]</b>  
-- 가능한 모든 기기에 대응할 수 있도록 텍스트 및 고정된 크기를 가진 뷰를 제외하고는 비율로 계산했습니다.
+- 앱 실행시 **온보딩 화면**이 나오며 다음 페이지로 이동됩니다.  
+  - ✅ 회원가입이 완료된 경우 → **메인 화면**으로 이동
+  - ❌ 회원가입이 안 된 경우 → **회원가입 화면**으로 이동
+- 회원가입은 **닉네임만 필수 항목**이며, 다음 조건을 만족해야 합니다:
+  - 공백을 제외한 **2~7자** 사이의 문자열
+
+| 온보딩 및 회원가입 |
+|:--------:|
+| <img src="https://github.com/user-attachments/assets/59790eec-d299-45fd-911d-6caf8bf3b16c" width="350"/> | 
+
+<br><br>
+
+### [코인 검색 및 상세보기]
+
+- 홈 화면에서는 이번 달 **월간 클라이밍 기록**과  **가장 많이 방문한 클라이밍장**이 표시됩니다.
+- 기록 등록 시에는 날짜, 클라이밍장, 운동 시간이 저장되며, 클라이밍장을 선택하면 **난이도 선택 화면**으로 이동합니다.
+- 캘린더 화면에서는 다음과 같이 마커가 표시됩니다:
+  - **현재 날짜**: 푸른색 마커
+  - **기록이 있는 날짜**: 붉은색 마커  
+  - **현재 날짜에 기록도 존재할 경우**: 푸른색 마커가 우선 적용됩니다
+- 동일 날짜에 **2개 이상의 기록이 있는 경우**, **등록된 순서대로** 리스트에 표시됩니다.
+
+
+| 홈, 캘린더, 기록 등록 |
+|:--------:|
+| <img src="https://github.com/user-attachments/assets/cdb15288-059a-48f4-9a39-b766c612edab" width="350"/> |
+
+<br><br>
+
+### [최근 뉴스]
+
+- **실시간 기록**은 클라이밍장을 선택한 후 시작되며, 이 시점부터 **타이머가 1초 단위로 작동**합니다.
+- **원하지 않는 난이도는 스와이프 동작을 통해 숨길 수 있으며**, 이후 언제든지 다시 불러올 수 있습니다.
+- 운동이 종료되면 기록에 대한 요약 화면이 표시됩니다.
+
+| 실시간 기록 |
+|:--------:|
+| <img src="https://github.com/user-attachments/assets/e5703bb9-e724-414e-a4ef-5557ff7ee564" width="350"/> |
+
+<br><br>
+
+### [네트워크 단절 대응]
+
+- **클라이밍장 검색**은 검색 버튼을 눌렀을 때 실행되며, 앱 실행 시 서버로부터 받은 데이터를 기반으로 로컬에 저장된 정보를 조회합니다.  
+- 각 클라이밍장 상세 페이지에는 **장소 설명**, **주소**, **Instagram ID** 등이 포함되어 있으며, Instagram ID를 클릭하면 해당 계정으로 이동합니다.
+- **정보 수정 요청하기** 버튼을 누르면, ALLEX 공식 Instagram 계정으로 이동됩니다.  
+ 
+| 검색 |
+|:--------:|
+| <img src="https://github.com/user-attachments/assets/e7f88c1d-7222-48dc-8595-f3c85144f8a2" width="350"/> |
+
+<br><br>
+
 
 ***
-### 트러블 슈팅
 
 
 
