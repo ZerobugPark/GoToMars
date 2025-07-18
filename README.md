@@ -68,7 +68,7 @@
 
 | 실시간 코인 조회 |
 |:--------:|
-| <img src="https://github.com/user-attachments/assets/8071063b-337a-4e75-94e7-b8e725ba9942" width="350"/> | 
+| <img src="https://github.com/user-attachments/assets/b5c1c17a-7c4d-483b-bf48-58ace8bf3ed5" width="350"/> | 
 
 <br><br>
 
@@ -82,7 +82,8 @@
 
 | 코인 검색 및 상세보기 |
 |:--------:|
-| <img src="https://github.com/user-attachments/assets/99986e89-a5c7-4db4-bb9a-fe5955e8c28e" width="350"/> |
+| <img src="https://github.com/user-attachments/assets/39910a6d-291f-4893-b853-e26bd77a339d" width="350"/> |
+
 
 
 <br><br>
@@ -94,7 +95,8 @@
 
 | 최신 뉴스 |
 |:--------:|
-| <img src="https://github.com/user-attachments/assets/b2a42531-d352-4610-a92c-d62acc7aeb5c" width="350"/> |
+| <img src="https://github.com/user-attachments/assets/1a9ce7a3-236d-4396-a7bf-f1f378bfb9ed" width="350"/> |
+
 
 
 <br><br>
@@ -107,7 +109,8 @@
  
 | 네트워크 단절 |
 |:--------:|
-| <img src="https://github.com/user-attachments/assets/2d018ab4-8918-403e-91df-c6427effb608" width="350"/> |
+| <img src="https://github.com/user-attachments/assets/4402d7be-6e9b-4f44-94d4-b93f83191303" width="350"/> |
+
 
 <br><br>
 
