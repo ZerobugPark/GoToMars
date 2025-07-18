@@ -40,6 +40,8 @@ final class ExchangeViewController: UIViewController {
         
 
         //startWith. 처음에 이벤트를 넣어주는 역할
+        // tapGesture: RxGestrue
+        // 버튼은 rxCocoa 가능하나,단순 뷰의 탭을 확인하기 위해서 RxGesture 사용
         let input = ExchangeViewModel.Input(viewDidLoad: Observable<Int>.interval(.seconds(5), scheduler: MainScheduler.instance).startWith(0),
                                             filterButtonTapped: Observable.merge(exchangeView.currentPriceView.rx.tapGesture().when(.recognized).asObservable()
                                                 .map { [weak self] _ in self?.exchangeView.currentPriceView.tag ?? 0 },

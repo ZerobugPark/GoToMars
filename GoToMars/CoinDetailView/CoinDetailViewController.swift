@@ -11,7 +11,7 @@ import Toast
 
 import RxCocoa
 import RxSwift
-import RxGesture
+//import RxGesture
 
 import SnapKit
 import DGCharts
