@@ -30,7 +30,7 @@
 
 ### 기술 스택
 - **FrameWork** - UIKit, Network, WebKit  
-- **Library** - RxSwift, RxDataSource, RxGesture, DGCharts, Alamofire, Realm, SnapKit, KingFisher, Toast<br>
+- **Library** - RxSwift, RxDataSource, RxGesture, DGCharts, Alamofire, Realm, SnapKit, KingFisher
 - **Architecture** - MVVM
 
 
