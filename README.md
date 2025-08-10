@@ -68,6 +68,8 @@
 - 다양한 기기 크기에 대응할 수 있도록, 텍스트 및 고정 크기 뷰를 제외한 대부분의 레이아웃을 비율 기반으로 계산했습니다.
 - DGCharts를 최근 1주(7일) 시세를 라인(선형) 차트로 표현했습니다.
 
+<img width="456" height="222" alt="image" src="https://github.com/user-attachments/assets/0a467bf0-eead-4722-8786-6333b5308e7f" />
+
 <br><br>
 ## 페이지별 기능
 
