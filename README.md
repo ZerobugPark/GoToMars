@@ -29,7 +29,7 @@
 기획 및 개발: 2025.03.06 ~ 2025.03.11(6일간) 
 
 ### 기술 스택
-- **FrameWork** - UIKit, Network, WebKit  
+- **Framework** - UIKit, Network, WebKit  
 - **Library** - RxSwift, RxDataSources, RxGesture, DGCharts, Alamofire, Realm, SnapKit, KingFisher
 - **Architecture** - MVVM
 
