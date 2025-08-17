@@ -1,7 +1,6 @@
 # 🪐 실시간 코인 & 뉴스 플랫폼 GoToMars
-![ReadMeTitle](https://github.com/user-attachments/assets/ff726042-1c98-436a-8258-635fe9a541c7)
+![ReadMeTitle](https://github.com/user-attachments/assets/b69fe44d-f527-47a3-9b4b-e1e50d9604ec)
 <br><br><br>
-
 
 ## 프로젝트 소개
 **GoToMars**는 화성을 향해 날아간다는 은유처럼, 비트코인 · 알트코인 · NFT의 실시간 시세와 최신 뉴스를 빠르게 조회할 수 있는 애플리케이션입니다.  
