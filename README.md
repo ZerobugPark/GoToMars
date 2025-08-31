@@ -56,7 +56,7 @@
 - 네트워크 연결이 끊긴 상태에서는 Pop-up을 통해 사용자에게 즉시 안내하며, 5초마다 자동으로 연결 상태를 재확인합니다.
 - 연결 타입(Wi-Fi / Cellular / Ethernet)도 감지할 수 있도록 NWPathMonitor 기반으로 설계되었습니다.
 
-  <img width="393" height="305" alt="image" src="https://github.com/user-attachments/assets/dd0c30da-48d3-4d4d-b9fe-0397d395506a" />
+<img width="602" height="418" alt="그림1" src="https://github.com/user-attachments/assets/6ef54572-69f5-4e10-98f9-7f5b9d66736c" />
 
 
 ### Compositional Layout
