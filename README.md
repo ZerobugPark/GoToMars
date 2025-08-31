@@ -56,6 +56,9 @@
 - 네트워크 연결이 끊긴 상태에서는 Pop-up을 통해 사용자에게 즉시 안내하며, 5초마다 자동으로 연결 상태를 재확인합니다.
 - 연결 타입(Wi-Fi / Cellular / Ethernet)도 감지할 수 있도록 NWPathMonitor 기반으로 설계되었습니다.
 
+  <img width="393" height="305" alt="image" src="https://github.com/user-attachments/assets/dd0c30da-48d3-4d4d-b9fe-0397d395506a" />
+
+
 ### Compositional Layout
 - CollectionView Compositional Layout과 RxDataSource를 활용하여 설계했습니다.
 - 섹션마다 데이터 타입이 다르기 때문에, enum 타입으로 섹션을 구분하여 각 섹션에 맞는 데이터가 들어가도록 처리했습니다.
